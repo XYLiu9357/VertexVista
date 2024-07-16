@@ -8,4 +8,7 @@ set(DIGRAPH_BASICS
     digraph-traverse.cpp
 )
 
-add_library(digraph-basics STATIC ${DIGRAPH_BASICS})
+set(LIB_NAME digraph_basics)
+
+add_library(${LIB_NAME} SHARED ${DIGRAPH_BASICS})
+

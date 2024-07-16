@@ -4,8 +4,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source code files 
 set(DIGRAPH_ROUTINES
+    biparte.cpp
+    connected-components.cpp
+    cycle.cpp
+    eulerian.cpp
+    planarity.cpp
     strong-connectivity.cpp
     topo-sort.cpp
 )
 
-add_library(digraph-routines STATIC ${DIGRAPH_ROUTINES})
+add_library(digraph-routines SHARED ${DIGRAPH_ROUTINES})

@@ -13,18 +13,23 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_SRC
     main.cpp
-    tests.cpp
+    adjtree-tests.cpp
+    digraph-tests.cpp
 )
 
-add_executable(digraph-test.out ${TEST_SRC})
+set(EXECUTABLE_NAME digraph-test.out)
 
-target_link_libraries(digraph-test.out
+add_executable(${EXECUTABLE_NAME} ${TEST_SRC})
+
+target_link_libraries(
+    ${EXECUTABLE_NAME}
+    adjacency-tree
     GTest::gtest_main
 )
 
-# Add include directories
-target_include_directories(digraph-test.out PRIVATE 
-    ${CMAKE_SOURCE_DIR}
+target_include_directories(
+    ${EXECUTABLE_NAME} 
+    PRIVATE ${CMAKE_SOURCE_DIR}
 )
 
 # Enable testing

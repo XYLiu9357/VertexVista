@@ -1,3 +1,8 @@
+/**digraph.hpp
+ *
+ * Header for directed graph container.
+ */
+
 #include <iostream>
 #include <vector>
 #include <map>
@@ -18,12 +23,15 @@ public:
     Digraph(int V);
 
     // Constructor: creates graph from input stream
-    Digraph(std::istream in);
+    Digraph(std::istream in, char delim);
 
     /**
      * Accessors
      */
+    // Return number of vertices
     int V();
+
+    // Return number of edges
     int E();
 
     // Serialization of the graph
