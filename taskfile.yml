@@ -1,0 +1,35 @@
+version: "3"
+
+env:
+  CLANG: /usr/bin/clang++
+  WARN_FLAGS: -Wall -fsanitize=address
+
+  DEBUG: -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
+  BUILD: -DCMAKE_CXX_FLAGS="-O3" -DBUILD_TESTS=OFF
+
+tasks:
+  default:
+    - task: build-test
+    - task: run-test
+
+  build-test:
+    cmds:
+      - cmake -S . -B build -DCMAKE_CXX_COMPILER=${CLANG} ${DEBUG} -DCMAKE_CXX_FLAGS="${WARN_FLAGS}"
+      - cmake --build build
+
+  build:
+    cmds:
+      - cmake -S . -B build -DCMAKE_CXX_COMPILER=${CLANG} ${BUILD}
+      - cmake --build build
+
+  run-test:
+    cmds:
+      - ./build/tests/digraph-test.out
+
+  valgrind:
+    cmds:
+      - valgrind --leak-check=full --show-leak-kinds=all ./build/digraph-test.out
+
+  gdb:
+    cmds:
+      - gdb ./build/digraph-test.out
