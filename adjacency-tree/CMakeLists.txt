@@ -2,11 +2,10 @@ cmake_minimum_required(VERSION 3.20)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(adjacency-tree)
-
+set(LIB_NAME adjtree)
 set(ADJACENCY_TREE_SRC
-    src/deque.hpp
-    src/adjtree.cpp
+    deque.hpp
+    adjtree.cpp
 )
 
-add_library(${PROJECT_NAME} ${ADJACENCY_TREE_SRC})
+add_library(${LIB_NAME} ${ADJACENCY_TREE_SRC})

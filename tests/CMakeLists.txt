@@ -23,7 +23,7 @@ add_executable(${EXECUTABLE_NAME} ${TEST_SRC})
 
 target_link_libraries(
     ${EXECUTABLE_NAME}
-    adjacency-tree
+    adjtree
     GTest::gtest_main
 )
 

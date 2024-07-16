@@ -8,7 +8,7 @@
 #include <random>
 #include <iostream>
 
-#include "adjacency-tree/src/adjtree.hpp"
+#include "adjacency-tree/adjtree.hpp"
 
 // Fast 32-bit integer log2 calculation from Bit Twiddling Hacks
 // http://graphics.stanford.edu/~seander/bithacks.html#IntegerLogLookup
