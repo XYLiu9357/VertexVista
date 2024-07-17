@@ -14,7 +14,7 @@ add_library(${LIB_NAME} SHARED ${DIGRAPH_SRC})
 
 target_link_libraries(
     ${LIB_NAME}
-    linked-list
+    adjtree
 )
 
 target_include_directories(

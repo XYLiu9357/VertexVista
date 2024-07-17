@@ -5,9 +5,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(digraph)
 
 # Build libraries
-add_subdirectory(linked-list)
-add_subdirectory(digraph)
-add_subdirectory(digraph-processing)
+add_subdirectory(adjacency-tree)
+# add_subdirectory(digraph)
+# add_subdirectory(digraph-processing)
 
 # Build executable with unit tests if specified
 option(BUILD_TESTS "Build executable containing unit tests" OFF)

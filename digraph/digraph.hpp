@@ -3,18 +3,18 @@
  * Header for directed graph container.
  */
 
+#ifndef DIGRAPH
+#define DIGRAPH
+
 #include <vector>
 #include <string>
 
-#include "linked-list/linked-list.hpp"
-
-#ifndef DIGRAPH
-#define DIGRAPH
+#include "adjacency-tree/adjtree.hpp"
 
 class Digraph
 {
 private:
-    std::vector<List> adjVec;
+    AdjTree adjTree;
     size_t edgeCount;
 
 public:

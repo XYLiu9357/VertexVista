@@ -17,17 +17,17 @@ Digraph::Digraph() : edgeCount(0) {}
 Digraph::Digraph(int V)
     : edgeCount(0)
 {
-    adjVec.reserve(V);
+    adjTree.reserve(V);
     for (int i = 0; i < V; i++)
-        adjVec.push_back(List());
+        adjTree.push_back(List());
 }
 
 // Constructor: copy graph "other"
 Digraph::Digraph(const Digraph &other) : edgeCount(other.edgeCount)
 {
-    adjVec.resize(other.adjVec.size());
-    for (size_t i = 0; i < other.adjVec.size(); ++i)
-        adjVec[i] = other.adjVec[i];
+    adjTree.resize(other.adjTree.size());
+    for (size_t i = 0; i < other.adjTree.size(); ++i)
+        adjTree[i] = other.adjTree[i];
 }
 
 /**
@@ -35,7 +35,7 @@ Digraph::Digraph(const Digraph &other) : edgeCount(other.edgeCount)
  */
 
 // Return number of vertices
-size_t Digraph::V() { return adjVec.size(); }
+size_t Digraph::V() { return adjTree.size(); }
 
 // Return number of edges
 size_t Digraph::E() { return edgeCount; }
@@ -47,7 +47,7 @@ std::string Digraph::toString()
     for (int i = 0; i < V(); i++)
     {
         graphStr += std::to_string(i) + ": ";
-        for (int v : adjVec[i])
+        for (int v : adjTree[i])
             graphStr += std::to_string(v) + " ";
         graphStr += "\n";
     }
@@ -62,7 +62,7 @@ void Digraph::addEdge(int v, int w)
     if (v < 0 || w < 0 || v >= V() || w >= V())
         throw std::out_of_range("Vertex index out of bounds [0, V)");
 
-    adjVec[v].insert(w);
+    adjTree[v].insert(w);
     edgeCount++;
 }
 
@@ -75,8 +75,8 @@ std::vector<int> Digraph::adj(int v)
         throw std::out_of_range("Vertex index out of bounds [0, V)");
 
     std::vector<int> neighbors;
-    neighbors.reserve(adjVec[v].size());
-    for (int vNum : adjVec[v])
+    neighbors.reserve(adjTree[v].size());
+    for (int vNum : adjTree[v])
         neighbors.push_back(vNum);
 
     return neighbors;
