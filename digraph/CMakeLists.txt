@@ -12,3 +12,7 @@ set(LIB_NAME digraph_basics)
 
 add_library(${LIB_NAME} SHARED ${DIGRAPH_BASICS})
 
+target_link_libraries(
+    ${LIB_NAME}
+    linked-list
+)

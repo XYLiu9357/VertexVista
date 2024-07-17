@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_SRC
     main.cpp
-    adjtree-tests.cpp
+    linked-list-tests.cpp
     digraph-tests.cpp
 )
 
@@ -23,8 +23,9 @@ add_executable(${EXECUTABLE_NAME} ${TEST_SRC})
 
 target_link_libraries(
     ${EXECUTABLE_NAME}
-    adjtree
-    GTest::gtest_main
+    linked-list
+    gtest_main
+    pthread
 )
 
 target_include_directories(

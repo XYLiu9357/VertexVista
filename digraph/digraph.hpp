@@ -8,9 +8,13 @@
 #include <map>
 #include <string>
 
+#include "linked-list/linked-list.hpp"
+
 class Digraph
 {
 private:
+    std::vector<List> adjList;
+
 public:
     /**
      * Constructors
@@ -28,6 +32,7 @@ public:
     /**
      * Accessors
      */
+
     // Return number of vertices
     int V();
 

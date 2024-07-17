@@ -1,7 +1,6 @@
-/**tests.cpp
+/**digraph-tests.cpp
  *
- * Unit tests for all implemented data structures
- * and algorithms.
+ * Unit tests for directed graph API.
  */
 
 #include <gtest/gtest.h>
@@ -9,17 +8,6 @@
 #include <vector>
 #include <digraph/digraph-traverse.hpp>
 #include <digraph/digraph.hpp>
-
-/**tests.cpp
- *
- * Unit tests for the left-leaning red-black tree
- */
-
-#include <gtest/gtest.h>
-#include <stdexcept>
-#include <random>
-#include <iostream>
-
 
 TEST(DigraphTest, EmptyGraph)
 {
