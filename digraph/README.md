@@ -4,7 +4,7 @@ The `Digraph` class uses a nested symbol table `RedBlackTree<int, AdjTree>` to s
 
 ## Runtime
 
-Let $T$ be the runtime, $N$ be the total number of vertices present in `Digraph`, and $e_i$ be the number of directed edges from vertex $i: 1\leq i \leq N$. $\lg$ is equivalent to $\log_2$.
+Let $T$ be the runtime, $N$ be the total number of vertices present in `Digraph`, and $e_i$ be the number of directed edges from vertex $i: 1\leq i \leq N$.
 
 - Insert new vertex $v$: $T \sim\lg N$
 - Insert new directed edge from vertex $v$ to vertex $w$: $T \sim 2\lg N + \lg e_v$
