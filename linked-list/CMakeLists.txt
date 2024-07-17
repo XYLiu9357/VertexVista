@@ -7,4 +7,4 @@ set(ListSrc
     linked-list.cpp
 )
 
-add_library(linked-list ${ListSrc})
+add_library(linked-list SHARED ${ListSrc})

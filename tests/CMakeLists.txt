@@ -24,8 +24,8 @@ add_executable(${EXECUTABLE_NAME} ${TEST_SRC})
 target_link_libraries(
     ${EXECUTABLE_NAME}
     linked-list
+    digraph
     gtest_main
-    pthread
 )
 
 target_include_directories(

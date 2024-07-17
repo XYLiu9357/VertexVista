@@ -23,9 +23,11 @@ private:
 public:
     List();
     List(std::initializer_list<int> init);
+    List(const List &that);
+    List &operator=(const List &other);
 
-    bool empty();
-    size_t size();
+    bool empty() const;
+    size_t size() const;
 
     void insert(int val);
     void erase(int val);

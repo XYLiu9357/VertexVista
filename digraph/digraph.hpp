@@ -3,17 +3,19 @@
  * Header for directed graph container.
  */
 
-#include <iostream>
 #include <vector>
-#include <map>
 #include <string>
 
 #include "linked-list/linked-list.hpp"
 
+#ifndef DIGRAPH
+#define DIGRAPH
+
 class Digraph
 {
 private:
-    std::vector<List> adjList;
+    std::vector<List> adjVec;
+    size_t edgeCount;
 
 public:
     /**
@@ -26,25 +28,30 @@ public:
     // Constructor: creates a graph with vertices 0 to V - 1
     Digraph(int V);
 
-    // Constructor: creates graph from input stream
-    Digraph(std::istream in, char delim);
+    // Constructor: copy graph "other"
+    Digraph(const Digraph &other);
 
     /**
      * Accessors
      */
 
     // Return number of vertices
-    int V();
-
+    size_t V();
     // Return number of edges
-    int E();
+    size_t E();
 
     // Serialization of the graph
     std::string toString();
 
-    // Create a directed edge
+    /**
+     * Mutators
+     */
+
+    // Create a directed edge from v to w
     void addEdge(int v, int w);
 
     // Get all neighbors such that v has a link to that neighbor
     std::vector<int> adj(int v);
 };
+
+#endif /*DIGRAPH*/
