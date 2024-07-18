@@ -17,22 +17,22 @@ set(TEST_SRC
     digraph-tests.cpp
 )
 
-set(EXECUTABLE_NAME digraph-test.out)
+set(TEST_NAME digraph-test.out)
 
-add_executable(${EXECUTABLE_NAME} ${TEST_SRC})
+add_executable(${TEST_NAME} ${TEST_SRC})
+add_test(${TEST_NAME} ${TEST_NAME})
 
 target_link_libraries(
-    ${EXECUTABLE_NAME}
+    ${TEST_NAME}
     adjtree
     digraph
     gtest_main
 )
 
 target_include_directories(
-    ${EXECUTABLE_NAME} 
+    ${TEST_NAME} 
     PRIVATE ${CMAKE_SOURCE_DIR}
 )
 
 # Enable testing
-enable_testing()
 include(GoogleTest)

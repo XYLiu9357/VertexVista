@@ -28,8 +28,11 @@ public:
     // Constructor: creates a graph with vertices 0 to V - 1
     Digraph(int V);
 
+    // Constructor: creates a graph with an intializer list of vertices
+    Digraph(std::initializer_list<int> vertices);
+
     // Constructor: deep copy another graph
-    Digraph(const Digraph &other);
+    Digraph(Digraph &other);
 
     /**
      * Accessors
@@ -53,6 +56,7 @@ public:
      * @param v Key of the new vertex
      */
     void insertVertex(int v);
+    void insertVertex(std::initializer_list<int> vertices);
 
     /*!
      * @function insertEdge
@@ -63,6 +67,7 @@ public:
      * @param w The destination vertex
      */
     void insertEdge(int v, int w);
+    void insertEdge(std::initializer_list<std::pair<int, int>> edges);
 
     /*!
      * @function eraseVertex
@@ -71,6 +76,7 @@ public:
      * @param v Key of the vertex to remove
      */
     void eraseVertex(int v);
+    void eraseVertex(std::initializer_list<int> vertices);
 
     /*!
      * @function insertEdge
@@ -81,6 +87,7 @@ public:
      * @param w The destination vertex
      */
     void eraseEdge(int v, int w);
+    void eraseEdge(std::initializer_list<std::pair<int, int>> edges);
 
     /**
      * TODO: adj iterable that supports pointer-based graph traversal

@@ -13,5 +13,8 @@ add_subdirectory(digraph)
 option(BUILD_TESTS "Build executable containing unit tests" OFF)
 
 if(BUILD_TESTS)
+    enable_testing()
+    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -g -O0")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address")
     add_subdirectory(tests)
 endif()

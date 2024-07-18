@@ -69,6 +69,7 @@ size_t AdjTree::eraseGraphTreeVertex(RedBlackTree<int, AdjTree> &graphTree, int 
     }
 
     // Erase vertex v
+    edgesRemoved += graphTree[v].size();
     graphTree.erase(v);
 
     return edgesRemoved;
