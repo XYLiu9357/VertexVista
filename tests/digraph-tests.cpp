@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include "digraph/digraph.hpp"
 
-constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 1000;
+constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 10000;
 
 TEST(DigraphTest, DefaultConstructor)
 {

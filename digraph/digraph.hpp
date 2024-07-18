@@ -89,9 +89,15 @@ public:
     void eraseEdge(int v, int w);
     void eraseEdge(std::initializer_list<std::pair<int, int>> edges);
 
-    /**
-     * TODO: adj iterable that supports pointer-based graph traversal
+    /*!
+     * @function adj
+     * @abstract Iterates inorder over all the neighbors of v connected by
+     *           an outgoing link from v
+     * @param v The query vertex
+     * @return  An iterator for associated AdjTree
+     * @todo
      */
+    AdjTree adj(int v);
 };
 
 #endif /*DIGRAPH*/
