@@ -6,7 +6,7 @@ project(digraph)
 
 # Build libraries
 add_subdirectory(adjacency-tree)
-# add_subdirectory(digraph)
+add_subdirectory(digraph)
 # add_subdirectory(digraph-processing)
 
 # Build executable with unit tests if specified

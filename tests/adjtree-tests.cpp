@@ -71,7 +71,9 @@ TEST(AdjTreeTest, EmptyTree)
     EXPECT_THROW(tree.erase(1), std::out_of_range);
     EXPECT_THROW(tree.rankSelect(1), std::out_of_range);
 
-    EXPECT_THROW(tree.toString(), std::out_of_range);
+    // Empty serialization is permitted in the context of adjacency tree
+    EXPECT_EQ(tree.toString(), "");
+
     EXPECT_EQ(tree.depth(), 0);
 }
 
@@ -253,7 +255,7 @@ TEST(AdjTreeTest, WorstCaseStressTestMixedInsertErase)
     EXPECT_TRUE(depth <= STRESS_TEST_LG2 + STRESS_TEST_LG2); // Depth <= 2lgN
 }
 
-TEST(AdjTreeSymbolTableOps, Iterator)
+TEST(AdjTreeTest, Iterator)
 {
     AdjTree tree1;
     AdjTree tree2;

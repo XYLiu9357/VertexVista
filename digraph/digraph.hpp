@@ -48,14 +48,29 @@ public:
      */
 
     /*!
+     * @function insertVertex
+     * @abstract Insert a vertex with key v
+     * @param v Key of the new vertex
+     */
+    void insertVertex(int v);
+
+    /*!
      * @function insertEdge
      * @abstract Insert an edge between vertex v and w if the vertices
-     *           exist. If the directed edge already exists, the function
-     *           will return true.
+     *           exist. If the vertices do not exist, out_of_range
+     *           exception will be thrown.
      * @param v The starting vertex
      * @param w The destination vertex
      */
     void insertEdge(int v, int w);
+
+    /*!
+     * @function eraseVertex
+     * @abstract Remove the vertex with key v. If the vertex does not exist,
+     *           out_of_range exception will be thrown.
+     * @param v Key of the vertex to remove
+     */
+    void eraseVertex(int v);
 
     /*!
      * @function insertEdge
@@ -67,8 +82,9 @@ public:
      */
     void eraseEdge(int v, int w);
 
-    // Get all neighbors such that v has a link to that neighbor
-    std::vector<int> adj(int v);
+    /**
+     * TODO: adj iterable that supports pointer-based graph traversal
+     */
 };
 
 #endif /*DIGRAPH*/

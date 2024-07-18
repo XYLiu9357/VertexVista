@@ -45,7 +45,6 @@ public:
             : p(pair), left(nullptr), right(nullptr), sz(1), color(c) {}
     };
 
-protected:
     // Tree attributes
     TreeNode *root;
     Compare comparator;
@@ -72,9 +71,11 @@ private:
     TreeNode *moveRedLeft(TreeNode *node);
     TreeNode *moveRedRight(TreeNode *node);
 
-protected:
+public:
     // Recursive helpers
     TreeNode *_at(TreeNode *node, const key_t &key) const;
+
+private:
     int _rank(TreeNode *node, const key_t &key) const;
     TreeNode *_floor(TreeNode *node, const key_t &key) const;
     TreeNode *_ceiling(TreeNode *node, const key_t &key) const;

@@ -14,7 +14,7 @@ FetchContent_MakeAvailable(googletest)
 set(TEST_SRC
     main.cpp
     adjtree-tests.cpp
-    # digraph-tests.cpp
+    digraph-tests.cpp
 )
 
 set(EXECUTABLE_NAME digraph-test.out)
@@ -24,7 +24,7 @@ add_executable(${EXECUTABLE_NAME} ${TEST_SRC})
 target_link_libraries(
     ${EXECUTABLE_NAME}
     adjtree
-    # digraph
+    digraph
     gtest_main
 )
 

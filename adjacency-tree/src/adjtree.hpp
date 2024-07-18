@@ -25,6 +25,44 @@ public:
     AdjTree(const AdjTree &that);
 
     /**
+     * Mutators (called by Digraph)
+     *
+     * The functions operate on the graphTree passeed as reference instead of this
+     * AdjTree. This design choice minimizes exposure of AdjTree implementation to
+     * dependent classes, e.g. Digraph.
+     */
+
+    /*!
+     * @function insertGraphTreeEdge
+     * @abstract Insert an edge between vertex v and w. All relevant checks should be
+     *           completed before calling this function.
+     * @param graphTree The digraph tree to modify
+     * @param v         The starting vertex
+     * @param w         The destination vertex
+     */
+    static void insertGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, int w);
+
+    /*!
+     * @function eraseGraphTreeVertex
+     * @abstract Remove the vertex with key v. All relevant checks should be
+     *           completed before calling this function.
+     * @param graphTree The digraph tree to modify
+     * @param v         Key of the vertex to remove
+     * @return          Number of edges removed
+     */
+    static size_t eraseGraphTreeVertex(RedBlackTree<int, AdjTree> &graphTree, int v);
+
+    /*!
+     * @function eraseGraphTreeEdge
+     * @abstract Remove the edge from v to w if the edge exists. All relevant
+     *           checks should be completed before calling this function.
+     * @param graphTree The digraph tree to modify
+     * @param v         The starting vertex
+     * @param w         The destination vertex
+     */
+    static void eraseGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, int w);
+
+    /**
      * Tree Processing
      */
 

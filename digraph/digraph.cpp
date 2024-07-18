@@ -13,49 +13,110 @@
  */
 
 // Constructor: create empty graph
-Digraph::Digraph() {}
+Digraph::Digraph() : edgeCount(0) {}
 
 // Constructor: creates a graph with vertices 0 to V - 1
-Digraph::Digraph(int V) {}
+Digraph::Digraph(int V) : edgeCount(0)
+{
+    for (int i = 0; i < V; i++)
+        graphTree[i] = AdjTree();
+}
 
 // Constructor: deep copy another graph
-Digraph::Digraph(const Digraph &other) {}
+Digraph::Digraph(const Digraph &other)
+    : edgeCount(other.edgeCount)
+{
+    /**
+     * TODO: Copy constructor
+     */
+}
 
 /**
  * Accessors
  */
 
 // Return number of vertices
-size_t Digraph::V() {}
+size_t Digraph::V() { return graphTree.size(); }
 // Return number of edges
-size_t Digraph::E() {}
+size_t Digraph::E() { return edgeCount; }
 
 // Serialization of the graph
-std::string Digraph::toString() {}
+std::string Digraph::toString()
+{
+    if (graphTree.empty())
+        throw std::out_of_range("Invalid serialization of empty container");
+    std::string serializedStr = "";
+    for (std::pair<int, AdjTree> pair : graphTree)
+        serializedStr += std::to_string(pair.first) + ": " + pair.second.toString() + "\n";
+    return serializedStr;
+}
 
 /**
  * Mutators
  */
 
 /*!
- * @function insertEdge
- * @abstract Insert an edge between vertex v and w if the vertices
- *           exist. If the directed edge already exists, the function
- *           will return true.
- * @param v The starting vertex
- * @param w The destination vertex
+ * @function insertVertex
+ * @abstract Insert a vertex with key v
+ * @param v Key of the new vertex
  */
-void Digraph::insertEdge(int v, int w) {}
+void Digraph::insertVertex(int v)
+{
+    if (graphTree.contains(v))
+        return;
+
+    graphTree[v] = AdjTree();
+}
 
 /*!
  * @function insertEdge
  * @abstract Insert an edge between vertex v and w if the vertices
- *           exist. If the directed edge does not exist, the function
- *           will return true.
+ *           exist. If the vertices do not exist, out_of_range
+ *           exception will be thrown.
  * @param v The starting vertex
  * @param w The destination vertex
  */
-void Digraph::eraseEdge(int v, int w) {}
+void Digraph::insertEdge(int v, int w)
+{
+    if (!graphTree.contains(v) || !graphTree.contains(w))
+        throw std::out_of_range("Attempted edge insertion between nonexistent vertices");
+    if (graphTree[v].contains(w)) // Edge already exists
+        return;
 
-// Get all neighbors such that v has a link to that neighbor
-std::vector<int> Digraph::adj(int v) {}
+    AdjTree::insertGraphTreeEdge(graphTree, v, w);
+    edgeCount++;
+}
+
+/*!
+ * @function eraseVertex
+ * @abstract Remove the vertex with key v. If the vertex does not exist,
+ *           out_of_range exception will be thrown.
+ * @param v Key of the vertex to remove
+ */
+void Digraph::eraseVertex(int v)
+{
+    if (!graphTree.contains(v))
+        throw std::out_of_range("Attempted vertex deletion on nonexistent vertex");
+
+    size_t edgesRemoved = AdjTree::eraseGraphTreeVertex(graphTree, v);
+    edgeCount -= edgesRemoved;
+}
+
+/*!
+ * @function eraseEdge
+ * @abstract Remove the edge from v to w if the edge exists. If the
+ *           directed edge does not exist, out_of_range exception will
+ *           be thrown.
+ * @param v The starting vertex
+ * @param w The destination vertex
+ */
+void Digraph::eraseEdge(int v, int w)
+{
+    if (!graphTree.contains(v) || !graphTree.contains(w))
+        throw std::out_of_range("Attempted edge deletion between nonexistent vertices");
+    if (!graphTree.find(v)->second.contains(w))
+        throw std::out_of_range("Attempted edge deletion on nonexistent edge");
+
+    AdjTree::eraseGraphTreeEdge(graphTree, v, w);
+    edgeCount--;
+}
