@@ -9,27 +9,29 @@
 /**
  * Constructors
  */
-AdjTree::AdjTree() {}
-AdjTree::AdjTree(const std::initializer_list<std::pair<int, RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>>> &init) {}
+AdjTree::AdjTree()
+    : RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>() {}
 
-// TODO: deep copy fix
-AdjTree::AdjTree(const AdjTree &that) {}
+AdjTree::AdjTree(const std::initializer_list<std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *>> &init)
+    : RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>(init) {}
 
-/**
- * Insertion
- */
-void AdjTree::insertVertex(int v) {}
-void AdjTree::insertEdge(int v, int w) {}
-
-/**
- * Removal
- */
-void AdjTree::eraseVertex(int v) {}
-void AdjTree::eraseEdge(int v, int w) {}
+// This makes a deep copy because operator= in RedBlackTree makes a deep-copied assignment
+AdjTree::AdjTree(const AdjTree &that)
+    : RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>(that) {}
 
 /**
  * Tree Processing
  */
 
 // Serialize adjacency tree
-std::string AdjTree::toString() {}
+std::string AdjTree::toString(const std::string &delim)
+{
+    if (empty())
+        throw std::out_of_range("Invalid serialization of empty container");
+
+    std::string serializedStr = "";
+    for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> pair : *this)
+        serializedStr += std::to_string(pair.first) + delim;
+
+    return serializedStr;
+}

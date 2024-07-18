@@ -3,81 +3,59 @@
  * Implementation for directed graph container.
  */
 
-#include <vector>
 #include <string>
 #include <stdexcept>
 
-#include "linked-list/linked-list.hpp"
 #include "digraph.hpp"
 
+/**
+ * Constructors
+ */
+
 // Constructor: create empty graph
-Digraph::Digraph() : edgeCount(0) {}
+Digraph::Digraph() {}
 
 // Constructor: creates a graph with vertices 0 to V - 1
-Digraph::Digraph(int V)
-    : edgeCount(0)
-{
-    adjTree.reserve(V);
-    for (int i = 0; i < V; i++)
-        adjTree.push_back(List());
-}
+Digraph::Digraph(int V) {}
 
-// Constructor: copy graph "other"
-Digraph::Digraph(const Digraph &other) : edgeCount(other.edgeCount)
-{
-    adjTree.resize(other.adjTree.size());
-    for (size_t i = 0; i < other.adjTree.size(); ++i)
-        adjTree[i] = other.adjTree[i];
-}
+// Constructor: deep copy another graph
+Digraph::Digraph(const Digraph &other) {}
 
 /**
  * Accessors
  */
 
 // Return number of vertices
-size_t Digraph::V() { return adjTree.size(); }
-
+size_t Digraph::V() {}
 // Return number of edges
-size_t Digraph::E() { return edgeCount; }
+size_t Digraph::E() {}
 
 // Serialization of the graph
-std::string Digraph::toString()
-{
-    std::string graphStr = "";
-    for (int i = 0; i < V(); i++)
-    {
-        graphStr += std::to_string(i) + ": ";
-        for (int v : adjTree[i])
-            graphStr += std::to_string(v) + " ";
-        graphStr += "\n";
-    }
-    return graphStr;
-}
+std::string Digraph::toString() {}
 
-// Create a directed edge from v to w
-void Digraph::addEdge(int v, int w)
-{
-    if (V() < 1)
-        throw std::out_of_range("Cannot add edge to empty graph");
-    if (v < 0 || w < 0 || v >= V() || w >= V())
-        throw std::out_of_range("Vertex index out of bounds [0, V)");
+/**
+ * Mutators
+ */
 
-    adjTree[v].insert(w);
-    edgeCount++;
-}
+/*!
+ * @function insertEdge
+ * @abstract Insert an edge between vertex v and w if the vertices
+ *           exist. If the directed edge already exists, the function
+ *           will return true.
+ * @param v The starting vertex
+ * @param w The destination vertex
+ */
+void Digraph::insertEdge(int v, int w) {}
+
+/*!
+ * @function insertEdge
+ * @abstract Insert an edge between vertex v and w if the vertices
+ *           exist. If the directed edge does not exist, the function
+ *           will return true.
+ * @param v The starting vertex
+ * @param w The destination vertex
+ */
+void Digraph::eraseEdge(int v, int w) {}
 
 // Get all neighbors such that v has a link to that neighbor
-std::vector<int> Digraph::adj(int v)
-{
-    if (V() < 1)
-        throw std::out_of_range("Cannot add edge to empty graph");
-    if (v < 0 || v >= V())
-        throw std::out_of_range("Vertex index out of bounds [0, V)");
-
-    std::vector<int> neighbors;
-    neighbors.reserve(adjTree[v].size());
-    for (int vNum : adjTree[v])
-        neighbors.push_back(vNum);
-
-    return neighbors;
-}
+std::vector<int> Digraph::adj(int v) {}

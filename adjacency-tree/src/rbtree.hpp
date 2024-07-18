@@ -23,6 +23,7 @@ private:
     constexpr static ComparisonResult EQUAL_TO = 0;
     constexpr static ComparisonResult GREATER_THAN = 1;
 
+    // Access is forbidden even if protected. No choice but to expose it as public.
 public:
     /**
      * TreeNode
@@ -44,18 +45,19 @@ public:
             : p(pair), left(nullptr), right(nullptr), sz(1), color(c) {}
     };
 
+protected:
     // Tree attributes
     TreeNode *root;
     Compare comparator;
 
 private:
+    // Recursive deep copy
+    TreeNode *copyTree(TreeNode const *node);
+
     // Utilities
     ComparisonResult comp(const key_t &k1, const key_t &k2) const;
     size_t nodeSize(TreeNode *node) const;
     bool treeEqual(TreeNode *node1, TreeNode *node2) const;
-
-    // Recursive deep copy
-    TreeNode *copyTree(TreeNode const *node);
 
     // Tree rotation & coloring
     bool isRed(TreeNode *node);
@@ -70,6 +72,7 @@ private:
     TreeNode *moveRedLeft(TreeNode *node);
     TreeNode *moveRedRight(TreeNode *node);
 
+protected:
     // Recursive helpers
     TreeNode *_at(TreeNode *node, const key_t &key) const;
     int _rank(TreeNode *node, const key_t &key) const;

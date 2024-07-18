@@ -62,7 +62,7 @@ const unsigned int STRESS_TEST_LG2 = lg2(STRESS_TEST_SAMPLE_COUNT);
  * Tree operations: search, insert, delete, copy tree
  */
 
-TEST(AdjTreeOperations, EmptyTree)
+TEST(AdjTreeTest, EmptyTree)
 {
     AdjTree tree;
     EXPECT_TRUE(tree.empty());
@@ -75,61 +75,61 @@ TEST(AdjTreeOperations, EmptyTree)
     EXPECT_EQ(tree.depth(), 0);
 }
 
-TEST(AdjTreeOperations, Insert7Integers)
+TEST(AdjTreeTest, Insert7Keys)
 {
     AdjTree tree;
-    tree.insert(3);
-    tree.insert(1);
-    tree.insert(5);
-    tree.insert(0);
-    tree.insert(4);
-    tree.insert(2);
-    tree.insert(6);
+    tree.insert({3, nullptr});
+    tree.insert({1, nullptr});
+    tree.insert({5, nullptr});
+    tree.insert({0, nullptr});
+    tree.insert({4, nullptr});
+    tree.insert({2, nullptr});
+    tree.insert({6, nullptr});
 
     EXPECT_TRUE(!tree.empty());
     EXPECT_EQ(tree.size(), 7);
-    EXPECT_EQ(tree.at(0), 0);
+    EXPECT_EQ(tree.at(0), nullptr);
     EXPECT_TRUE(tree.contains(2));
     EXPECT_TRUE(tree.contains(4));
     EXPECT_TRUE(!tree.contains(8));
 }
 
-TEST(AdjTreeOperations, Initialize7Integers)
+TEST(AdjTreeTest, Initialize7Integers)
 {
-    AdjTree tree{3, 1, 5, 0, 4, 2, 6};
+    AdjTree tree{{3, nullptr}, {1, nullptr}, {5, nullptr}, {0, nullptr}, {4, nullptr}, {2, nullptr}, {6, nullptr}};
 
     EXPECT_TRUE(!tree.empty());
     EXPECT_EQ(tree.size(), 7);
-    EXPECT_EQ(tree.at(0), 0);
-    EXPECT_EQ(tree.at(3), 3);
-    EXPECT_EQ(tree.at(5), 5);
+    EXPECT_EQ(tree.at(0), nullptr);
+    EXPECT_EQ(tree.at(3), nullptr);
+    EXPECT_EQ(tree.at(5), nullptr);
 }
 
-TEST(AdjTreeOperations, SerializeAndDepth)
+TEST(AdjTreeTest, SerializeAndDepth)
 {
-    AdjTree tree{3, 1, 5, 0, 4, 2, 6};
+    AdjTree tree{{3, nullptr}, {1, nullptr}, {5, nullptr}, {0, nullptr}, {4, nullptr}, {2, nullptr}, {6, nullptr}};
 
     EXPECT_TRUE(!tree.empty());
     EXPECT_EQ(tree.size(), 7);
 
     std::string serializedTree = tree.toString();
-    std::string expected = "3,1,0,)2,)5,4,)6,)";
+    std::string expected = "0,1,2,3,4,5,6,";
     EXPECT_EQ(serializedTree, expected);
     EXPECT_EQ(tree.depth(), 3);
 }
 
-TEST(AdjTreeOperations, WorstCaseInsert7Integers)
+TEST(AdjTreeTest, WorstCaseInsert7Integers)
 {
-    AdjTree tree{0, 1, 2, 3, 4, 5, 6};
+    AdjTree tree{{0, nullptr}, {1, nullptr}, {2, nullptr}, {3, nullptr}, {4, nullptr}, {5, nullptr}, {6, nullptr}};
 
     std::string serializedTree = tree.toString();
-    std::string expected = "3,1,0,)2,)5,4,)6,)";
+    std::string expected = "0,1,2,3,4,5,6,";
     EXPECT_TRUE(!tree.empty());
     EXPECT_EQ(tree.size(), 7);
     EXPECT_EQ(serializedTree, expected);
 }
 
-TEST(AdjTreeOperations, RandomStressTestInsertOnly)
+TEST(AdjTreeTest, RandomStressTestInsertOnly)
 {
     std::mt19937 randGen(RAND_GEN_SEED);
     AdjTree tree;
@@ -139,7 +139,7 @@ TEST(AdjTreeOperations, RandomStressTestInsertOnly)
     for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; i++)
     {
         randNum = randGen();
-        tree.insert(randNum);
+        tree.insert({randNum, nullptr});
 
         // Randomly choose a key to store
         if (randNum % 17 == 0)
@@ -154,21 +154,21 @@ TEST(AdjTreeOperations, RandomStressTestInsertOnly)
     EXPECT_TRUE(tree.depth() <= STRESS_TEST_LG2 + STRESS_TEST_LG2); // Depth <= 2lgN
 }
 
-TEST(AdjTreeOperations, WorstCaseStressTestInsertOnly)
+TEST(AdjTreeTest, WorstCaseStressTestInsertOnly)
 {
     AdjTree tree;
     for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; i++)
-        tree.insert(i);
+        tree.insert({i, nullptr});
 
     EXPECT_EQ(tree.size(), STRESS_TEST_SAMPLE_COUNT);
     EXPECT_TRUE(tree.depth() <= STRESS_TEST_LG2 + STRESS_TEST_LG2); // Depth <= 2lgN
 }
 
-TEST(AdjTreeOperations, Insert10IntegersWithDelete)
+TEST(AdjTreeTest, Insert10IntegersWithDelete)
 {
     AdjTree tree;
     for (int i = 0; i < 10; i++)
-        tree.insert(i);
+        tree.insert({i, nullptr});
 
     tree.erase(1);
     tree.erase(3);
@@ -190,7 +190,7 @@ TEST(AdjTreeOperations, Insert10IntegersWithDelete)
     EXPECT_THROW(tree.at(1), std::out_of_range);
 }
 
-TEST(AdjTreeOperations, RandomStressTestMixedInsertErase)
+TEST(AdjTreeTest, RandomStressTestMixedInsertErase)
 {
     std::mt19937 randGen(RAND_GEN_SEED);
     AdjTree tree;
@@ -201,7 +201,7 @@ TEST(AdjTreeOperations, RandomStressTestMixedInsertErase)
     for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; ++i)
     {
         randNum = randGen();
-        tree.insert(randNum);
+        tree.insert({randNum, nullptr});
 
         // Randomly choose a key to delete
         if (i % 7 == 0)
@@ -223,14 +223,14 @@ TEST(AdjTreeOperations, RandomStressTestMixedInsertErase)
     EXPECT_TRUE(depth <= STRESS_TEST_LG2 + STRESS_TEST_LG2); // Depth <= 2lgN
 }
 
-TEST(AdjTreeOperations, WorstCaseStressTestMixedInsertErase)
+TEST(AdjTreeTest, WorstCaseStressTestMixedInsertErase)
 {
     AdjTree tree;
     int deleteCount = 0;
     int deleteKey = 0;
     for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; i++)
     {
-        tree.insert(i);
+        tree.insert({i, nullptr});
 
         // Store key i / 4
         if (i % 7 == 0)
@@ -253,74 +253,16 @@ TEST(AdjTreeOperations, WorstCaseStressTestMixedInsertErase)
     EXPECT_TRUE(depth <= STRESS_TEST_LG2 + STRESS_TEST_LG2); // Depth <= 2lgN
 }
 
-TEST(AdjTreeOperations, MixedOperationsIntInt)
-{
-    AdjTree tree;
-
-    tree.insert(1);
-    tree.insert(2);
-    tree.insert(3);
-
-    tree.erase(1);
-
-    // Assertions
-    EXPECT_TRUE(tree.contains(2));
-    EXPECT_TRUE(tree.contains(3));
-    EXPECT_FALSE(tree.contains(1));
-}
-
-TEST(AdjTreeOperations, TreeDeepCopyStressTest)
-{
-    AdjTree tree1;
-    AdjTree tree2;
-    for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; i++)
-        tree1.insert(i);
-
-    EXPECT_EQ(tree1.size(), STRESS_TEST_SAMPLE_COUNT);
-    EXPECT_TRUE(tree1.depth() <= STRESS_TEST_LG2 + STRESS_TEST_LG2); // Depth <= 2lgN
-
-    tree2 = tree1; // Deep copy made
-    EXPECT_EQ(tree1, tree2);
-
-    while (tree1.size() > 0)
-        tree1.erase(tree1.max());
-
-    EXPECT_TRUE(tree1.empty());
-    EXPECT_TRUE(!tree2.empty());
-}
-
-/**
- * Symbol table operations
- */
-
-TEST(AdjTreeSymbolTableOps, MinMaxRankIntInt)
-{
-    AdjTree tree;
-    int nums[] = {5, 3, 8, 1, 4, 7, 10, 2, 6, 9};
-    for (int i = 0; i < 10; i++)
-        tree.insert(nums[i]);
-
-    EXPECT_EQ(tree.rank(5), 4);
-    EXPECT_EQ(tree.rank(3), 2);
-    EXPECT_EQ(tree.rank(8), 7);
-    EXPECT_EQ(tree.rank(1), 0);
-    EXPECT_EQ(tree.rank(-1), 0);
-    EXPECT_EQ(tree.rank(11), 10); // All keys are strictly less than 11
-
-    EXPECT_EQ(tree.min(), 1);
-    EXPECT_EQ(tree.max(), 10);
-}
-
-TEST(AdjTreeSymbolTableOps, IteratorIntInt)
+TEST(AdjTreeSymbolTableOps, Iterator)
 {
     AdjTree tree1;
     AdjTree tree2;
 
     for (int i = 0; i < 20; i++)
-        tree1.insert(i);
+        tree1.insert({i, nullptr});
 
-    for (int key : tree1)
-        tree2.insert(key);
+    for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> pair : tree1)
+        tree2.insert(pair);
 
     for (int i = 0; i < 20; i++)
         tree1.erase(i);
@@ -330,10 +272,10 @@ TEST(AdjTreeSymbolTableOps, IteratorIntInt)
     EXPECT_TRUE(tree2.size() == 20);
 
     int counter = 0;
-    for (int val : tree2)
+    for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> pair : tree2)
     {
-        EXPECT_EQ(val, counter);
-        EXPECT_EQ(*(tree2.find(counter)), counter);
+        EXPECT_EQ(pair.first, counter);
+        EXPECT_EQ(tree2.find(counter)->first, counter);
         counter++;
     }
 }

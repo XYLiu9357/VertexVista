@@ -13,7 +13,7 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_SRC
     main.cpp
-    # adjtree-tests.cpp
+    adjtree-tests.cpp
     # digraph-tests.cpp
 )
 
