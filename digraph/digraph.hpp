@@ -39,12 +39,23 @@ public:
      */
 
     // Return number of vertices
-    size_t V();
+    size_t V() const;
     // Return number of edges
-    size_t E();
+    size_t E() const;
+
+    // Check if the graph contains v
+    bool contains(int v) const;
 
     // Serialization of the graph
     std::string toString();
+
+    // Return minimum vertex
+    int min() const;
+    // Return maximum vertex
+    int max() const;
+
+    // Return the degree of vertex v
+    int degree(int v) const;
 
     /**
      * Mutators
@@ -95,9 +106,9 @@ public:
      *           an outgoing link from v
      * @param v The query vertex
      * @return  An iterator for associated AdjTree
-     * @todo
+     * @todo Refactor to use iterators
      */
-    AdjTree adj(int v);
+    std::vector<int> adj(int v) const;
 };
 
 #endif /*DIGRAPH*/

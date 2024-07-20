@@ -15,12 +15,11 @@ set(TEST_SRC
     main.cpp
     adjtree-tests.cpp
     digraph-tests.cpp
+    digraph-traverse-tests.cpp
 )
-
 set(TEST_NAME digraph-test.out)
 
 add_executable(${TEST_NAME} ${TEST_SRC})
-add_test(${TEST_NAME} ${TEST_NAME})
 
 target_link_libraries(
     ${TEST_NAME}

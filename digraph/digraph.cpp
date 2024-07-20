@@ -51,9 +51,12 @@ Digraph::Digraph(Digraph &other)
  */
 
 // Return number of vertices
-size_t Digraph::V() { return graphTree.size(); }
+size_t Digraph::V() const { return graphTree.size(); }
 // Return number of edges
-size_t Digraph::E() { return edgeCount; }
+size_t Digraph::E() const { return edgeCount; }
+
+// Check if the graph contains v
+bool Digraph::contains(int v) const { return graphTree.contains(v); }
 
 // Serialization of the graph
 std::string Digraph::toString()
@@ -65,6 +68,14 @@ std::string Digraph::toString()
         serializedStr += std::to_string(pair.first) + ": " + pair.second.toString() + "\n";
     return serializedStr;
 }
+
+// Return minimum vertex
+int Digraph::min() const { return graphTree.min(); }
+// Return maximum vertex
+int Digraph::max() const { return graphTree.max(); }
+
+// Return the degree of a vertex
+int Digraph::degree(int v) const { return graphTree[v].size(); }
 
 /**
  * Mutators
@@ -158,4 +169,14 @@ void Digraph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
 {
     for (std::pair<int, int> edge : edges)
         eraseEdge(edge.first, edge.second);
+}
+
+// TODO: improve encapsulation and support pointer access in digraph traverse and processing
+std::vector<int> Digraph::adj(int v) const
+{
+    std::vector<int> adjacentVertices;
+    for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> pair : graphTree.at(v))
+        adjacentVertices.push_back(pair.first);
+
+    return adjacentVertices;
 }
