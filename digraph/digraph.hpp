@@ -9,12 +9,13 @@
 #include <vector>
 #include <string>
 
+#include "adjacency-tree/src/map.hpp"
 #include "adjacency-tree/src/adjtree.hpp"
 
 class Digraph
 {
 private:
-    RedBlackTree<int, AdjTree> graphTree;
+    Map<int, AdjTree> graphTree;
     size_t edgeCount;
 
 public:
@@ -54,8 +55,11 @@ public:
     // Return maximum vertex
     int max() const;
 
-    // Return the degree of vertex v
-    int degree(int v) const;
+    // Return the indegree of vertex v
+    int indegree(int v) const;
+
+    // Return the outdegree of a vertex
+    int outdegree(int v) const;
 
     /**
      * Mutators

@@ -1,23 +1,31 @@
-/**adjtree.hpp
+/**adjtree.cpp
  *
  * Implementation of adjacency tree. Adjacency tree is used to store the neighbors of a
- * vertex and support O(1) access during Digraph traversal.
+ * vertex and support ~lgN access during Digraph traversal.
+ *
+ * To support efficient removal of dead edges when a vertex is removed, the adjacency
+ * tree also keeps track of all the incoming vertices. This sacrifices a bit of memory
+ * but brings node removal time from ~N to ~2lgN.
+ *
+ * NOTE: this class is not meant to be accessed directly.
  */
 
+#include <iostream> // DEBUG
 #include "adjtree.hpp"
 
 /**
  * Constructors
  */
 AdjTree::AdjTree()
-    : RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>() {}
+    : outgoing(Set<int>()), incoming(Set<int>()) {}
 
-AdjTree::AdjTree(const std::initializer_list<std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *>> &init)
-    : RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>(init) {}
-
-// This makes a deep copy because operator= in RedBlackTree makes a deep-copied assignment
+// Deep copy
 AdjTree::AdjTree(const AdjTree &that)
-    : RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>(that) {}
+{
+    // Calls copy constructor of Set
+    this->outgoing = Set<int>(that.outgoing);
+    this->incoming = Set<int>(that.incoming);
+}
 
 /**
  * Mutators
@@ -31,10 +39,10 @@ AdjTree::AdjTree(const AdjTree &that)
  * @param v         The starting vertex
  * @param w         The destination vertex
  */
-void AdjTree::insertGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, int w)
+void AdjTree::insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w)
 {
-    RedBlackTree<int, AdjTree>::TreeNode *queryPtr = graphTree._at(graphTree.root, v);
-    graphTree[v].insert({w, queryPtr});
+    graphTree[v].outgoing.insert(w);
+    graphTree[w].incoming.insert(v);
 }
 
 /*!
@@ -45,34 +53,23 @@ void AdjTree::insertGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, 
  * @param v         Key of the vertex to remove
  * @return          Number of edges removed
  */
-size_t AdjTree::eraseGraphTreeVertex(RedBlackTree<int, AdjTree> &graphTree, int v)
+size_t AdjTree::eraseGraphTreeVertex(Map<int, AdjTree> &graphTree, int v)
 {
-    RedBlackTree<int, AdjTree>::TreeNode *cur = graphTree.root;
-    Deque<RedBlackTree<int, AdjTree>::TreeNode *> stack;
-    size_t edgesRemoved = 0;
-
-    // Erase all links to vertex v
-    while (cur || !stack.empty())
+    AdjTree &curAdjTree = graphTree[v];
+    for (int w : curAdjTree.incoming)
     {
-        while (cur)
-        {
-            stack.push_back(cur);
-            cur = cur->left;
-        }
-        cur = stack.pop_back();
-        if (cur->p.second.contains(v))
-        {
-            cur->p.second.erase(v);
-            edgesRemoved++;
-        }
-        cur = cur->right;
+        if (graphTree.find(w) != graphTree.end())
+            graphTree[w].outgoing.erase(v);
+        else
+            std::cerr << "Warning: vertex " << w << " not found in graphTree." << std::endl;
     }
 
-    // Erase vertex v
-    edgesRemoved += graphTree[v].size();
-    graphTree.erase(v);
+    std::cerr << "Erasing vertex " << v << " from graphTree." << std::endl;
+    std::cerr << "graphTree size before erase: " << graphTree.size() << std::endl;
 
-    return edgesRemoved;
+    graphTree.erase(v); // ERROR HERE
+
+    std::cerr << "graphTree size after erase: " << graphTree.size() << std::endl;
 }
 
 /*!
@@ -83,9 +80,10 @@ size_t AdjTree::eraseGraphTreeVertex(RedBlackTree<int, AdjTree> &graphTree, int 
  * @param v         The starting vertex
  * @param w         The destination vertex
  */
-void AdjTree::eraseGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, int w)
+void AdjTree::eraseGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w)
 {
-    graphTree.find(v)->second.erase(w);
+    graphTree[v].outgoing.erase(w);
+    graphTree[w].incoming.erase(v);
 }
 
 /**
@@ -96,8 +94,15 @@ void AdjTree::eraseGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, i
 std::string AdjTree::toString(const std::string &delim)
 {
     std::string serializedStr = "";
-    for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> pair : *this)
-        serializedStr += std::to_string(pair.first) + delim;
+    for (int v : this->outgoing)
+        serializedStr += std::to_string(v) + delim;
 
     return serializedStr;
+}
+
+/**
+ * Destructor
+ */
+AdjTree::~AdjTree()
+{
 }

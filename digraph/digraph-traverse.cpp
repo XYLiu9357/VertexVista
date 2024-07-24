@@ -13,7 +13,7 @@
 void DigraphPaths::reset()
 {
     // Automatically calls destructor ~RedBlackTree
-    edgeTo = RedBlackTree<int, int>();
+    edgeTo = Map<int, int>();
 }
 
 // Iterative DFS that updates edgeTo

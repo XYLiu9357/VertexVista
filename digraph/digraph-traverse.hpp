@@ -14,7 +14,7 @@ class DigraphPaths
 {
 private:
     // Keep track of path used to visit a vertex
-    RedBlackTree<int, int> edgeTo;
+    Map<int, int> edgeTo;
     int queryVertex;
     size_t connectedCount;
 

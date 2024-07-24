@@ -1,21 +1,21 @@
 /**rbtree.hpp
  *
- * Interface of the left-leaning red black tree template class.
+ * Interface for an ordered set container implemented as a
+ * left-leaning red black tree template class.
  */
 
-#ifndef RBTREE_H
-#define RBTREE_H
+#ifndef RBSET_H
+#define RBSET_H
 
 #include <cstdint>
 #include <functional>
 #include <initializer_list>
 #include <string>
-#include <utility>
 
 #include "deque.hpp"
 
-template <typename key_t, typename value_t, typename Compare = std::less<key_t>>
-class RedBlackTree
+template <typename key_t, typename Compare = std::less<key_t>>
+class Set
 {
 private:
     using ComparisonResult = std::int8_t;
@@ -23,8 +23,6 @@ private:
     constexpr static ComparisonResult EQUAL_TO = 0;
     constexpr static ComparisonResult GREATER_THAN = 1;
 
-    // Access is forbidden even if protected. No choice but to expose it as public.
-public:
     /**
      * TreeNode
      */
@@ -35,28 +33,27 @@ public:
         const static bool RED = true;
         const static bool BLACK = false;
 
-        std::pair<key_t, value_t> p;
+        key_t key;
         TreeNode *left;
         TreeNode *right;
         size_t sz;
         bool color;
 
-        TreeNode(std::pair<key_t, value_t> pair, bool c)
-            : p(pair), left(nullptr), right(nullptr), sz(1), color(c) {}
+        TreeNode(key_t k, bool c)
+            : key(k), left(nullptr), right(nullptr), sz(1), color(c) {}
     };
 
     // Tree attributes
     TreeNode *root;
     Compare comparator;
 
-private:
-    // Recursive deep copy
-    TreeNode *copyTree(TreeNode const *node);
-
     // Utilities
     ComparisonResult comp(const key_t &k1, const key_t &k2) const;
     size_t nodeSize(TreeNode *node) const;
     bool treeEqual(TreeNode *node1, TreeNode *node2) const;
+
+    // Recursive deep copy
+    TreeNode *copyTree(TreeNode const *node);
 
     // Tree rotation & coloring
     bool isRed(TreeNode *node);
@@ -71,17 +68,14 @@ private:
     TreeNode *moveRedLeft(TreeNode *node);
     TreeNode *moveRedRight(TreeNode *node);
 
-public:
     // Recursive helpers
     TreeNode *_at(TreeNode *node, const key_t &key) const;
-
-private:
     int _rank(TreeNode *node, const key_t &key) const;
     TreeNode *_floor(TreeNode *node, const key_t &key) const;
     TreeNode *_ceiling(TreeNode *node, const key_t &key) const;
     const key_t &_rankSelect(TreeNode *node, int rank) const;
 
-    TreeNode *_insert(TreeNode *node, const std::pair<key_t, value_t> &pair);
+    TreeNode *_insert(TreeNode *node, const key_t &key);
     TreeNode *_eraseMin(TreeNode *node);
     TreeNode *_erase(TreeNode *node, const key_t &key);
 
@@ -90,9 +84,9 @@ public:
      * Constructors
      */
 
-    RedBlackTree();
-    RedBlackTree(const std::initializer_list<std::pair<key_t, value_t>> &init);
-    RedBlackTree(const RedBlackTree &that); // Deep copy
+    Set();
+    Set(const std::initializer_list<key_t> &init);
+    Set(const Set &that); // Deep copy
 
     /**
      * Utilities
@@ -101,20 +95,18 @@ public:
     size_t size() const;
     bool empty() const;
 
-    RedBlackTree &operator=(const RedBlackTree &that); // Deep copy
-    bool operator==(const RedBlackTree &that) const;
-    bool operator!=(const RedBlackTree &that) const;
+    Set &operator=(const Set &that); // Deep copy
+    bool operator==(const Set &that) const;
+    bool operator!=(const Set &that) const;
 
     /**
      * Search
      */
 
-    value_t at(const key_t &key) const;
-    const value_t &operator[](const key_t &key) const;
     bool contains(const key_t &key) const;
 
     /**
-     * Ordered symbol table operations
+     * Ordered set operations
      */
 
     int rank(const key_t &key) const;
@@ -129,8 +121,7 @@ public:
      * Insertion
      */
 
-    void insert(const std::pair<key_t, value_t> &pair);
-    value_t &operator[](const key_t &key);
+    void insert(const key_t &key);
 
     /**
      * Deletion
@@ -142,7 +133,7 @@ public:
      * Tree processing
      */
 
-    std::string toString(const std::function<std::string(const key_t &)> &objToString, const std::string &delim = ",", const std::string &nilStr = ")") const;
+    std::string serialize(const std::function<std::string(const key_t &)> &objToString, const std::string &delim = ",", const std::string &nilStr = ")") const;
     size_t depth() const; // BFS: ~2n node accesses
 
     /**
@@ -150,7 +141,7 @@ public:
      */
 
     void _deleteTree(TreeNode *node);
-    ~RedBlackTree();
+    ~Set();
 
     /**
      * Inorder iterator
@@ -161,9 +152,8 @@ private:
     public:
         Deque<TreeNode *> nodeStack;
 
-        Iterator(const RedBlackTree<key_t, value_t, Compare> &tree);
-        std::pair<key_t, value_t> &operator*();
-        std::pair<key_t, value_t> *operator->();
+        Iterator(const Set<key_t, Compare> &tree);
+        key_t &operator*();
         bool operator==(Iterator that) const;
         bool operator!=(Iterator that) const;
         void operator++();
@@ -175,6 +165,6 @@ public:
     Iterator find(const key_t &key);
 };
 
-#include "rbtree.ipp"
+#include "set.ipp"
 
-#endif /*RBTREE_H*/
+#endif /*RBSET_H*/

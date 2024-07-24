@@ -6,6 +6,7 @@
 #include <string>
 #include <stdexcept>
 
+#include <iostream> // DEBUG
 #include "digraph.hpp"
 
 /**
@@ -42,8 +43,8 @@ Digraph::Digraph(Digraph &other)
 
     // Iterate through all adjacency trees and reconstruct edges
     for (std::pair<int, AdjTree> otherGraphTreePair : other.graphTree)
-        for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> otherAdjTreePair : otherGraphTreePair.second)
-            AdjTree::insertGraphTreeEdge(graphTree, otherGraphTreePair.first, otherAdjTreePair.first);
+        for (int otherVertexKey : otherGraphTreePair.second.outgoing)
+            AdjTree::insertGraphTreeEdge(graphTree, otherGraphTreePair.first, otherVertexKey);
 }
 
 /**
@@ -74,8 +75,11 @@ int Digraph::min() const { return graphTree.min(); }
 // Return maximum vertex
 int Digraph::max() const { return graphTree.max(); }
 
-// Return the degree of a vertex
-int Digraph::degree(int v) const { return graphTree[v].size(); }
+// Return the indegree of a vertex
+int Digraph::indegree(int v) const { return graphTree[v].incoming.size(); }
+
+// Return the outdegree of a vertex
+int Digraph::outdegree(int v) const { return graphTree[v].outgoing.size(); }
 
 /**
  * Mutators
@@ -106,7 +110,7 @@ void Digraph::insertEdge(int v, int w)
 {
     if (!graphTree.contains(v) || !graphTree.contains(w))
         throw std::out_of_range("Attempted edge insertion between nonexistent vertices");
-    if (graphTree[v].contains(w)) // Edge already exists
+    if (graphTree[v].outgoing.contains(w)) // Edge already exists
         return;
 
     AdjTree::insertGraphTreeEdge(graphTree, v, w);
@@ -125,6 +129,7 @@ void Digraph::eraseVertex(int v)
         throw std::out_of_range("Attempted vertex deletion on nonexistent vertex");
 
     size_t edgesRemoved = AdjTree::eraseGraphTreeVertex(graphTree, v);
+    std::cout << "END OF FUNC REACHED" << std::endl;
     edgeCount -= edgesRemoved;
 }
 
@@ -140,7 +145,7 @@ void Digraph::eraseEdge(int v, int w)
 {
     if (!graphTree.contains(v) || !graphTree.contains(w))
         throw std::out_of_range("Attempted edge deletion between nonexistent vertices");
-    if (!graphTree.find(v)->second.contains(w))
+    if (!graphTree.find(v)->second.outgoing.contains(w))
         throw std::out_of_range("Attempted edge deletion on nonexistent edge");
 
     AdjTree::eraseGraphTreeEdge(graphTree, v, w);
@@ -175,8 +180,8 @@ void Digraph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
 std::vector<int> Digraph::adj(int v) const
 {
     std::vector<int> adjacentVertices;
-    for (std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *> pair : graphTree.at(v))
-        adjacentVertices.push_back(pair.first);
+    for (int neighbor : graphTree.at(v).outgoing)
+        adjacentVertices.push_back(neighbor);
 
     return adjacentVertices;
 }

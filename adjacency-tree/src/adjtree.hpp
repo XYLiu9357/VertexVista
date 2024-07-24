@@ -1,27 +1,32 @@
 /**adjtree.hpp
  *
  * Interface of adjacency tree. Adjacency tree is used to store the neighbors of a
- * vertex and support O(1) access during Digraph traversal.
+ * vertex and support ~lgN access during Digraph traversal.
+ *
+ * To support efficient removal of dead edges when a vertex is removed, the adjacency
+ * tree also keeps track of all the incoming vertices. This sacrifices a bit of memory
+ * but brings node removal time from ~N to ~2lgN.
+ *
+ * NOTE: this class is not meant to be accessed directly.
  */
 
 #ifndef ADJTREE
 #define ADJTREE
 
-#include "rbtree.hpp"
+#include "map.hpp"
+#include "set.hpp"
 
-class AdjTree : public RedBlackTree<int, RedBlackTree<int, AdjTree>::TreeNode *>
+class AdjTree
 {
-    /**
-     * The integer key represents a neighbor
-     * RedBlackTree<int, AdjTree>::TreeNode * points to the neighbor's TreeNode in the
-     * Digraph tree. The Digraph tree itself is RedBlackTree<int, AdjTree>.
-     */
 public:
+    // Use two sets to keep track of incoming and outgoing links
+    Set<int> outgoing;
+    Set<int> incoming;
+
     /**
      * Constructors
      */
     AdjTree();
-    AdjTree(const std::initializer_list<std::pair<int, RedBlackTree<int, AdjTree>::TreeNode *>> &init);
     AdjTree(const AdjTree &that);
 
     /**
@@ -40,7 +45,7 @@ public:
      * @param v         The starting vertex
      * @param w         The destination vertex
      */
-    static void insertGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, int w);
+    static void insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w);
 
     /*!
      * @function eraseGraphTreeVertex
@@ -50,7 +55,7 @@ public:
      * @param v         Key of the vertex to remove
      * @return          Number of edges removed
      */
-    static size_t eraseGraphTreeVertex(RedBlackTree<int, AdjTree> &graphTree, int v);
+    static size_t eraseGraphTreeVertex(Map<int, AdjTree> &graphTree, int v);
 
     /*!
      * @function eraseGraphTreeEdge
@@ -60,7 +65,7 @@ public:
      * @param v         The starting vertex
      * @param w         The destination vertex
      */
-    static void eraseGraphTreeEdge(RedBlackTree<int, AdjTree> &graphTree, int v, int w);
+    static void eraseGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w);
 
     /**
      * Tree Processing
@@ -68,6 +73,11 @@ public:
 
     // Serialize adjacency tree
     std::string toString(const std::string &delim = ",");
+
+    /**
+     * Destructor
+     */
+    ~AdjTree();
 };
 
 #endif /*ADJTREE*/
