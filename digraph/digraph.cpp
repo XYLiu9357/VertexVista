@@ -174,12 +174,11 @@ void Digraph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
         eraseEdge(edge.first, edge.second);
 }
 
-// TODO: improve encapsulation and support pointer access in digraph traverse and processing
-std::vector<int> Digraph::adj(int v) const
-{
-    std::vector<int> adjacentVertices;
-    for (int neighbor : graphTree.at(v).outgoing)
-        adjacentVertices.push_back(neighbor);
-
-    return adjacentVertices;
-}
+/*!
+ * @function adj
+ * @abstract Iterates inorder over all the neighbors of v connected by
+ *           an outgoing link from v
+ * @param v The query vertex
+ * @return  The outgoing set in adjacency tree of v
+ */
+const Set<int> &Digraph::adj(int v) const { return graphTree[v].outgoing; }

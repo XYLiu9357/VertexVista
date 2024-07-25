@@ -109,10 +109,9 @@ public:
      * @abstract Iterates inorder over all the neighbors of v connected by
      *           an outgoing link from v
      * @param v The query vertex
-     * @return  An iterator for associated AdjTree
-     * @todo Refactor to use iterators
+     * @return  The outgoing set in adjacency tree of v
      */
-    std::vector<int> adj(int v) const;
+    const Set<int> &adj(int v) const;
 };
 
 #endif /*DIGRAPH*/
