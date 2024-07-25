@@ -10,7 +10,6 @@
  * NOTE: this class is not meant to be accessed directly.
  */
 
-#include <iostream> // DEBUG
 #include "adjtree.hpp"
 
 /**
@@ -56,20 +55,20 @@ void AdjTree::insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w)
 size_t AdjTree::eraseGraphTreeVertex(Map<int, AdjTree> &graphTree, int v)
 {
     AdjTree &curAdjTree = graphTree[v];
+    size_t edgesErased = 0;
+
     for (int w : curAdjTree.incoming)
     {
         if (graphTree.find(w) != graphTree.end())
+        {
             graphTree[w].outgoing.erase(v);
-        else
-            std::cerr << "Warning: vertex " << w << " not found in graphTree." << std::endl;
+            edgesErased++;
+        }
     }
 
-    std::cerr << "Erasing vertex " << v << " from graphTree." << std::endl;
-    std::cerr << "graphTree size before erase: " << graphTree.size() << std::endl;
-
-    graphTree.erase(v); // ERROR HERE
-
-    std::cerr << "graphTree size after erase: " << graphTree.size() << std::endl;
+    edgesErased += curAdjTree.outgoing.size();
+    graphTree.erase(v);
+    return edgesErased;
 }
 
 /*!

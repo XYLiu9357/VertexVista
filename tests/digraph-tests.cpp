@@ -162,6 +162,8 @@ TEST(DigraphTest, MixedOpsWithIntializerList)
 
     // Self cycles
     g.eraseVertex({4, 6});
+    EXPECT_EQ(g.V(), 2);
+    EXPECT_EQ(g.E(), 1);
     EXPECT_THROW(g.eraseEdge({{4, 4}}), std::out_of_range);
     EXPECT_THROW(g.eraseEdge({{0, 10}}), std::out_of_range);
     EXPECT_NO_THROW(g.eraseEdge({{10, 0}}));

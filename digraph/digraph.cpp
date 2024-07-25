@@ -6,7 +6,6 @@
 #include <string>
 #include <stdexcept>
 
-#include <iostream> // DEBUG
 #include "digraph.hpp"
 
 /**
@@ -129,7 +128,6 @@ void Digraph::eraseVertex(int v)
         throw std::out_of_range("Attempted vertex deletion on nonexistent vertex");
 
     size_t edgesRemoved = AdjTree::eraseGraphTreeVertex(graphTree, v);
-    std::cout << "END OF FUNC REACHED" << std::endl;
     edgeCount -= edgesRemoved;
 }
 

@@ -21,7 +21,3 @@ target_include_directories(
     ${LIB_NAME} 
     PRIVATE ${CMAKE_SOURCE_DIR}
 )
-
-# Memory checks
-add_compile_options(-fsanitize=address)
-add_link_options(-fsanitize=address)
