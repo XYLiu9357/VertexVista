@@ -1,8 +1,8 @@
 # Adjacency tree
 
-Adjacency tree `AdjTree` is an instantiated _left-learning red-black tree_ symbol table. It will be used to support flexible insertion and removal of vertices with a `Digraph`.
+Adjacency tree `AdjTree` contains two instantiated containers implemented using a left-learning red-black tree. The first container is a `Map<int, int>` that stores the neighbor pointed by the current vertex, and the second is a `Set<int>` that stores the neighbor pointing tothe current vertex.
 
-`AdjTree` uses integer-valued keys and `TreeNode*` values to represent the neighbors of a given node. This allows `Digraph` to support $\Theta(1)$ vertex access during graph traversal and maintain graph integrity in near-linear time in the case of vertex removal. See [implementation](../digraph/README.md) of `Digraph` for complete runtime and space usage analysis.
+`AdjTree` uses integer-valued keys to represent the neighbors of a given node. This allows `Digraph` to support $\Theta(lgN)$ vertex access during graph traversal and maintain graph integrity in near-logarithmic time in the case of vertex removal. See [implementation](../digraph/README.md) of `Digraph` for complete runtime and space usage analysis.
 
 ## Left-learning Red-Black Tree
 
