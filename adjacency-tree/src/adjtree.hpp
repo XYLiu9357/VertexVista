@@ -10,8 +10,8 @@
  * NOTE: this class is not meant to be accessed directly.
  */
 
-#ifndef ADJTREE
-#define ADJTREE
+#ifndef ADJACENCY_TREE
+#define ADJACENCY_TREE
 
 #include "map.hpp"
 #include "set.hpp"
@@ -20,7 +20,7 @@ class AdjTree
 {
 public:
     // Use two sets to keep track of incoming and outgoing links
-    Set<int> outgoing;
+    Map<int, int> outgoing;
     Set<int> incoming;
 
     /**
@@ -44,8 +44,9 @@ public:
      * @param graphTree The digraph tree to modify
      * @param v         The starting vertex
      * @param w         The destination vertex
+     * @param weight    The weight of the edge inserted
      */
-    static void insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w);
+    static void insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w, int weight);
 
     /*!
      * @function eraseGraphTreeVertex

@@ -28,13 +28,13 @@ void DigraphPaths::dfs(const Digraph &G, int queryVertex)
     while (stack.size() > 0)
     {
         int cur = stack.pop_back();
-        for (int neighbor : G.adj(cur))
+        for (std::pair<int, int> neighbor : G.adj(cur))
         {
-            if (!edgeTo.contains(neighbor))
+            if (!edgeTo.contains(neighbor.first))
             {
                 connectedCount++;
-                stack.push_back(neighbor);
-                edgeTo[neighbor] = cur;
+                stack.push_back(neighbor.first);
+                edgeTo[neighbor.first] = cur;
             }
         }
     }

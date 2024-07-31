@@ -24,7 +24,7 @@ Digraph::Digraph(int V)
         graphTree[i] = AdjTree();
 }
 
-// Constructor: creates a graph with an intializer list of vertices
+// Constructor: creates a graph with an initializer list of vertices
 Digraph::Digraph(std::initializer_list<int> vertices)
     : edgeCount(0)
 {
@@ -42,8 +42,8 @@ Digraph::Digraph(Digraph &other)
 
     // Iterate through all adjacency trees and reconstruct edges
     for (std::pair<int, AdjTree> otherGraphTreePair : other.graphTree)
-        for (int otherVertexKey : otherGraphTreePair.second.outgoing)
-            AdjTree::insertGraphTreeEdge(graphTree, otherGraphTreePair.first, otherVertexKey);
+        for (std::pair<int, int> otherVertexPair : otherGraphTreePair.second.outgoing)
+            AdjTree::insertGraphTreeEdge(graphTree, otherGraphTreePair.first, otherVertexPair.first, otherVertexPair.second);
 }
 
 /**
@@ -104,15 +104,16 @@ void Digraph::insertVertex(int v)
  *           exception will be thrown.
  * @param v The starting vertex
  * @param w The destination vertex
+ * @param weight Weight of the edge, default to 1
  */
-void Digraph::insertEdge(int v, int w)
+void Digraph::insertEdge(int v, int w, int weight)
 {
     if (!graphTree.contains(v) || !graphTree.contains(w))
         throw std::out_of_range("Attempted edge insertion between nonexistent vertices");
     if (graphTree[v].outgoing.contains(w)) // Edge already exists
         return;
 
-    AdjTree::insertGraphTreeEdge(graphTree, v, w);
+    AdjTree::insertGraphTreeEdge(graphTree, v, w, weight);
     edgeCount++;
 }
 
@@ -179,6 +180,6 @@ void Digraph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
  * @abstract Iterates inorder over all the neighbors of v connected by
  *           an outgoing link from v
  * @param v The query vertex
- * @return  The outgoing set in adjacency tree of v
+ * @return  The outgoing map in adjacency tree of v
  */
-const Set<int> &Digraph::adj(int v) const { return graphTree[v].outgoing; }
+const Map<int, int> &Digraph::adj(int v) const { return graphTree[v].outgoing; }

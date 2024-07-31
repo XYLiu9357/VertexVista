@@ -29,7 +29,7 @@ public:
     // Constructor: creates a graph with vertices 0 to V - 1
     Digraph(int V);
 
-    // Constructor: creates a graph with an intializer list of vertices
+    // Constructor: creates a graph with an initializer list of vertices
     Digraph(std::initializer_list<int> vertices);
 
     // Constructor: deep copy another graph
@@ -77,11 +77,12 @@ public:
      * @function insertEdge
      * @abstract Insert an edge between vertex v and w if the vertices
      *           exist. If the vertices do not exist, out_of_range
-     *           exception will be thrown.
+     *           exception will be thrown. Weights are all set to 1
      * @param v The starting vertex
      * @param w The destination vertex
+     * @param weight Weight of the edge, default to 1
      */
-    void insertEdge(int v, int w);
+    void insertEdge(int v, int w, int weight = 1);
     void insertEdge(std::initializer_list<std::pair<int, int>> edges);
 
     /*!
@@ -109,9 +110,9 @@ public:
      * @abstract Iterates inorder over all the neighbors of v connected by
      *           an outgoing link from v
      * @param v The query vertex
-     * @return  The outgoing set in adjacency tree of v
+     * @return  The outgoing map in adjacency tree of v
      */
-    const Set<int> &adj(int v) const;
+    const Map<int, int> &adj(int v) const;
 };
 
 #endif /*DIGRAPH*/

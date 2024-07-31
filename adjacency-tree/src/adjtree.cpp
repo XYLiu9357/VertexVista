@@ -16,13 +16,13 @@
  * Constructors
  */
 AdjTree::AdjTree()
-    : outgoing(Set<int>()), incoming(Set<int>()) {}
+    : outgoing(Map<int, int>()), incoming(Set<int>()) {}
 
 // Deep copy
 AdjTree::AdjTree(const AdjTree &that)
 {
-    // Calls copy constructor of Set
-    this->outgoing = Set<int>(that.outgoing);
+    // Calls copy constructor of Set and Map
+    this->outgoing = Map<int, int>(that.outgoing);
     this->incoming = Set<int>(that.incoming);
 }
 
@@ -37,10 +37,11 @@ AdjTree::AdjTree(const AdjTree &that)
  * @param graphTree The digraph tree to modify
  * @param v         The starting vertex
  * @param w         The destination vertex
+ * @param weight    The weight of the edge inserted
  */
-void AdjTree::insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w)
+void AdjTree::insertGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w, int weight)
 {
-    graphTree[v].outgoing.insert(w);
+    graphTree[v].outgoing.insert({w, weight});
     graphTree[w].incoming.insert(v);
 }
 
@@ -93,8 +94,8 @@ void AdjTree::eraseGraphTreeEdge(Map<int, AdjTree> &graphTree, int v, int w)
 std::string AdjTree::toString(const std::string &delim)
 {
     std::string serializedStr = "";
-    for (int v : this->outgoing)
-        serializedStr += std::to_string(v) + delim;
+    for (std::pair<int, int> p : this->outgoing)
+        serializedStr += std::to_string(p.first) + "[" + std::to_string(p.second) + "]" + delim;
 
     return serializedStr;
 }
