@@ -4,18 +4,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source code files 
 set(DIGRAPH_SRC
-    digraph.cpp
-    digraph-traverse.cpp
+    vertex-map.cpp
+    # digraph.cpp
+    # digraph-traverse.cpp
 )
 
 set(LIB_NAME digraph)
 
 add_library(${LIB_NAME} SHARED ${DIGRAPH_SRC})
-
-target_link_libraries(
-    ${LIB_NAME}
-    adjtree
-)
 
 target_include_directories(
     ${LIB_NAME} 

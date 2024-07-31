@@ -9,13 +9,9 @@
 #include <vector>
 #include <string>
 
-#include "adjacency-tree/src/map.hpp"
-#include "adjacency-tree/src/adjtree.hpp"
-
 class Digraph
 {
 private:
-    Map<int, AdjTree> graphTree;
     size_t edgeCount;
 
 public:

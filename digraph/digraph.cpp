@@ -20,30 +20,18 @@ Digraph::Digraph()
 Digraph::Digraph(int V)
     : edgeCount(0)
 {
-    for (int i = 0; i < V; i++)
-        graphTree[i] = AdjTree();
 }
 
 // Constructor: creates a graph with an initializer list of vertices
 Digraph::Digraph(std::initializer_list<int> vertices)
     : edgeCount(0)
 {
-    for (int v : vertices)
-        graphTree[v] = AdjTree();
 }
 
 // Constructor: deep copy another graph
 Digraph::Digraph(Digraph &other)
     : edgeCount(other.edgeCount)
 {
-    // Reconstruct vertices
-    for (std::pair<int, AdjTree> otherGraphTreePair : other.graphTree)
-        insertVertex(otherGraphTreePair.first);
-
-    // Iterate through all adjacency trees and reconstruct edges
-    for (std::pair<int, AdjTree> otherGraphTreePair : other.graphTree)
-        for (std::pair<int, int> otherVertexPair : otherGraphTreePair.second.outgoing)
-            AdjTree::insertGraphTreeEdge(graphTree, otherGraphTreePair.first, otherVertexPair.first, otherVertexPair.second);
 }
 
 /**
@@ -51,34 +39,28 @@ Digraph::Digraph(Digraph &other)
  */
 
 // Return number of vertices
-size_t Digraph::V() const { return graphTree.size(); }
+size_t Digraph::V() const {}
 // Return number of edges
-size_t Digraph::E() const { return edgeCount; }
+size_t Digraph::E() const {}
 
 // Check if the graph contains v
-bool Digraph::contains(int v) const { return graphTree.contains(v); }
+bool Digraph::contains(int v) const {}
 
 // Serialization of the graph
 std::string Digraph::toString()
 {
-    if (graphTree.empty())
-        throw std::out_of_range("Invalid serialization of empty container");
-    std::string serializedStr = "";
-    for (std::pair<int, AdjTree> pair : graphTree)
-        serializedStr += std::to_string(pair.first) + ": " + pair.second.toString() + "\n";
-    return serializedStr;
 }
 
 // Return minimum vertex
-int Digraph::min() const { return graphTree.min(); }
+int Digraph::min() const {}
 // Return maximum vertex
-int Digraph::max() const { return graphTree.max(); }
+int Digraph::max() const {}
 
 // Return the indegree of a vertex
-int Digraph::indegree(int v) const { return graphTree[v].incoming.size(); }
+int Digraph::indegree(int v) const {}
 
 // Return the outdegree of a vertex
-int Digraph::outdegree(int v) const { return graphTree[v].outgoing.size(); }
+int Digraph::outdegree(int v) const {}
 
 /**
  * Mutators
@@ -91,10 +73,6 @@ int Digraph::outdegree(int v) const { return graphTree[v].outgoing.size(); }
  */
 void Digraph::insertVertex(int v)
 {
-    if (graphTree.contains(v))
-        return;
-
-    graphTree[v] = AdjTree();
 }
 
 /*!
@@ -108,13 +86,6 @@ void Digraph::insertVertex(int v)
  */
 void Digraph::insertEdge(int v, int w, int weight)
 {
-    if (!graphTree.contains(v) || !graphTree.contains(w))
-        throw std::out_of_range("Attempted edge insertion between nonexistent vertices");
-    if (graphTree[v].outgoing.contains(w)) // Edge already exists
-        return;
-
-    AdjTree::insertGraphTreeEdge(graphTree, v, w, weight);
-    edgeCount++;
 }
 
 /*!
@@ -125,11 +96,6 @@ void Digraph::insertEdge(int v, int w, int weight)
  */
 void Digraph::eraseVertex(int v)
 {
-    if (!graphTree.contains(v))
-        throw std::out_of_range("Attempted vertex deletion on nonexistent vertex");
-
-    size_t edgesRemoved = AdjTree::eraseGraphTreeVertex(graphTree, v);
-    edgeCount -= edgesRemoved;
 }
 
 /*!
@@ -142,13 +108,6 @@ void Digraph::eraseVertex(int v)
  */
 void Digraph::eraseEdge(int v, int w)
 {
-    if (!graphTree.contains(v) || !graphTree.contains(w))
-        throw std::out_of_range("Attempted edge deletion between nonexistent vertices");
-    if (!graphTree.find(v)->second.outgoing.contains(w))
-        throw std::out_of_range("Attempted edge deletion on nonexistent edge");
-
-    AdjTree::eraseGraphTreeEdge(graphTree, v, w);
-    edgeCount--;
 }
 
 // Initializer list equivalents
@@ -182,4 +141,3 @@ void Digraph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
  * @param v The query vertex
  * @return  The outgoing map in adjacency tree of v
  */
-const Map<int, int> &Digraph::adj(int v) const { return graphTree[v].outgoing; }

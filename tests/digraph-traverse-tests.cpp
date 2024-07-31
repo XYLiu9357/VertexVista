@@ -1,6 +1,6 @@
 /**digraph-tests.cpp
  *
- * Unit tests for directed graph path-finding API.
+ * Unit tests for directed graph path-finding data structure.
  */
 
 #include <gtest/gtest.h>

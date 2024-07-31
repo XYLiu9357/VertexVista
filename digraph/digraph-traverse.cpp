@@ -6,7 +6,7 @@
  */
 
 #include <stdexcept>
-#include "adjacency-tree/src/deque.hpp"
+#include "deque.hpp"
 #include "digraph-traverse.hpp"
 
 // Reset the storage by clearing edgeTo

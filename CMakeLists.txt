@@ -5,7 +5,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 project(digraph)
 
 # Build libraries
-add_subdirectory(adjacency-tree)
 add_subdirectory(digraph)
 # add_subdirectory(digraph-processing)
 
