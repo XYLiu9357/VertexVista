@@ -24,6 +24,12 @@ TEST_F(VertexMapTest, InsertAndRetrieve)
 
     map.insert(1, 300); // Update value
     EXPECT_EQ(map.at(1), 300);
+
+    map[2] = 500;
+    EXPECT_EQ(map.at(2), 500);
+
+    map[3] = 600;
+    EXPECT_EQ(map[3], 600);
 }
 
 // Test contains method
@@ -78,5 +84,6 @@ TEST_F(VertexMapTest, StressTest)
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double> duration = end - start;
-    std::cout << "Stress test duration: " << duration.count() << " seconds\n";
+    if (duration > std::chrono::duration<double>(0.007))
+        FAIL();
 }
