@@ -15,14 +15,14 @@
 
 // Constructor: create empty graph
 Graph::Graph()
-    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(VertexMap())
+    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
 {
     vertices.reserve(32);
 }
 
 // Constructor: creates a graph with vertices 0 to V - 1
 Graph::Graph(int V)
-    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(VertexMap())
+    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
 {
     vertices.resize(V);
     for (int id = 0; id < V; id++)
@@ -34,7 +34,7 @@ Graph::Graph(int V)
 
 // Constructor: creates a graph with an initializer list of vertices
 Graph::Graph(std::initializer_list<int> vertices)
-    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(VertexMap())
+    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
 {
     this->vertices.resize(vertices.size());
     for (int id = 0; id < vertices.size(); id++)
@@ -58,7 +58,7 @@ size_t Graph::V() const { return vertices.size(); }
 size_t Graph::E() const { return edgeCount; }
 
 // Check if the graph contains v
-bool Graph::contains(int v) const { return idToIndex.contains(v); }
+bool Graph::contains(int v) const { return idToIndex.find(v) != idToIndex.end(); }
 
 // Serialization of the graph
 std::string Graph::toString(std::string delim)
@@ -106,9 +106,9 @@ int Graph::outdegree(int v) const
  */
 void Graph::insertVertex(int v)
 {
-    if (!idToIndex.contains(v))
+    if (idToIndex.find(v) == idToIndex.end())
     {
-        idToIndex.insert(v, vertices.size());
+        idToIndex.insert({v, vertices.size()});
         vertices.emplace_back(Node(v));
     }
 }
@@ -124,9 +124,9 @@ void Graph::insertVertex(int v)
  */
 void Graph::insertEdge(int from, int to, double weight)
 {
-    if (!idToIndex.contains(from))
+    if (idToIndex.find(from) == idToIndex.end())
         throw std::out_of_range("Edge insertion error: vertex " + std::to_string(from) + " is not in graph");
-    if (!idToIndex.contains(to))
+    if (idToIndex.find(to) == idToIndex.end())
         throw std::out_of_range("Edge insertion error: vertex " + std::to_string(to) + " is not in graph");
 
     int fromIdx = idToIndex.at(from);
@@ -147,7 +147,7 @@ void Graph::insertEdge(int from, int to, double weight)
  */
 void Graph::eraseVertex(int v)
 {
-    if (!idToIndex.contains(v))
+    if (idToIndex.find(v) == idToIndex.end())
         throw std::out_of_range("Vertex removal error: vertex " + std::to_string(v) + " is not in graph");
 
     // Erase all edges to v
@@ -160,6 +160,11 @@ void Graph::eraseVertex(int v)
     idToIndex.erase(v);
 
     // Update idToIndex map
+    for (auto pair : idToIndex)
+    {
+        if (pair.first > vIdx)
+            pair.second--;
+    }
 }
 
 /*!
@@ -172,9 +177,9 @@ void Graph::eraseVertex(int v)
  */
 void Graph::eraseEdge(int from, int to)
 {
-    if (!idToIndex.contains(from))
+    if (idToIndex.find(from) == idToIndex.end())
         throw std::out_of_range("Edge removal error: vertex " + std::to_string(from) + " is not in graph");
-    if (!idToIndex.contains(to))
+    if (idToIndex.find(to) == idToIndex.end())
         throw std::out_of_range("Edge removal error: vertex " + std::to_string(to) + " is not in graph");
 
     int fromIdx = idToIndex.at(from);
@@ -216,3 +221,4 @@ void Graph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
  * @param v The query vertex
  * @return  The outgoing map in adjacency tree of v
  */
+const std::forward_list<Edge> &Graph::adj(int v) const { return vertices[idToIndex.at(v)].edges(); }

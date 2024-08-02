@@ -13,8 +13,7 @@ FetchContent_MakeAvailable(googletest)
 
 set(TEST_SRC
     main.cpp
-    vertex-map-tests.cpp
-    # graph-tests.cpp
+    graph-tests.cpp
     # graph-traverse-tests.cpp
 )
 set(TEST_NAME graph-test.out)

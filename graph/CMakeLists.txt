@@ -4,8 +4,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source code files 
 set(GRAPH_SRC
-    vertex-map.cpp
-    # graph.cpp
+    node-edge.cpp
+    graph.cpp
 )
 
 set(LIB_NAME graph)

@@ -6,18 +6,18 @@
 #ifndef GRAPH
 #define GRAPH
 
+#include <unordered_map>
 #include <forward_list>
 #include <vector>
 #include <string>
 
 #include "node-edge.hpp"
-#include "vertex-map.hpp"
 
 class Graph
 {
 private:
     std::vector<Node> vertices;
-    VertexMap idToIndex;
+    std::unordered_map<int, int> idToIndex;
     size_t edgeCount;
 
 public:
