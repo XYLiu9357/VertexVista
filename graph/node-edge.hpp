@@ -30,7 +30,7 @@ public:
     int getTo() const;
     double getWeight() const;
     void setWeight(double weight);
-    std::string toString() const;
+    std::string toString(int precision) const;
 };
 
 #endif /*EDGE*/
@@ -42,7 +42,7 @@ class Node
 {
 private:
     int id;
-    int indegree;
+    int outDegree;
     std::forward_list<Edge> edgeList;
 
 public:
@@ -51,7 +51,7 @@ public:
 
     // Accessors
     int getId() const;
-    int getInDeg() const;
+    int getOutDeg() const;
     bool hasEdgeTo(int v) const;
 
     // Mutators

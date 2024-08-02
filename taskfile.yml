@@ -26,7 +26,7 @@ tasks:
 
   valgrind:
     cmds:
-      - valgrind --leak-check=full --show-leak-kinds=all ./build/tests/digraph-test.out
+      - valgrind --leak-check=full --show-leak-kinds=all ./build/tests/graph-test.out
 
   gdb:
     cmds:

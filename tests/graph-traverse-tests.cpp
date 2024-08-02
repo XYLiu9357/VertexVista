@@ -5,8 +5,8 @@
 
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include "graph/digraph.hpp"
-#include "graph/digraph-traverse.hpp"
+#include "graph/graph.hpp"
+#include "graph-routines/graph-traverse.hpp"
 
 class DigraphPathsTest : public ::testing::Test
 {

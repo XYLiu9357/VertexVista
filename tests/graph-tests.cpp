@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include "graph/digraph.hpp"
+#include "graph/graph.hpp"
 
 constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 10000;
 
@@ -14,7 +14,7 @@ TEST(DigraphTest, DefaultConstructor)
     Graph g;
     EXPECT_EQ(g.V(), 0);
     EXPECT_EQ(g.E(), 0);
-    EXPECT_THROW(g.toString(), std::out_of_range);
+    EXPECT_EQ(g.toString(), "");
 }
 
 TEST(DigraphTest, VertexCountConstructor)
@@ -52,7 +52,7 @@ TEST(DigraphTest, InsertVertex)
     g.insertEdge(1, 2);
     g.insertEdge(2, 1);
     g.insertEdge(3, 1);
-    EXPECT_EQ(g.toString(), "1: 2,\n2: 1,\n3: 1,\n");
+    EXPECT_EQ(g.toString(), "1: 1 -> 2[1.00],\n2: 2 -> 1[1.00],\n3: 3 -> 1[1.00],\n");
 }
 
 TEST(DigraphTest, InsertEdge)
@@ -83,7 +83,7 @@ TEST(DigraphTest, EraseVertex)
     {
         expected += std::to_string(i) + ": ";
         for (int j = 0; j < N - 1; j++)
-            expected += std::to_string(j) + ",";
+            expected += std::to_string(i) + " -> " + std::to_string(j) + "[1.00]" + ",";
         expected += "\n";
     }
     EXPECT_EQ(g.toString(), expected);

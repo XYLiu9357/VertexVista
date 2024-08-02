@@ -32,10 +32,10 @@ public:
     Graph(int V);
 
     // Constructor: creates a graph with an initializer list of vertices
-    Graph(std::initializer_list<int> vertices);
+    Graph(const std::initializer_list<int> &vertices);
 
     // Constructor: deep copy another graph
-    Graph(Graph &other);
+    Graph(const Graph &other);
 
     /**
      * Accessors
@@ -50,7 +50,7 @@ public:
     bool contains(int v) const;
 
     // Serialization of the graph
-    std::string toString(std::string delim = ",");
+    std::string toString(std::string delim = ",", int weightPrecision = 2);
 
     // Return the indegree of vertex v
     int indegree(int v) const;

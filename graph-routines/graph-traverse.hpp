@@ -8,7 +8,7 @@
 #ifndef GRAPH_TRAVERSE
 #define GRAPH_TRAVERSE
 
-#include "digraph.hpp"
+#include "graph/graph.hpp"
 
 class DigraphPaths
 {

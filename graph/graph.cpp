@@ -24,28 +24,28 @@ Graph::Graph()
 Graph::Graph(int V)
     : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
 {
-    vertices.resize(V);
+    vertices.reserve(V);
     for (int id = 0; id < V; id++)
     {
-        vertices[id] = Node(id);
+        vertices.emplace_back(Node(id));
         idToIndex[id] = id;
     }
 }
 
 // Constructor: creates a graph with an initializer list of vertices
-Graph::Graph(std::initializer_list<int> vertices)
+Graph::Graph(const std::initializer_list<int> &vertices)
     : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
 {
-    this->vertices.resize(vertices.size());
+    this->vertices.reserve(vertices.size());
     for (int id = 0; id < vertices.size(); id++)
     {
-        this->vertices[id] = Node(id);
+        this->vertices.emplace_back(Node(id));
         idToIndex[id] = id;
     }
 }
 
 // Constructor: deep copy another graph
-Graph::Graph(Graph &other)
+Graph::Graph(const Graph &other)
     : edgeCount(other.edgeCount), vertices(other.vertices), idToIndex(other.idToIndex) {}
 
 /**
@@ -61,27 +61,28 @@ size_t Graph::E() const { return edgeCount; }
 bool Graph::contains(int v) const { return idToIndex.find(v) != idToIndex.end(); }
 
 // Serialization of the graph
-std::string Graph::toString(std::string delim)
+std::string Graph::toString(std::string delim, int weightPrecision)
 {
     // Obtain sorted copy of vertices
     std::string graphStr = "";
     std::vector<Node> sortedVertices(vertices);
     std::sort(sortedVertices.begin(), sortedVertices.end(),
-              [](Node &node)
-              { return node.getId(); });
+              [](const Node &n1, const Node &n2)
+              { return n1.getId() < n2.getId(); });
 
     // Construct string
     for (Node node : sortedVertices)
     {
         graphStr += std::to_string(node.getId()) + ": ";
         for (Edge edge : node.edges())
-            graphStr += delim + edge.toString();
+            graphStr += edge.toString(weightPrecision) + delim;
+        graphStr += "\n";
     }
     return graphStr;
 }
 
 // Return the indegree of a vertex
-int Graph::indegree(int v) const { return vertices[idToIndex.at(v)].getInDeg(); }
+int Graph::indegree(int v) const { return vertices[idToIndex.at(v)].getOutDeg(); }
 
 // Return the outdegree of a vertex
 int Graph::outdegree(int v) const
@@ -134,7 +135,10 @@ void Graph::insertEdge(int from, int to, double weight)
 
     // Insert new if no such edge, overwrite weight otherwise
     if (!node.hasEdgeTo(to))
+    {
         node.insertEdge(to, weight);
+        edgeCount++;
+    }
     else
         node.setWeight(to, weight);
 }
@@ -153,9 +157,13 @@ void Graph::eraseVertex(int v)
     // Erase all edges to v
     int vIdx = idToIndex.at(v);
     for (Node other : vertices)
+    {
         other.eraseEdgeTo(v);
+        edgeCount--;
+    }
 
     // Erase v
+    edgeCount -= vertices[vIdx].getOutDeg();
     vertices.erase(vertices.begin() + vIdx);
     idToIndex.erase(v);
 
@@ -185,7 +193,10 @@ void Graph::eraseEdge(int from, int to)
     int fromIdx = idToIndex.at(from);
     Node &node = vertices[fromIdx];
     if (node.hasEdgeTo(to))
+    {
         node.eraseEdgeTo(to);
+        edgeCount--;
+    }
     else
         return;
 }
