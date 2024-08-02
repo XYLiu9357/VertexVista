@@ -21,8 +21,8 @@ protected:
         cycleGraph.insertEdge({{0, 1}, {1, 2}, {2, 3}, {3, 0}});
     }
 
-    Digraph smallGraph;
-    Digraph cycleGraph;
+    Graph smallGraph;
+    Graph cycleGraph;
 };
 
 TEST_F(DigraphPathsTest, ConstructorDFS)
@@ -82,7 +82,7 @@ TEST_F(DigraphPathsTest, CycleDetectionBFS)
 
 TEST_F(DigraphPathsTest, DisconnectedGraph)
 {
-    Digraph disconnectedGraph;
+    Graph disconnectedGraph;
     disconnectedGraph.insertVertex({0, 1, 2});
     disconnectedGraph.insertEdge({{0, 1}});
 
@@ -93,7 +93,7 @@ TEST_F(DigraphPathsTest, DisconnectedGraph)
 
 TEST_F(DigraphPathsTest, ComplexGraph)
 {
-    Digraph complexGraph;
+    Graph complexGraph;
     complexGraph.insertVertex({0, 1, 2, 3, 4, 5});
     complexGraph.insertEdge({{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}});
 
@@ -106,7 +106,7 @@ TEST_F(DigraphPathsTest, ComplexGraph)
 
 TEST_F(DigraphPathsTest, StressTestSimpleCyclic)
 {
-    Digraph simpleCylicGraph;
+    Graph simpleCylicGraph;
     int numVertices = 100000;
     for (int i = 0; i < numVertices; ++i)
     {
@@ -123,7 +123,7 @@ TEST_F(DigraphPathsTest, StressTestSimpleCyclic)
 
 TEST_F(DigraphPathsTest, StressTestCompelxCyclic)
 {
-    Digraph complexCyclicGraph;
+    Graph complexCyclicGraph;
     int numVertices = 100000;
     for (int i = 0; i < numVertices; ++i)
     {

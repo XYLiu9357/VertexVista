@@ -1,17 +1,23 @@
-/**digraph.hpp
+/**graph.hpp
  *
- * Header for directed graph container.
+ * Weighted directed graph container.
  */
 
-#ifndef DIGRAPH
-#define DIGRAPH
+#ifndef GRAPH
+#define GRAPH
 
+#include <forward_list>
 #include <vector>
 #include <string>
 
-class Digraph
+#include "node-edge.hpp"
+#include "vertex-map.hpp"
+
+class Graph
 {
 private:
+    std::vector<int> vertices;
+    VertexMap idToIndex;
     size_t edgeCount;
 
 public:
@@ -20,16 +26,16 @@ public:
      */
 
     // Constructor: create empty graph
-    Digraph();
+    Graph();
 
     // Constructor: creates a graph with vertices 0 to V - 1
-    Digraph(int V);
+    Graph(int V);
 
     // Constructor: creates a graph with an initializer list of vertices
-    Digraph(std::initializer_list<int> vertices);
+    Graph(std::initializer_list<int> vertices);
 
     // Constructor: deep copy another graph
-    Digraph(Digraph &other);
+    Graph(Graph &other);
 
     /**
      * Accessors
@@ -108,7 +114,7 @@ public:
      * @param v The query vertex
      * @return  The outgoing map in adjacency tree of v
      */
-    const Map<int, int> &adj(int v) const;
+    const std::forward_list<Edge> &adj(int v) const;
 };
 
-#endif /*DIGRAPH*/
+#endif /*GRAPH*/

@@ -1,6 +1,6 @@
-/**digraph.cpp
+/**graph.cpp
  *
- * Implementation for directed graph container.
+ * Weighted directed graph container.
  */
 
 #include <string>
@@ -13,23 +13,23 @@
  */
 
 // Constructor: create empty graph
-Digraph::Digraph()
+Graph::Graph()
     : edgeCount(0) {}
 
 // Constructor: creates a graph with vertices 0 to V - 1
-Digraph::Digraph(int V)
+Graph::Graph(int V)
     : edgeCount(0)
 {
 }
 
 // Constructor: creates a graph with an initializer list of vertices
-Digraph::Digraph(std::initializer_list<int> vertices)
+Graph::Graph(std::initializer_list<int> vertices)
     : edgeCount(0)
 {
 }
 
 // Constructor: deep copy another graph
-Digraph::Digraph(Digraph &other)
+Graph::Graph(Graph &other)
     : edgeCount(other.edgeCount)
 {
 }
@@ -39,28 +39,28 @@ Digraph::Digraph(Digraph &other)
  */
 
 // Return number of vertices
-size_t Digraph::V() const {}
+size_t Graph::V() const {}
 // Return number of edges
-size_t Digraph::E() const {}
+size_t Graph::E() const {}
 
 // Check if the graph contains v
-bool Digraph::contains(int v) const {}
+bool Graph::contains(int v) const {}
 
 // Serialization of the graph
-std::string Digraph::toString()
+std::string Graph::toString()
 {
 }
 
 // Return minimum vertex
-int Digraph::min() const {}
+int Graph::min() const {}
 // Return maximum vertex
-int Digraph::max() const {}
+int Graph::max() const {}
 
 // Return the indegree of a vertex
-int Digraph::indegree(int v) const {}
+int Graph::indegree(int v) const {}
 
 // Return the outdegree of a vertex
-int Digraph::outdegree(int v) const {}
+int Graph::outdegree(int v) const {}
 
 /**
  * Mutators
@@ -71,7 +71,7 @@ int Digraph::outdegree(int v) const {}
  * @abstract Insert a vertex with key v
  * @param v Key of the new vertex
  */
-void Digraph::insertVertex(int v)
+void Graph::insertVertex(int v)
 {
 }
 
@@ -84,7 +84,7 @@ void Digraph::insertVertex(int v)
  * @param w The destination vertex
  * @param weight Weight of the edge, default to 1
  */
-void Digraph::insertEdge(int v, int w, int weight)
+void Graph::insertEdge(int v, int w, int weight)
 {
 }
 
@@ -94,7 +94,7 @@ void Digraph::insertEdge(int v, int w, int weight)
  *           out_of_range exception will be thrown.
  * @param v Key of the vertex to remove
  */
-void Digraph::eraseVertex(int v)
+void Graph::eraseVertex(int v)
 {
 }
 
@@ -106,29 +106,29 @@ void Digraph::eraseVertex(int v)
  * @param v The starting vertex
  * @param w The destination vertex
  */
-void Digraph::eraseEdge(int v, int w)
+void Graph::eraseEdge(int v, int w)
 {
 }
 
 // Initializer list equivalents
-void Digraph::insertVertex(std::initializer_list<int> vertices)
+void Graph::insertVertex(std::initializer_list<int> vertices)
 {
     for (int v : vertices)
         insertVertex(v);
 }
 
-void Digraph::insertEdge(std::initializer_list<std::pair<int, int>> edges)
+void Graph::insertEdge(std::initializer_list<std::pair<int, int>> edges)
 {
     for (std::pair<int, int> edge : edges)
         insertEdge(edge.first, edge.second);
 }
-void Digraph::eraseVertex(std::initializer_list<int> vertices)
+void Graph::eraseVertex(std::initializer_list<int> vertices)
 {
     for (int v : vertices)
         eraseVertex(v);
 }
 
-void Digraph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
+void Graph::eraseEdge(std::initializer_list<std::pair<int, int>> edges)
 {
     for (std::pair<int, int> edge : edges)
         eraseEdge(edge.first, edge.second);

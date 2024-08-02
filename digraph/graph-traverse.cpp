@@ -1,4 +1,4 @@
-/**digraph-traverse.cpp
+/**graph-traverse.cpp
  *
  * Directed graph path search & traversal class.
  * Supports elementary path query using
@@ -7,7 +7,7 @@
 
 #include <stdexcept>
 #include "deque.hpp"
-#include "digraph-traverse.hpp"
+#include "graph-traverse.hpp"
 
 // Reset the storage by clearing edgeTo
 void DigraphPaths::reset()
@@ -17,7 +17,7 @@ void DigraphPaths::reset()
 }
 
 // Iterative DFS that updates edgeTo
-void DigraphPaths::dfs(const Digraph &G, int queryVertex)
+void DigraphPaths::dfs(const Graph &G, int queryVertex)
 {
     // TODO: take advantage of the pointers somehow
     Deque<int> stack;
@@ -41,7 +41,7 @@ void DigraphPaths::dfs(const Digraph &G, int queryVertex)
 }
 
 // Iterative BFS that updates edgeTo
-void DigraphPaths::bfs(const Digraph &G, int queryVertex)
+void DigraphPaths::bfs(const Graph &G, int queryVertex)
 {
     // TODO: take advantage of the pointers somehow
     Deque<int> queue;
@@ -68,13 +68,13 @@ void DigraphPaths::bfs(const Digraph &G, int queryVertex)
  * @function DigraphPaths
  * @abstract Constructor for a DigraphPaths object that processes
  *           a digraph G and supports path query.
- * @param G           Digraph pending processing
+ * @param G           Graph pending processing
  * @param queryVertex Vertex to initiate query
  * @param useDfs      Use depth-first traversal to process graph. Setting
  *                    it to false will invoke bread-first traversal.
- * @return DigraphPaths object that has already processed Digraph G
+ * @return DigraphPaths object that has already processed Graph G
  */
-DigraphPaths::DigraphPaths(const Digraph &G, int queryVertex, bool useDfs)
+DigraphPaths::DigraphPaths(const Graph &G, int queryVertex, bool useDfs)
     : queryVertex(queryVertex), connectedCount(0)
 {
     if (G.V() < 1)

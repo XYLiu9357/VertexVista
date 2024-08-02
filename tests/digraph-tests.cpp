@@ -11,7 +11,7 @@ constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 10000;
 
 TEST(DigraphTest, DefaultConstructor)
 {
-    Digraph g;
+    Graph g;
     EXPECT_EQ(g.V(), 0);
     EXPECT_EQ(g.E(), 0);
     EXPECT_THROW(g.toString(), std::out_of_range);
@@ -20,7 +20,7 @@ TEST(DigraphTest, DefaultConstructor)
 TEST(DigraphTest, VertexCountConstructor)
 {
     int V = 5;
-    Digraph g(V);
+    Graph g(V);
     EXPECT_EQ(g.V(), V);
     EXPECT_EQ(g.E(), 0);
     EXPECT_NO_THROW(g.insertEdge(1, 2));
@@ -28,10 +28,10 @@ TEST(DigraphTest, VertexCountConstructor)
 
 TEST(DigraphTest, CopyConstructor)
 {
-    Digraph g1(5);
+    Graph g1(5);
     g1.insertEdge(0, 1);
     g1.insertEdge(1, 2);
-    Digraph g2(g1);
+    Graph g2(g1);
     EXPECT_EQ(g2.V(), 5);
     EXPECT_EQ(g2.E(), 2);
     EXPECT_EQ(g1.toString(), g2.toString());
@@ -44,7 +44,7 @@ TEST(DigraphTest, CopyConstructor)
 
 TEST(DigraphTest, InsertVertex)
 {
-    Digraph g;
+    Graph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertVertex(3);
@@ -57,7 +57,7 @@ TEST(DigraphTest, InsertVertex)
 
 TEST(DigraphTest, InsertEdge)
 {
-    Digraph g;
+    Graph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertEdge(1, 2);
@@ -67,7 +67,7 @@ TEST(DigraphTest, InsertEdge)
 TEST(DigraphTest, EraseVertex)
 {
     int N = 10;
-    Digraph g(N);
+    Graph g(N);
 
     // Each vertex connects to every vertex (including itself)
     for (int i = 0; i < N; i++)
@@ -91,7 +91,7 @@ TEST(DigraphTest, EraseVertex)
 
 TEST(DigraphTest, EraseEdge)
 {
-    Digraph g;
+    Graph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertVertex(3);
@@ -109,7 +109,7 @@ TEST(DigraphTest, EraseEdge)
 
 TEST(DigraphTest, ToString)
 {
-    Digraph g;
+    Graph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertEdge(1, 2);
@@ -119,7 +119,7 @@ TEST(DigraphTest, ToString)
 
 TEST(DigraphTest, MixedOpsWithIntializerList)
 {
-    Digraph g = {0, 2, 4, 6, 8, 10};
+    Graph g = {0, 2, 4, 6, 8, 10};
 
     // Mixed insertion followed by edge removal
     g.insertEdge({{0, 2}, {0, 4}, {2, 6}, {2, 8}, {4, 8}, {4, 10}, {6, 10}});
@@ -199,7 +199,7 @@ TEST(DigraphTest, MixedOpsWithIntializerList)
 
 TEST(DigraphTest, InsertionWithRepetitions)
 {
-    Digraph g(5);
+    Graph g(5);
 
     // Repetitive vertex insertion
     g.insertVertex({0, 1, 2, 3, 4});
@@ -240,7 +240,7 @@ TEST(DigraphTest, InsertionWithRepetitions)
 
 TEST(DigraphTest, MixedStressTest)
 {
-    Digraph g;
+    Graph g;
 
     // Insertion with cycles
     for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; i++)

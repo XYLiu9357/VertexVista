@@ -1,12 +1,12 @@
-/**digraph-traverse.hpp
+/**graph-traverse.hpp
  *
  * Directed graph path search & traversal class.
  * Supports elementary path query using
  * depth-first and breadth-first traversal.
  */
 
-#ifndef DIGRAPH_TRAVERSE
-#define DIGRAPH_TRAVERSE
+#ifndef GRAPH_TRAVERSE
+#define GRAPH_TRAVERSE
 
 #include "digraph.hpp"
 
@@ -22,10 +22,10 @@ private:
     void reset();
 
     // Iterative DFS that updates visted and edgeTo
-    void dfs(const Digraph &G, int queryVertex);
+    void dfs(const Graph &G, int queryVertex);
 
     // Iterative BFS that updates visted and edgeTo
-    void bfs(const Digraph &G, int queryVertex);
+    void bfs(const Graph &G, int queryVertex);
 
 public:
     /*!
@@ -38,7 +38,7 @@ public:
      *                    it to false will invoke bread-first traversal.
      * @return DigraphPaths object that has already processed Digraph G
      */
-    DigraphPaths(const Digraph &G, int queryVertex, bool useDfs = true);
+    DigraphPaths(const Graph &G, int queryVertex, bool useDfs = true);
 
     /*!
      * @function hasPathTo
@@ -66,4 +66,4 @@ public:
     size_t count();
 };
 
-#endif /*DIGRAPH_TRAVERSE*/
+#endif /*GRAPH_TRAVERSE*/
