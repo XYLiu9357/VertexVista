@@ -16,7 +16,7 @@
 class Graph
 {
 private:
-    std::vector<int> vertices;
+    std::vector<Node> vertices;
     VertexMap idToIndex;
     size_t edgeCount;
 
@@ -50,12 +50,7 @@ public:
     bool contains(int v) const;
 
     // Serialization of the graph
-    std::string toString();
-
-    // Return minimum vertex
-    int min() const;
-    // Return maximum vertex
-    int max() const;
+    std::string toString(std::string delim = ",");
 
     // Return the indegree of vertex v
     int indegree(int v) const;
@@ -84,7 +79,7 @@ public:
      * @param w The destination vertex
      * @param weight Weight of the edge, default to 1
      */
-    void insertEdge(int v, int w, int weight = 1);
+    void insertEdge(int v, int w, double weight = 1);
     void insertEdge(std::initializer_list<std::pair<int, int>> edges);
 
     /*!

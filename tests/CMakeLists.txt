@@ -14,16 +14,16 @@ FetchContent_MakeAvailable(googletest)
 set(TEST_SRC
     main.cpp
     vertex-map-tests.cpp
-    # digraph-tests.cpp
-    # digraph-traverse-tests.cpp
+    # graph-tests.cpp
+    # graph-traverse-tests.cpp
 )
-set(TEST_NAME digraph-test.out)
+set(TEST_NAME graph-test.out)
 
 add_executable(${TEST_NAME} ${TEST_SRC})
 
 target_link_libraries(
     ${TEST_NAME}
-    digraph
+    graph
     gtest_main
 )
 

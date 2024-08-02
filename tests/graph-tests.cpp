@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include "digraph/digraph.hpp"
+#include "graph/digraph.hpp"
 
 constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 10000;
 

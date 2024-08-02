@@ -42,14 +42,36 @@ public:
     VertexMap(const VertexMap &other);
 
     // Accessors
-    size_t size();
-    bool contains(int key);
-    int at(int key);
+    size_t size() const;
+    bool contains(int key) const;
+    int at(int key) const;
 
     // Mutators
     void insert(int key, int value);
     void erase(int key);
     int &operator[](int key);
+    int operator[](int key) const;
+
+private:
+    class Iterator
+    {
+    private:
+        const VertexMap *map;
+        size_t bucketIndex;
+        std::list<Bucket>::const_iterator listIterator;
+
+        void advance();
+
+    public:
+        Iterator(const VertexMap *map, size_t bucketIndex, std::list<Bucket>::const_iterator listIterator);
+        Iterator &operator++();
+        bool operator!=(const Iterator &other) const;
+        const Bucket &operator*() const;
+    };
+
+public:
+    Iterator begin() const;
+    Iterator end() const;
 };
 
 #endif /*VERTEX_MAP*/

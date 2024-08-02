@@ -4,7 +4,7 @@
  */
 
 #include <gtest/gtest.h>
-#include "digraph/vertex-map.hpp"
+#include "graph/vertex-map.hpp"
 
 // Test fixture for VertexMap
 class VertexMapTest : public ::testing::Test

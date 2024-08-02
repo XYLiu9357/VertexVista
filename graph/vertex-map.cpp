@@ -58,8 +58,8 @@ VertexMap::VertexMap(const VertexMap &other)
 }
 
 // Accessors
-size_t VertexMap::size() { return sz; }
-bool VertexMap::contains(int key)
+size_t VertexMap::size() const { return sz; }
+bool VertexMap::contains(int key) const
 {
     size_t bucketIndex = getBucketIndex(key);
 
@@ -72,7 +72,7 @@ bool VertexMap::contains(int key)
     return false;
 }
 
-int VertexMap::at(int key)
+int VertexMap::at(int key) const
 {
     size_t bucketIndex = getBucketIndex(key);
     for (const auto &entry : buckets[bucketIndex])
@@ -133,4 +133,53 @@ int &VertexMap::operator[](int key)
     buckets[bucketIndex].emplace_back(key, -1);
     sz++;
     return buckets[bucketIndex].back().value;
+}
+
+int VertexMap::operator[](int key) const { return at(key); }
+
+/**
+ * Iterator
+ */
+
+VertexMap::Iterator::Iterator(const VertexMap *map, size_t bucketIndex, std::list<Bucket>::const_iterator listIterator)
+    : map(map), bucketIndex(bucketIndex), listIterator(listIterator)
+{
+    advance();
+}
+
+void VertexMap::Iterator::advance()
+{
+    while (bucketIndex < map->numBuckets && listIterator == map->buckets[bucketIndex].end())
+    {
+        ++bucketIndex;
+        if (bucketIndex < map->numBuckets)
+            listIterator = map->buckets[bucketIndex].begin();
+    }
+}
+
+VertexMap::Iterator &VertexMap::Iterator::operator++()
+{
+    ++listIterator;
+    advance();
+    return *this;
+}
+
+bool VertexMap::Iterator::operator!=(const Iterator &other) const
+{
+    return bucketIndex != other.bucketIndex || listIterator != other.listIterator;
+}
+
+const VertexMap::Bucket &VertexMap::Iterator::operator*() const
+{
+    return *listIterator;
+}
+
+VertexMap::Iterator VertexMap::begin() const
+{
+    return Iterator(this, 0, buckets.empty() ? std::list<Bucket>::const_iterator() : buckets[0].begin());
+}
+
+VertexMap::Iterator VertexMap::end() const
+{
+    return Iterator(this, numBuckets, std::list<Bucket>::const_iterator());
 }

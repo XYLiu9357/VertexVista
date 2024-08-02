@@ -3,15 +3,14 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source code files 
-set(DIGRAPH_SRC
+set(GRAPH_SRC
     vertex-map.cpp
-    # digraph.cpp
-    # digraph-traverse.cpp
+    # graph.cpp
 )
 
-set(LIB_NAME digraph)
+set(LIB_NAME graph)
 
-add_library(${LIB_NAME} SHARED ${DIGRAPH_SRC})
+add_library(${LIB_NAME} SHARED ${GRAPH_SRC})
 
 target_include_directories(
     ${LIB_NAME} 

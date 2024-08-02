@@ -22,7 +22,7 @@ tasks:
 
   run-test:
     cmds:
-      - ./build/tests/digraph-test.out
+      - ./build/tests/graph-test.out
 
   valgrind:
     cmds:
@@ -30,7 +30,7 @@ tasks:
 
   gdb:
     cmds:
-      - gdb ./build/tests/digraph-test.out
+      - gdb ./build/tests/graph-test.out
 
   clean:
     cmds:

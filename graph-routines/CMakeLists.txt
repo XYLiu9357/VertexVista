@@ -3,7 +3,7 @@ set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # Source code files 
-set(DIGRAPH_ROUTINES
+set(GRAPH_ROUTINES
     biparte.cpp
     connected-components.cpp
     cycle.cpp
@@ -13,4 +13,4 @@ set(DIGRAPH_ROUTINES
     topo-sort.cpp
 )
 
-add_library(digraph-routines SHARED ${DIGRAPH_ROUTINES})
+add_library(digraph-routines SHARED ${GRAPH_ROUTINES})
