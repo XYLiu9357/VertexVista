@@ -37,10 +37,12 @@ Graph::Graph(const std::initializer_list<int> &vertices)
     : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
 {
     this->vertices.reserve(vertices.size());
-    for (int id = 0; id < vertices.size(); id++)
+    int curIdx = 0;
+    for (int id : vertices)
     {
         this->vertices.emplace_back(Node(id));
-        idToIndex[id] = id;
+        idToIndex[id] = curIdx;
+        curIdx++;
     }
 }
 
@@ -61,20 +63,33 @@ size_t Graph::E() const { return edgeCount; }
 bool Graph::contains(int v) const { return idToIndex.find(v) != idToIndex.end(); }
 
 // Serialization of the graph
-std::string Graph::toString(std::string delim, int weightPrecision)
+std::string Graph::toString(std::string delim, bool doSort, int weightPrecision)
 {
     // Obtain sorted copy of vertices
     std::string graphStr = "";
-    std::vector<Node> sortedVertices(vertices);
-    std::sort(sortedVertices.begin(), sortedVertices.end(),
-              [](const Node &n1, const Node &n2)
-              { return n1.getId() < n2.getId(); });
+    std::vector<Node> toStringVertices(vertices);
+
+    // Sort vertices if needed
+    if (doSort)
+    {
+        std::sort(toStringVertices.begin(), toStringVertices.end(),
+                  [](const Node &n1, const Node &n2)
+                  { return n1.getId() < n2.getId(); });
+    }
 
     // Construct string
-    for (Node node : sortedVertices)
+    for (Node node : toStringVertices)
     {
         graphStr += std::to_string(node.getId()) + ": ";
-        for (Edge edge : node.edges())
+        std::forward_list<Edge> toStringEdges(node.edges());
+
+        // Sort edges if needed
+        if (doSort)
+        {
+            toStringEdges.sort([](const Edge &e1, const Edge &e2)
+                               { return e1.getTo() < e2.getTo(); });
+        }
+        for (Edge edge : toStringEdges)
             graphStr += edge.toString(weightPrecision) + delim;
         graphStr += "\n";
     }
@@ -154,15 +169,21 @@ void Graph::eraseVertex(int v)
     if (idToIndex.find(v) == idToIndex.end())
         throw std::out_of_range("Vertex removal error: vertex " + std::to_string(v) + " is not in graph");
 
-    // Erase all edges to v
+    // Erase all edges to v from other vertices
     int vIdx = idToIndex.at(v);
-    for (Node other : vertices)
+    for (Node &other : vertices)
     {
+        // Skip if it's v itself
+        if (other.getId() == v)
+            continue;
+        // Erase only if there is such an edge
+        if (!other.hasEdgeTo(v))
+            continue;
         other.eraseEdgeTo(v);
         edgeCount--;
     }
 
-    // Erase v
+    // Erase v itself
     edgeCount -= vertices[vIdx].getOutDeg();
     vertices.erase(vertices.begin() + vIdx);
     idToIndex.erase(v);

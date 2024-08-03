@@ -50,7 +50,7 @@ public:
     bool contains(int v) const;
 
     // Serialization of the graph
-    std::string toString(std::string delim = ",", int weightPrecision = 2);
+    std::string toString(std::string delim = ",", bool doSort = false, int weightPrecision = 2);
 
     // Return the indegree of vertex v
     int indegree(int v) const;

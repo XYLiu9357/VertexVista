@@ -77,9 +77,18 @@ void Node::insertEdges(std::initializer_list<Edge> edges)
 
 void Node::eraseEdgeTo(int to)
 {
-    for (auto it = edgeList.begin(); it != edgeList.end(); ++it)
-        if (std::next(it) != edgeList.end() && std::next(it)->getTo() == to)
-            edgeList.erase_after(it);
+    auto prev = edgeList.before_begin();
+    auto it = edgeList.begin();
+    for (; it != edgeList.end(); ++prev, ++it)
+    {
+        // Erase first match
+        if (it->getTo() == to)
+        {
+            edgeList.erase_after(prev);
+            outDegree--;
+            return;
+        }
+    }
 }
 
 const std::forward_list<Edge> &Node::edges() const { return edgeList; }
