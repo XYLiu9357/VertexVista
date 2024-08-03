@@ -78,7 +78,7 @@ std::string Graph::toString(std::string delim, bool doSort, int weightPrecision)
     }
 
     // Construct string
-    for (Node node : toStringVertices)
+    for (const Node &node : toStringVertices)
     {
         graphStr += std::to_string(node.getId()) + ": ";
         std::forward_list<Edge> toStringEdges(node.edges());
@@ -89,7 +89,7 @@ std::string Graph::toString(std::string delim, bool doSort, int weightPrecision)
             toStringEdges.sort([](const Edge &e1, const Edge &e2)
                                { return e1.getTo() < e2.getTo(); });
         }
-        for (Edge edge : toStringEdges)
+        for (const Edge &edge : toStringEdges)
             graphStr += edge.toString(weightPrecision) + delim;
         graphStr += "\n";
     }
@@ -189,9 +189,9 @@ void Graph::eraseVertex(int v)
     idToIndex.erase(v);
 
     // Update idToIndex map
-    for (auto pair : idToIndex)
+    for (auto &pair : idToIndex)
     {
-        if (pair.first > vIdx)
+        if (pair.second > vIdx)
             pair.second--;
     }
 }

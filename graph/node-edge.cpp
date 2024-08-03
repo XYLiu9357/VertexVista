@@ -32,10 +32,34 @@ std::string Edge::toString(int precision) const
 }
 
 /**
- * Edges
+ * Nodes
  */
 Node::Node(int id) : id(id), edgeList(std::forward_list<Edge>()), outDegree(0) {}
 Node::Node(const Node &other) : id(other.id), edgeList(std::forward_list<Edge>(other.edgeList)), outDegree(other.outDegree) {}
+Node::Node(Node &&other) : id(other.id), outDegree(other.outDegree), edgeList(std::move(other.edgeList)) {}
+
+Node &Node::operator=(const Node &other)
+{
+    if (this != &other)
+    {
+        id = other.id;
+        outDegree = other.outDegree;
+        edgeList = other.edgeList;
+    }
+    return *this;
+}
+
+Node &Node::operator=(Node &&other)
+{
+    if (this != &other)
+    {
+        id = other.id;
+        outDegree = other.outDegree;
+        edgeList = std::move(other.edgeList);
+    }
+    return *this;
+}
+
 int Node::getId() const { return id; }
 int Node::getOutDeg() const { return outDegree; }
 

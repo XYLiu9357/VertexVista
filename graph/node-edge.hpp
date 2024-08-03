@@ -48,6 +48,9 @@ private:
 public:
     Node(int id);
     Node(const Node &other);
+    Node(Node &&other);
+    Node &operator=(const Node &other);
+    Node &operator=(Node &&other);
 
     // Accessors
     int getId() const;

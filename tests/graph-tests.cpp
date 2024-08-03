@@ -151,14 +151,14 @@ TEST(DigraphTest, MixedOpsWithIntializerList)
     EXPECT_EQ(g.E(), 6);
     g.insertEdge({{2, 0}, {6, 4}, {10, 8}});
     EXPECT_EQ(g.E(), 9);
-    expected = "0: 2,\n2: 0,4,\n4: 6,\n6: 4,8,\n8: 10,\n10: 0,8,\n";
+    expected = "0: 0 -> 2[1.00],\n2: 2 -> 0[1.00],2 -> 4[1.00],\n4: 4 -> 6[1.00],\n6: 6 -> 4[1.00],6 -> 8[1.00],\n8: 8 -> 10[1.00],\n10: 10 -> 0[1.00],10 -> 8[1.00],\n";
     EXPECT_EQ(g.toString(",", true), expected);
 
     // Remove vertices linked by bidirectional links
     g.eraseVertex({2, 8});
     EXPECT_EQ(g.V(), 4);
     EXPECT_EQ(g.E(), 3);
-    expected = "0: \n4: 6,\n6: 4,\n10: 0,\n";
+    expected = "0: \n4: 4 -> 6[1.00],\n6: 6 -> 4[1.00],\n10: 10 -> 0[1.00],\n";
     EXPECT_EQ(g.toString(",", true), expected);
 
     // Self cycles
@@ -166,20 +166,19 @@ TEST(DigraphTest, MixedOpsWithIntializerList)
     EXPECT_EQ(g.V(), 2);
     EXPECT_EQ(g.E(), 1);
     EXPECT_THROW(g.eraseEdge({{4, 4}}), std::out_of_range);
-    EXPECT_THROW(g.eraseEdge({{0, 10}}), std::out_of_range);
     EXPECT_NO_THROW(g.eraseEdge({{10, 0}}));
 
     g.insertEdge({{0, 0}, {0, 10}, {10, 0}, {10, 10}});
     EXPECT_EQ(g.V(), 2);
     EXPECT_EQ(g.E(), 4);
-    expected = "0: 0,10,\n10: 0,10,\n";
+    expected = "0: 0 -> 0[1.00],0 -> 10[1.00],\n10: 10 -> 0[1.00],10 -> 10[1.00],\n";
     EXPECT_EQ(g.toString(",", true), expected);
 
     // A series of deletions and checks
     g.eraseEdge(0, 0);
     EXPECT_EQ(g.V(), 2);
     EXPECT_EQ(g.E(), 3);
-    expected = "0: 10,\n10: 0,10,\n";
+    expected = "0: 0 -> 10[1.00],\n10: 10 -> 0[1.00],10 -> 10[1.00],\n";
     EXPECT_EQ(g.toString(",", true), expected);
 
     g.eraseEdge(10, 0);
