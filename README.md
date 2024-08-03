@@ -58,3 +58,7 @@ Our team will be tracking bugs, issues, and other relevant feedback through [Git
 ## Call for Contributions
 
 We welcome all changes and suggestions, big or small. If you want to contribute to VertexVista, feel free to fork the repository on GitHub and create a pull request (PR). We want to make VertexVista the #1 choice for light-weight graph analysis library, and we would love to meet people with the same interest and passion!
+
+## Licensing
+
+[MIT license](LICENSE.txt)
