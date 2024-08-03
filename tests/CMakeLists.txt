@@ -14,7 +14,7 @@ FetchContent_MakeAvailable(googletest)
 set(TEST_SRC
     main.cpp
     graph-tests.cpp
-    # graph-traverse-tests.cpp
+    graph-paths-tests.cpp
 )
 set(TEST_NAME graph-test.out)
 
@@ -23,6 +23,7 @@ add_executable(${TEST_NAME} ${TEST_SRC})
 target_link_libraries(
     ${TEST_NAME}
     graph
+    graph_routines
     gtest_main
 )
 

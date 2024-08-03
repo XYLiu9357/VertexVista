@@ -2,11 +2,11 @@ cmake_minimum_required(VERSION 3.20)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-project(digraph)
+project(vertexvista)
 
 # Build libraries
 add_subdirectory(graph)
-# add_subdirectory(graph-processing)
+add_subdirectory(graph-routines)
 
 # Build executable with unit tests if specified
 option(BUILD_TESTS "Build executable containing unit tests" OFF)

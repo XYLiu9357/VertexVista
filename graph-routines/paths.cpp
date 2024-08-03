@@ -1,4 +1,4 @@
-/**graph-traverse.cpp
+/**paths.cpp
  *
  * Directed graph path search & traversal class.
  * Supports elementary path query using
@@ -6,20 +6,17 @@
  */
 
 #include <stdexcept>
-#include "deque.hpp"
-#include "graph-traverse.hpp"
+#include "utils/deque.hpp"
+#include "paths.hpp"
 
 // Reset the storage by clearing edgeTo
-void DigraphPaths::reset()
-{
-    // Automatically calls destructor ~RedBlackTree
-    edgeTo = Map<int, int>();
-}
+void GraphPaths::reset() { edgeTo.clear(); }
 
 // Iterative DFS that updates edgeTo
-void DigraphPaths::dfs(const Graph &G, int queryVertex)
+void GraphPaths::dfs(const Graph &G, int queryVertex)
 {
-    // TODO: take advantage of the pointers somehow
+    reset();
+
     Deque<int> stack;
     edgeTo[queryVertex] = queryVertex;
     stack.push_back(queryVertex);
@@ -28,20 +25,20 @@ void DigraphPaths::dfs(const Graph &G, int queryVertex)
     while (stack.size() > 0)
     {
         int cur = stack.pop_back();
-        for (std::pair<int, int> neighbor : G.adj(cur))
+        for (const Edge &edge : G.adj(cur))
         {
-            if (!edgeTo.contains(neighbor.first))
+            if (edgeTo.find(edge.getTo()) == edgeTo.end())
             {
                 connectedCount++;
-                stack.push_back(neighbor.first);
-                edgeTo[neighbor.first] = cur;
+                stack.push_back(edge.getTo());
+                edgeTo[edge.getTo()] = cur;
             }
         }
     }
 }
 
 // Iterative BFS that updates edgeTo
-void DigraphPaths::bfs(const Graph &G, int queryVertex)
+void GraphPaths::bfs(const Graph &G, int queryVertex)
 {
     // TODO: take advantage of the pointers somehow
     Deque<int> queue;
@@ -52,29 +49,29 @@ void DigraphPaths::bfs(const Graph &G, int queryVertex)
     while (queue.size() > 0)
     {
         int cur = queue.pop_front();
-        for (int neighbor : G.adj(cur))
+        for (const Edge &edge : G.adj(cur))
         {
-            if (!edgeTo.contains(neighbor))
+            if (edgeTo.find(edge.getTo()) == edgeTo.end())
             {
                 connectedCount++;
-                queue.push_back(neighbor);
-                edgeTo[neighbor] = cur;
+                queue.push_back(edge.getTo());
+                edgeTo[edge.getTo()] = cur;
             }
         }
     }
 }
 
 /*!
- * @function DigraphPaths
- * @abstract Constructor for a DigraphPaths object that processes
+ * @function GraphPaths
+ * @abstract Constructor for a GraphPaths object that processes
  *           a digraph G and supports path query.
  * @param G           Graph pending processing
  * @param queryVertex Vertex to initiate query
  * @param useDfs      Use depth-first traversal to process graph. Setting
  *                    it to false will invoke bread-first traversal.
- * @return DigraphPaths object that has already processed Graph G
+ * @return GraphPaths object that has already processed Graph G
  */
-DigraphPaths::DigraphPaths(const Graph &G, int queryVertex, bool useDfs)
+GraphPaths::GraphPaths(const Graph &G, int queryVertex, bool useDfs)
     : queryVertex(queryVertex), connectedCount(0)
 {
     if (G.V() < 1)
@@ -95,7 +92,7 @@ DigraphPaths::DigraphPaths(const Graph &G, int queryVertex, bool useDfs)
  * @param v Connectivity query vertex
  * @return True if v is connected to queryVertex, false otherwise
  */
-bool DigraphPaths::hasPathTo(int v) { return edgeTo.contains(v); }
+bool GraphPaths::hasPathTo(int v) { return edgeTo.find(v) != edgeTo.end(); }
 
 /*!
  * @function pathTo
@@ -105,7 +102,7 @@ bool DigraphPaths::hasPathTo(int v) { return edgeTo.contains(v); }
  * @return A sequence of vertices from queryVertex to v. Empty if no
  *         such path exists.
  */
-std::vector<int> DigraphPaths::pathTo(int v)
+std::vector<int> GraphPaths::pathTo(int v)
 {
     std::vector<int> path;
 
@@ -131,4 +128,4 @@ std::vector<int> DigraphPaths::pathTo(int v)
  * @abstract Returns the number of vertices connected to queryVertex
  * @return Number of vertices connected to queryVertex in graph G
  */
-size_t DigraphPaths::count() { return connectedCount; }
+size_t GraphPaths::count() { return connectedCount; }

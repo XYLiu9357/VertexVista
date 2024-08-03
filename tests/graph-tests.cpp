@@ -9,7 +9,7 @@
 
 constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 10000;
 
-TEST(DigraphTest, DefaultConstructor)
+TEST(GraphTest, DefaultConstructor)
 {
     Graph g;
     EXPECT_EQ(g.V(), 0);
@@ -17,7 +17,7 @@ TEST(DigraphTest, DefaultConstructor)
     EXPECT_EQ(g.toString(",", true), "");
 }
 
-TEST(DigraphTest, VertexCountConstructor)
+TEST(GraphTest, VertexCountConstructor)
 {
     int V = 5;
     Graph g(V);
@@ -26,7 +26,7 @@ TEST(DigraphTest, VertexCountConstructor)
     EXPECT_NO_THROW(g.insertEdge(1, 2));
 }
 
-TEST(DigraphTest, ToString)
+TEST(GraphTest, ToString)
 {
     Graph g;
     g.insertVertex(1);
@@ -36,7 +36,7 @@ TEST(DigraphTest, ToString)
     EXPECT_EQ(g.toString(",", true), expected);
 }
 
-TEST(DigraphTest, CopyConstructor)
+TEST(GraphTest, CopyConstructor)
 {
     Graph g1(5);
     g1.insertEdge(0, 1);
@@ -52,7 +52,7 @@ TEST(DigraphTest, CopyConstructor)
     EXPECT_EQ(g2.V(), 5);
 }
 
-TEST(DigraphTest, InsertVertex)
+TEST(GraphTest, InsertVertex)
 {
     Graph g;
     g.insertVertex(1);
@@ -65,7 +65,7 @@ TEST(DigraphTest, InsertVertex)
     EXPECT_EQ(g.toString(",", true), "1: 1 -> 2[1.00],\n2: 2 -> 1[1.00],\n3: 3 -> 1[1.00],\n");
 }
 
-TEST(DigraphTest, InsertEdge)
+TEST(GraphTest, InsertEdge)
 {
     Graph g;
     g.insertVertex(1);
@@ -74,7 +74,7 @@ TEST(DigraphTest, InsertEdge)
     EXPECT_EQ(g.E(), 1);
 }
 
-TEST(DigraphTest, EraseEdge)
+TEST(GraphTest, EraseEdge)
 {
     Graph g;
     g.insertVertex(1);
@@ -93,7 +93,7 @@ TEST(DigraphTest, EraseEdge)
     EXPECT_NO_THROW(g.eraseEdge(1, 4));
 }
 
-TEST(DigraphTest, EraseVertex)
+TEST(GraphTest, EraseVertex)
 {
     int N = 10;
     Graph g(N);
@@ -118,7 +118,7 @@ TEST(DigraphTest, EraseVertex)
     EXPECT_EQ(g.toString(",", true), expected);
 }
 
-TEST(DigraphTest, MixedOpsWithIntializerList)
+TEST(GraphTest, MixedOpsWithIntializerList)
 {
     Graph g = {0, 2, 4, 6, 8, 10};
 
@@ -197,7 +197,7 @@ TEST(DigraphTest, MixedOpsWithIntializerList)
     EXPECT_EQ(g.E(), 0);
 }
 
-TEST(DigraphTest, InsertionWithRepetitions)
+TEST(GraphTest, InsertionWithRepetitions)
 {
     Graph g(5);
 
@@ -238,7 +238,7 @@ TEST(DigraphTest, InsertionWithRepetitions)
     EXPECT_EQ(g.E(), 4);
 }
 
-TEST(DigraphTest, MixedStressTest)
+TEST(GraphTest, MixedStressTest)
 {
     Graph g;
 

@@ -1,20 +1,21 @@
-/**graph-traverse.hpp
+/**paths.hpp
  *
  * Directed graph path search & traversal class.
  * Supports elementary path query using
  * depth-first and breadth-first traversal.
  */
 
-#ifndef GRAPH_TRAVERSE
-#define GRAPH_TRAVERSE
+#ifndef GRAPH_PATHS
+#define GRAPH_PATHS
 
+#include <map>
 #include "graph/graph.hpp"
 
-class DigraphPaths
+class GraphPaths
 {
 private:
     // Keep track of path used to visit a vertex
-    Map<int, int> edgeTo;
+    std::map<int, int> edgeTo;
     int queryVertex;
     size_t connectedCount;
 
@@ -29,16 +30,16 @@ private:
 
 public:
     /*!
-     * @function DigraphPaths
-     * @abstract Constructor for a DigraphPaths object that processes
+     * @function GraphPaths
+     * @abstract Constructor for a GraphPaths object that processes
      *           a digraph G and supports path query.
      * @param G           Digraph pending processing
      * @param queryVertex Vertex to initiate query
      * @param useDfs      Use depth-first traversal to process graph. Setting
      *                    it to false will invoke bread-first traversal.
-     * @return DigraphPaths object that has already processed Digraph G
+     * @return GraphPaths object that has already processed Digraph G
      */
-    DigraphPaths(const Graph &G, int queryVertex, bool useDfs = true);
+    GraphPaths(const Graph &G, int queryVertex, bool useDfs = true);
 
     /*!
      * @function hasPathTo
@@ -66,4 +67,4 @@ public:
     size_t count();
 };
 
-#endif /*GRAPH_TRAVERSE*/
+#endif /*GRAPH_PATHS*/
