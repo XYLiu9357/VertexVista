@@ -73,9 +73,15 @@ bool Node::hasEdgeTo(int v) const
 
 void Node::setWeight(int to, double weight)
 {
-    for (auto it = edgeList.begin(); it != edgeList.end(); ++it)
-        if (std::next(it)->getTo() == to)
+    auto it = edgeList.begin();
+    for (; it != edgeList.end(); ++it)
+    {
+        if (it->getTo() == to)
+        {
             it->setWeight(weight);
+            return;
+        }
+    }
 }
 
 void Node::insertEdge(int to, double weight)

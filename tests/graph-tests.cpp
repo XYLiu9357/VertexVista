@@ -215,13 +215,13 @@ TEST(DigraphTest, InsertionWithRepetitions)
     g.insertEdge(1, 3);
     g.insertEdge(2, 2);
     EXPECT_EQ(g.E(), 3);
-    std::string expected = "0: 4,\n1: 3,\n2: 2,\n3: \n4: \n";
+    std::string expected = "0: 0 -> 4[1.00],\n1: 1 -> 3[1.00],\n2: 2 -> 2[1.00],\n3: \n4: \n";
     EXPECT_EQ(g.toString(",", true), expected);
 
     // Bidirectional edge
     g.insertEdge(3, 1);
     g.insertEdge(1, 3);
-    expected = "0: 4,\n1: 3,\n2: 2,\n3: 1,\n4: \n";
+    expected = "0: 0 -> 4[1.00],\n1: 1 -> 3[1.00],\n2: 2 -> 2[1.00],\n3: 3 -> 1[1.00],\n4: \n";
     EXPECT_EQ(g.E(), 4);
     EXPECT_EQ(g.toString(",", true), expected);
 
