@@ -20,7 +20,7 @@ Indeed, BGL is a fantastic library built by absolute C++ virtuosos. It's versati
 
 ## Dependencies & Installation
 
-## Simple Example
+## Example
 
 Create a directed graph and determine if there exists an [Eulerian path](https://en.wikipedia.org/wiki/Eulerian_path): a path that visits every edge exactly once.
 
