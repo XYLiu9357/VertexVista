@@ -22,7 +22,7 @@ Indeed, BGL is a fantastic library built by absolute C++ virtuosos. It's versati
 
 ## Reporting Bugs
 
-Our team will be tracking bugs, issues, and other relevant feedback through GitHub Issues: https://github.com/XYLiu9357/VertexVista/issues. If you encountered trouble using this library or anything that could help us improve, please don't hesitate to post an Issue.
+Our team will be tracking bugs, issues, and other relevant feedback through [GitHub Issues](https://github.com/XYLiu9357/VertexVista/issues). If you encountered trouble using VertexVista or thought of anything that could help us improve, please don't hesitate to post an Issue.
 
 ## Call for Contributions
 
