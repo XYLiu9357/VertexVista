@@ -6,7 +6,7 @@
 
 VertexVista is a C++ library for the manipulation and analysis of the structure of weighted directed graphs and networks. The library is designed with elegance, performance, and flexibility in mind, while achieving memory and runtime optimality for read, write, and various query operations.
 
-Documentations can be found here:
+Technical documentations can be found here:
 
 - **Graph**: the skeleton of VertexVista - [Graph](docs/Graph.rst)
 - **Routines**: graph analysis and processing routines - [GraphRoutines](docs/GraphRoutines.rst)
