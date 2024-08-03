@@ -6,9 +6,9 @@ VertexVista is a C++ library for the manipulation and analysis of the structure 
 
 Technical documentations can be found here:
 
-- **Graph**: the skeleton of VertexVista - [Graph](docs/Graph.rst)
-- **Routines**: graph analysis and processing routines - [GraphRoutines](docs/GraphRoutines.rst)
-- **Performance Analysis**: performance analysis for a subset of graph routines - [Performance](docs/Performance.rst)
+- **Graph**: the skeleton of VertexVista - [Graph](docs/Graph.md)
+- **Routines**: graph analysis and processing routines - [GraphRoutines](docs/GraphRoutines.md)
+- **Performance Analysis**: performance analysis for a subset of graph routines - [Performance](docs/Performance.md)
 
 VertexVista currently offers a C++ interface with expressive syntax and customizable features. A Python interface with the same structure and style will be developed in the near future.
 
