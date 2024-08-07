@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Source code files 
 set(GRAPH_ROUTINES_SRC
     paths.cpp
-    # biparte.cpp
+    bipartite.cpp
     # connected-components.cpp
     # cycle.cpp
     # eulerian.cpp
