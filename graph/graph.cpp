@@ -50,6 +50,17 @@ Graph::Graph(const std::initializer_list<int> &vertices)
 Graph::Graph(const Graph &other)
     : edgeCount(other.edgeCount), vertices(other.vertices), idToIndex(other.idToIndex) {}
 
+// Operator=: deep copy-and-swap
+Graph &Graph::operator=(const Graph &other)
+{
+    // Copy and swap
+    Graph newCopy(other);
+    std::swap(this->vertices, newCopy.vertices);
+    std::swap(this->idToIndex, newCopy.idToIndex);
+    std::swap(this->edgeCount, newCopy.edgeCount);
+    return *this;
+}
+
 /**
  * Accessors
  */

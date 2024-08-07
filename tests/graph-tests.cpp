@@ -52,6 +52,22 @@ TEST(GraphTest, CopyConstructor)
     EXPECT_EQ(g2.V(), 5);
 }
 
+TEST(GraphTest, CopyAssignment)
+{
+    Graph g1(5);
+    g1.insertEdge(0, 1);
+    g1.insertEdge(1, 2);
+    Graph g2 = g1;
+    EXPECT_EQ(g2.V(), 5);
+    EXPECT_EQ(g2.E(), 2);
+    EXPECT_EQ(g1.toString(",", true), g2.toString(",", true));
+
+    for (int i = 0; i < 5; i++)
+        g1.eraseVertex(i);
+    EXPECT_EQ(g1.V(), 0);
+    EXPECT_EQ(g2.V(), 5);
+}
+
 TEST(GraphTest, InsertVertex)
 {
     Graph g;

@@ -5,3 +5,70 @@
  *
  * This routine returns the two partitions as iterable data types.
  */
+
+#ifndef BIPARTITE
+#define BIPARTITE
+
+#include <set>
+#include "graph/graph.hpp"
+
+class Bipartite
+{
+private:
+    Graph g;
+    std::set<int> vertexSet1;
+    std::set<int> vertexSet2;
+    bool _isBipartite;
+
+    // DFS to check if the graph is bipartite
+    bool dfsBipartite();
+
+public:
+    /*!
+     * @function Bipartite
+     * @abstract Construct Bipartite-type object based on a
+     * directed graph.
+     * @param target directed graph used as input
+     */
+    Bipartite(const Graph &target);
+
+    /*!
+     * @function Bipartite
+     * @abstract Copy constructor for Bipartite-type object.
+     * @param other another Bipartite-type object
+     */
+    Bipartite(const Bipartite &other);
+
+    /*!
+     * @function isBipartite
+     * @abstract Checks if the Bipartite object is constructed
+     * based on a bipartite graph.
+     * @return true if the graph is bipartite, false otherwise
+     */
+    bool isBipartite();
+
+    /*!
+     * @function sameSet
+     * @abstract Checks if two query vertices are in the same set
+     * @param v first query vertex
+     * @param w second query vertex
+     * @return true if v and w are in the same set, false otherwise
+     */
+    bool sameSet(int v, int w);
+
+    /*!
+     * @function getPart1
+     * @abstract Returns the first set of vertices
+     * @return the first set of vertices
+     */
+    const std::set<int> &getPart1();
+
+    /*!
+     * @function getPart2
+     * @abstract Returns the second (other) set of vertices
+     * @return the second set of vertices
+     */
+    const std::set<int> &getPart2();
+};
+
+#endif /*BIPARTITE*/

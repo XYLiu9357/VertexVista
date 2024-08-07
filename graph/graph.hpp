@@ -37,6 +37,9 @@ public:
     // Constructor: deep copy another graph
     Graph(const Graph &other);
 
+    // Operator=: deep copy-and-swap
+    Graph &operator=(const Graph &other);
+
     /**
      * Accessors
      */
