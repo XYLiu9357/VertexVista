@@ -26,7 +26,7 @@ void printState(vector<vector<int>> state)
 
 TEST(UnionFindTest, UnionOperation5Elements)
 {
-    UF u = UF(5);
+    UF<int> u = UF<int>(5);
     vector<vector<int>> state(5);
 
     u.connect(1, 2);
@@ -42,7 +42,7 @@ TEST(UnionFindTest, UnionOperation5Elements)
 
 TEST(UnionFindTest, UnionOperation10Elements)
 {
-    UF u = UF(10);
+    UF<int> u = UF<int>(10);
     vector<vector<int>> state1(10);
 
     u.connect(0, 1);
@@ -67,7 +67,7 @@ TEST(UnionFindTest, UnionOperation10Elements)
 
 TEST(UnionFindTest, UnionOperation10ElementsSequel)
 {
-    UF u = UF(10);
+    UF<int> u = UF<int>(10);
     vector<vector<int>> state(10);
 
     u.connect(0, 1);
@@ -91,7 +91,7 @@ TEST(UnionFindTest, UnionOperation10ElementsSequel)
 
 TEST(UnionFindTest, UnionOperation8Elements)
 {
-    UF u = UF(8);
+    UF<int> u = UF<int>(8);
     vector<vector<int>> state(8);
 
     u.connect(0, 1);
