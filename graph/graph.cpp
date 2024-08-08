@@ -70,6 +70,9 @@ size_t Graph::V() const { return vertices.size(); }
 // Return number of edges
 size_t Graph::E() const { return edgeCount; }
 
+// Return iterator to vertices vectors
+const std::vector<Node> &Graph::getVertices() const { return vertices; }
+
 // Check if the graph contains v
 bool Graph::contains(int v) const { return idToIndex.find(v) != idToIndex.end(); }
 

@@ -21,7 +21,7 @@ private:
     bool _isBipartite;
 
     // DFS to check if the graph is bipartite
-    bool dfsBipartite();
+    bool dfsBipartite(int curId);
 
 public:
     /*!
@@ -53,7 +53,6 @@ public:
      * based on a bipartite graph.
      * @return true if the graph is bipartite, false otherwise
      * @exception throws std::out_of_range if graph is empty
-
      */
     bool isBipartite();
 

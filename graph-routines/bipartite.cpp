@@ -6,13 +6,17 @@
  * This routine returns the two partitions as iterable data types.
  */
 
+#include <string>
 #include <stdexcept>
 #include <algorithm>
-#include "graph/graph.hpp"
+
 #include "bipartite.hpp"
+#include "graph/graph.hpp"
 
 // DFS to check if the graph is bipartite
-bool Bipartite::dfsBipartite() {}
+bool Bipartite::dfsBipartite(int curId)
+{
+}
 
 /*!
  * @function Bipartite
@@ -23,7 +27,6 @@ bool Bipartite::dfsBipartite() {}
 Bipartite::Bipartite(const Graph &target)
 {
     this->g = target;
-    this->_isBipartite = dfsBipartite();
 }
 
 /*!
@@ -31,7 +34,13 @@ Bipartite::Bipartite(const Graph &target)
  * @abstract Copy constructor for Bipartite-type object.
  * @param other another Bipartite-type object
  */
-Bipartite::Bipartite(const Bipartite &other) {}
+Bipartite::Bipartite(const Bipartite &other)
+{
+    this->g = Graph(other.g);
+    this->vertexSet1 = std::set<int>(other.vertexSet1);
+    this->vertexSet2 = std::set<int>(other.vertexSet2);
+    this->_isBipartite = other._isBipartite;
+}
 
 /*!
  * @function operator=
@@ -52,7 +61,7 @@ Bipartite &Bipartite::operator=(const Bipartite &other)
  * @function isBipartite
  * @abstract Checks if the Bipartite object is constructed
  * based on a bipartite graph.
- * @return true if the graph is bipartite, false otherwise
+ * @return true if the graph is bipartite or empty, false otherwise
  * @exception throws std::out_of_range if graph is empty
  */
 bool Bipartite::isBipartite()

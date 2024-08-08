@@ -49,6 +49,9 @@ public:
     // Return number of edges
     size_t E() const;
 
+    // Return iterator to vertices vectors
+    const std::vector<Node> &getVertices() const;
+
     // Check if the graph contains v
     bool contains(int v) const;
 

@@ -15,6 +15,7 @@ set(TEST_SRC
     main.cpp
     graph-tests.cpp
     graph-paths-tests.cpp
+    uf-tests.cpp
     routine-tests.cpp
 )
 set(TEST_NAME graph-test.out)

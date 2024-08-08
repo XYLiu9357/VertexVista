@@ -25,7 +25,7 @@ protected:
         largeGraph = Graph(50);
 
         // Set up graphs
-        for (int i = 0; i < 12; i++)
+        for (int i = 0; i < 3; i++)
             smallGraph.insertEdge({{i, 4 + i}, {4 + i, 8 + i}}); // Fully connected network
 
         for (int i = 1; i < 50; i++)
