@@ -7,6 +7,7 @@
 #ifndef UnionFind
 #define UnionFind
 
+#include <algorithm>
 #include <vector>
 #include <unordered_map>
 
@@ -58,13 +59,72 @@ private:
     bool isIdConnected(int p, int q) { return connections[getRoot(p)] == connections[getRoot(q)]; }
 
 public:
-    UF() {}
-    UF(int numItems) {}
-    UF(std::initializer_list<T> init) {}
-    UF(const UF &other) {}
+    UF() : toId(std::unordered_map<T, int>()),
+           ids(std::vector<int>()),
+           sizes(std::vector<int>()),
+           nextId(0) {}
 
-    void connect(const T &p, const T &q) {}
-    void isConnected(const T &p, const T &q) {}
+    UF(int numItems) : nextId(numItems)
+    {
+        ids.resize(numItems);
+        sizes.resize(numItems);
+
+        for (int i = 0; i < numItems; i++)
+        {
+            toId.insert({T(i), i});
+            ids[i] = i;
+            sizes[i] = 1;
+        }
+    }
+
+    UF(std::initializer_list<T> init) : nextId(init.size())
+    {
+        int numItems = init.size();
+        ids.resize(numItems);
+        sizes.resize(numItems);
+
+        for (int i = 0; i < numItems; i++)
+        {
+            toId.insert({init[i], i});
+            ids[i] = i;
+            sizes[i] = 1;
+        }
+    }
+
+    UF(const UF &other)
+    {
+        this->toId = std::unordered_map<T, int>(other.toId);
+        this->ids = std::vector<int>(other.ids);
+        this->sizes = std::vector<int>(other.sizes);
+        this->nextId = other.nextId;
+    }
+
+    UF &operator=(const UF &other)
+    {
+        UF copy(other);
+        std::swap(this->toId, copy.toId);
+        std::swap(this->ids, copy.ids);
+        std::swap(this->sizes, copy.sizes);
+        std::swap(this->nextId, copy.nextId);
+        return *this;
+    }
+
+    void insert(const T &p)
+    {
+        T pCopy(p); // Defensive copy
+        toId.insert({pCopy, nextId});
+        ids[nextId] = nextId;
+        sizes[nextId] = 1;
+        nextId++;
+    }
+
+    void erase(const T &p)
+    {
+        int substituteId = -1;
+    }
+
+    void connect(const T &p, const T &q) { connectId(toId.at(p), toId.at(q)); }
+    bool isConnected(const T &p, const T &q) { return isIdConnected(toId.at(p), toId.at(q)); }
 };
 
 #endif /*UnionFind*/
