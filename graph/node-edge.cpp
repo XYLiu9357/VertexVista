@@ -20,6 +20,7 @@ Edge::Edge(const Edge &other)
 Edge Edge::operator=(const Edge &other) { return Edge(other); }
 
 // Utilities
+bool Edge::operator==(const Edge &other) const { return this->from == other.from && this->to == other.to && this->weight == other.weight; }
 int Edge::getFrom() const { return from; }
 int Edge::getTo() const { return to; }
 double Edge::getWeight() const { return weight; }
@@ -59,6 +60,8 @@ Node &Node::operator=(Node &&other)
     }
     return *this;
 }
+
+bool Node::operator==(const Node &other) const { return this->id == other.id && this->edgeList == other.edgeList; }
 
 int Node::getId() const { return id; }
 int Node::getOutDeg() const { return outDegree; }

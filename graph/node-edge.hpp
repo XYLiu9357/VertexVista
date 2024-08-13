@@ -26,6 +26,7 @@ public:
     Edge operator=(const Edge &other);
 
     // Utilities
+    bool operator==(const Edge &other) const;
     int getFrom() const;
     int getTo() const;
     double getWeight() const;
@@ -51,6 +52,9 @@ public:
     Node(Node &&other);
     Node &operator=(const Node &other);
     Node &operator=(Node &&other);
+
+    // Equality
+    bool operator==(const Node &other) const;
 
     // Accessors
     int getId() const;

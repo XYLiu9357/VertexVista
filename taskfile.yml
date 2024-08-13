@@ -1,6 +1,7 @@
 version: "3"
 
 env:
+  GCC: /usr/bin/g++
   CLANG: /usr/bin/clang++
   DEBUG: -DCMAKE_BUILD_TYPE=Debug -DBUILD_TESTS=ON
   BUILD: -DCMAKE_BUILD_TYPE=Release -DBUILD_TESTS=OFF
@@ -12,7 +13,7 @@ tasks:
 
   build-test:
     cmds:
-      - cmake -S . -B build -DCMAKE_CXX_COMPILER=${CLANG} ${DEBUG}
+      - cmake -S . -B build -DCMAKE_CXX_COMPILER=${GCC} ${DEBUG}
       - cmake --build build
 
   build:
