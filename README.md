@@ -2,7 +2,7 @@
 
 ## Overview
 
-VertexVista is a C++ library for the manipulation and analysis of the structure of weighted directed graphs and networks. The library is designed with elegance, performance, and flexibility in mind, while achieving memory and runtime optimality for read, write, and various query operations.
+VertexVista is a C++ library for the manipulation and analysis of the structure of weighted directed graphs and networks. The library achieves memory and runtime optimality for read, write, and various query operations.
 
 Technical documentations can be found here:
 
@@ -10,13 +10,13 @@ Technical documentations can be found here:
 - **Routines**: graph analysis and processing routines - [GraphRoutines](docs/GraphRoutines.md)
 - **Performance Analysis**: performance analysis for a subset of graph routines - [Performance](docs/Performance.md)
 
-VertexVista currently offers a C++ interface with expressive syntax and customizable features. A Python interface with the same structure and style will be developed in the near future.
+\*The library currently offers a C++ interface with expressive syntax and customizable features. A Python interface with the same structure and style will be developed in the near future.
 
 ## About VertexVista
 
-VertexVista provides a comprehensive set of features for working with weighted directed graphs, including support for various graph algorithms and efficient data structures. Still, why reinvent the wheel when there are existing efficient and robust solutions such as the [Boost Graph Library](https://www.boost.org/doc/libs/1_75_0/libs/graph/doc/index.html)?
+VertexVista provides a comprehensive set of features for working with weighted directed graphs, including support for graph algorithms and efficient data structures. Still, why reinvent the wheel when there are existing efficient and robust solutions such as the [Boost Graph Library](https://www.boost.org/doc/libs/1_75_0/libs/graph/doc/index.html)?
 
-Indeed, BGL is a fantastic library built by absolute C++ virtuosos. It's versatile and is well-known for its compatibility and robust performance. Yet this comes at a cost: BGL has a steep learning curve and is somewhat bulky. For many use cases, support for ancient or eccentric compilers is unnecessary. Developers have expressed the need for a light-weight alternative for their projects. VertexVista is a performant, flexible alternative solution that can easily be tailored to your own projects.
+Indeed, BGL is a fantastic library built by absolute C++ virtuosos. It's versatile and is well-known for its compatibility and robust performance. Yet this comes at a cost: BGL has a steep learning curve and is somewhat bulky. For many use cases, support for ancient or eccentric compilers is unnecessary. Developers have expressed the need for a light-weight alternative for their projects. VertexVista is a performant, flexible alternative solution that can easily be tailored to our own projects.
 
 ## Dependencies & Installation
 
@@ -57,7 +57,7 @@ Our team will be tracking bugs, issues, and other relevant feedback through [Git
 
 ## Call for Contributions
 
-We welcome all changes and suggestions, big or small. If you want to contribute to VertexVista, feel free to fork the repository on GitHub and create a pull request (PR). We want to make VertexVista the #1 choice for light-weight graph analysis library, and we would love to meet people with the same interest and passion!
+We welcome all changes and suggestions, big or small. If you want to contribute to VertexVista, feel free to fork the repository on GitHub and create a pull request (PR).
 
 ## Licensing
 
