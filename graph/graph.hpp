@@ -1,18 +1,19 @@
 /**graph.hpp
  *
  * Weighted undirected graph container.
+ * Implemented as a child class of DiGraph.
  */
 
 #ifndef GRAPH
 #define GRAPH
 
 #include <unordered_map>
-#include <forward_list>
 #include <vector>
-#include <string>
+
+#include "digraph.hpp"
 #include "node-edge.hpp"
 
-class Graph
+class Graph : public DiGraph
 {
 private:
     std::vector<Node> vertices;
@@ -33,6 +34,9 @@ public:
     // Constructor: creates a graph with an initializer list of vertices
     Graph(const std::initializer_list<int> &vertices);
 
+    // Constructor: extract the underlying representation of a directed graph
+    Graph(const DiGraph &digraph);
+
     // Constructor: deep copy another graph
     Graph(const Graph &other);
 
@@ -43,61 +47,22 @@ public:
      * Accessors
      */
 
-    // Return number of vertices
-    size_t V() const;
-    // Return number of edges
-    size_t E() const;
-
-    // Return const reference to vertices vectors
-    const std::vector<Node> &getVertices() const;
-
-    // Check if the graph contains v
-    bool contains(int v) const;
-
-    // Serialization of the graph
-    std::string toString(std::string delim = ",", bool doSort = false, int weightPrecision = 2);
-
-    // Return the indegree of vertex v
-    int indegree(int v) const;
-
-    // Return the outdegree of a vertex
-    int outdegree(int v) const;
-
-    /*!
-     * @function adj
-     * @abstract Iterates inorder over all the neighbors of v connected by
-     *           an outgoing link from v
-     * @param v The query vertex
-     * @return  The outgoing map in adjacency tree of v
-     */
-    const std::forward_list<Edge> &adj(int v) const;
-
-    /**
-     * @function toUndirected
-     * @abstract Returns the underlying undirected representation of the graph.
-     * @return   The underlying undirected graph
-     */
-    Graph toUndirected();
+    // Return the degree of vertex v
+    int degree(int v) const;
 
     /**
      * Mutators
+     *
+     * Overwrited DiGraph mutators
      */
-
-    /*!
-     * @function insertVertex
-     * @abstract Insert a vertex with key v
-     * @param v Key of the new vertex
-     */
-    void insertVertex(int v);
-    void insertVertex(std::initializer_list<int> vertices);
 
     /*!
      * @function insertEdge
      * @abstract Insert an edge between vertex v and w if the vertices
      *           exist. If the vertices do not exist, out_of_range
-     *           exception will be thrown. Weights are all set to 1
-     * @param v First vertex
-     * @param w Second vertex
+     *           exception will be thrown.
+     * @param v The first vertex
+     * @param w The second vertex
      * @param weight Weight of the edge, default to 1
      */
     void insertEdge(int v, int w, double weight = 1);
@@ -113,10 +78,11 @@ public:
     void eraseVertex(std::initializer_list<int> vertices);
 
     /*!
-     * @function insertEdge
-     * @abstract Insert an edge between vertex v and w if the vertices exist.
-     * @param v The starting vertex
-     * @param w The destination vertex
+     * @function eraseEdge
+     * @abstract Remove the edge between vertices v and w if the edge exists. If the
+     *           edge does not exist, out_of_range exception will be thrown.
+     * @param v The first vertex
+     * @param w The second vertex
      */
     void eraseEdge(int v, int w);
     void eraseEdge(std::initializer_list<std::pair<int, int>> edges);

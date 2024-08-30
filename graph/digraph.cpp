@@ -135,49 +135,6 @@ int DiGraph::outdegree(int v) const
 const std::forward_list<Edge> &DiGraph::adj(int v) const { return vertices[idToIndex.at(v)].edges(); }
 
 /**
- * @function toUndirected
- * @abstract Returns the underlying undirected representation of the graph.
- * @return   The underlying undirected graph
- */
-DiGraph DiGraph::toUndirected()
-{
-    DiGraph undirectedGraph;
-
-    // Copy all vertices from the directed graph to the undirected graph
-    for (const Node &vertex : this->getVertices())
-    {
-        undirectedGraph.insertVertex(vertex.getId());
-    }
-
-    // Iterate over all vertices
-    for (const Node &vertex : this->getVertices())
-    {
-        int v = vertex.getId();
-        // Get all outgoing edges from vertex v
-        const std::forward_list<Edge> &edges = this->adj(v);
-        for (const Edge &edge : edges)
-        {
-            int w = edge.getTo();
-            double weight = edge.getWeight();
-            // Insert the edge v -> w
-            undirectedGraph.insertEdge(v, w, weight);
-            // Insert the reverse edge w -> v to make it undirected
-            if (!this->contains(w) ||
-                std::find_if(this->adj(w).begin(), this->adj(w).end(),
-                             [v](const Edge &e)
-                             { return e.getTo() == v; }) == this->adj(w).end())
-            {
-                undirectedGraph.insertEdge(w, v, weight);
-            }
-        }
-    }
-
-    // Fix edge count
-    undirectedGraph.edgeCount /= 2;
-    return undirectedGraph;
-}
-
-/**
  * Mutators
  */
 

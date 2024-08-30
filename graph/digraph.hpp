@@ -74,13 +74,6 @@ public:
     const std::forward_list<Edge> &adj(int v) const;
 
     /**
-     * @function toUndirected
-     * @abstract Returns the underlying undirected representation of the graph.
-     * @return   The underlying undirected graph
-     */
-    DiGraph toUndirected();
-
-    /**
      * Mutators
      */
 
