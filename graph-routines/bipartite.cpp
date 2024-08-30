@@ -7,14 +7,18 @@
  */
 
 #include <string>
+#include <unordered_set>
 #include <stdexcept>
 #include <algorithm>
+#include <utility>
+#include <iostream>
 
 #include "bipartite.hpp"
-#include "graph/graph.hpp"
+#include "graph/digraph.hpp"
+#include "utils/deque.hpp"
 
-// DFS to check if the graph is bipartite
-bool Bipartite::dfsBipartite(int curId)
+// BFS to check if the graph is bipartite starting from one source
+bool Bipartite::bfsFromSrc(const DiGraph &g, int src)
 {
 }
 
@@ -24,9 +28,9 @@ bool Bipartite::dfsBipartite(int curId)
  * directed graph.
  * @param target directed graph used as input
  */
-Bipartite::Bipartite(const Graph &target)
+Bipartite::Bipartite(const DiGraph &target)
 {
-    this->g = target;
+    this->g = target; // Copy made
 }
 
 /*!
@@ -36,7 +40,7 @@ Bipartite::Bipartite(const Graph &target)
  */
 Bipartite::Bipartite(const Bipartite &other)
 {
-    this->g = Graph(other.g);
+    this->g = DiGraph(other.g);
     this->vertexSet1 = std::set<int>(other.vertexSet1);
     this->vertexSet2 = std::set<int>(other.vertexSet2);
     this->_isBipartite = other._isBipartite;
@@ -66,8 +70,6 @@ Bipartite &Bipartite::operator=(const Bipartite &other)
  */
 bool Bipartite::isBipartite()
 {
-    if (g.V() == 0)
-        throw std::out_of_range("Invalid bipartite query: graph is empty");
     return _isBipartite;
 }
 
@@ -97,7 +99,7 @@ bool Bipartite::sameSet(int v, int w)
  * @return the second set of vertices. Empty if graph is not bipartite.
  * @exception throws std::out_of_range if graph is empty
  */
-const std::set<int> &Bipartite::getPart1()
+std::set<int> Bipartite::getPart1()
 {
     if (g.V() == 0)
         throw std::out_of_range("Invalid bipartite query: graph is empty");
@@ -105,7 +107,7 @@ const std::set<int> &Bipartite::getPart1()
     if (_isBipartite)
         return vertexSet1;
     else
-        return std::set<int>();
+        throw std::set<int>();
 }
 
 /*!
@@ -114,7 +116,7 @@ const std::set<int> &Bipartite::getPart1()
  * @return the second set of vertices. Empty if graph is not bipartite.
  * @exception throws std::out_of_range if graph is empty
  */
-const std::set<int> &Bipartite::getPart2()
+std::set<int> Bipartite::getPart2()
 {
     if (g.V() == 0)
         throw std::out_of_range("Invalid bipartite query: graph is empty");

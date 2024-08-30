@@ -10,18 +10,18 @@
 #define BIPARTITE
 
 #include <set>
-#include "graph/graph.hpp"
+#include "graph/digraph.hpp"
 
 class Bipartite
 {
 private:
-    Graph g;
+    DiGraph g;
     std::set<int> vertexSet1;
     std::set<int> vertexSet2;
     bool _isBipartite;
 
-    // DFS to check if the graph is bipartite
-    bool dfsBipartite(int curId);
+    // BFS to check if the graph is bipartite starting from one source
+    bool bfsFromSrc(const DiGraph &g, int src);
 
 public:
     /*!
@@ -30,7 +30,7 @@ public:
      * directed graph.
      * @param target directed graph used as input
      */
-    Bipartite(const Graph &target);
+    Bipartite(const DiGraph &target);
 
     /*!
      * @function Bipartite
@@ -73,7 +73,7 @@ public:
      * @return the first set of vertices. Empty if graph is not bipartite.
      * @exception throws std::out_of_range if graph is empty
      */
-    const std::set<int> &getPart1();
+    std::set<int> getPart1();
 
     /*!
      * @function getPart2
@@ -81,7 +81,7 @@ public:
      * @return the second set of vertices. Empty if graph is not bipartite.
      * @exception throws std::out_of_range if graph is empty
      */
-    const std::set<int> &getPart2();
+    std::set<int> getPart2();
 };
 
 #endif /*BIPARTITE*/

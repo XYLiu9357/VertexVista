@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GRAPH_SRC
     node-edge.cpp
     graph.cpp
+    digraph.cpp
 )
 
 set(LIB_NAME graph)

@@ -5,7 +5,7 @@
 
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include "graph/graph.hpp"
+#include "graph/digraph.hpp"
 #include "graph-routines/traversal.hpp"
 
 class GraphPathsTest : public ::testing::Test
@@ -21,8 +21,8 @@ protected:
         cycleGraph.insertEdge({{0, 1}, {1, 2}, {2, 3}, {3, 0}});
     }
 
-    Graph smallGraph;
-    Graph cycleGraph;
+    DiGraph smallGraph;
+    DiGraph cycleGraph;
 };
 
 TEST_F(GraphPathsTest, ConstructorDFS)
@@ -82,7 +82,7 @@ TEST_F(GraphPathsTest, CycleDetectionBFS)
 
 TEST_F(GraphPathsTest, DisconnectedGraph)
 {
-    Graph disconnectedGraph;
+    DiGraph disconnectedGraph;
     disconnectedGraph.insertVertex({0, 1, 2});
     disconnectedGraph.insertEdge({{0, 1}});
 
@@ -93,7 +93,7 @@ TEST_F(GraphPathsTest, DisconnectedGraph)
 
 TEST_F(GraphPathsTest, ComplexGraph)
 {
-    Graph complexGraph;
+    DiGraph complexGraph;
     complexGraph.insertVertex({0, 1, 2, 3, 4, 5});
     complexGraph.insertEdge({{0, 1}, {0, 2}, {1, 3}, {1, 4}, {2, 5}});
 
@@ -106,7 +106,7 @@ TEST_F(GraphPathsTest, ComplexGraph)
 
 TEST_F(GraphPathsTest, StressTestSimpleCyclic)
 {
-    Graph simpleCylicGraph;
+    DiGraph simpleCylicGraph;
     int numVertices = 100000;
     for (int i = 0; i < numVertices; ++i)
     {
@@ -123,7 +123,7 @@ TEST_F(GraphPathsTest, StressTestSimpleCyclic)
 
 TEST_F(GraphPathsTest, StressTestComplexCyclic)
 {
-    Graph complexCyclicGraph;
+    DiGraph complexCyclicGraph;
 
     // Running with 100,000 vertices takes about 20 seconds in O3 mode
     int numVertices = 40000;

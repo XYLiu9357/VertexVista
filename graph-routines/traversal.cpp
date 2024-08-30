@@ -13,10 +13,9 @@
 void GraphPaths::reset() { edgeTo.clear(); }
 
 // Iterative DFS that updates edgeTo
-void GraphPaths::dfs(const Graph &G, int queryVertex)
+void GraphPaths::dfs(const DiGraph &G, int queryVertex)
 {
     reset();
-
     Deque<int> stack;
     edgeTo[queryVertex] = queryVertex;
     stack.push_back(queryVertex);
@@ -38,7 +37,7 @@ void GraphPaths::dfs(const Graph &G, int queryVertex)
 }
 
 // Iterative BFS that updates edgeTo
-void GraphPaths::bfs(const Graph &G, int queryVertex)
+void GraphPaths::bfs(const DiGraph &G, int queryVertex)
 {
     // TODO: take advantage of the pointers somehow
     Deque<int> queue;
@@ -71,7 +70,7 @@ void GraphPaths::bfs(const Graph &G, int queryVertex)
  *                    it to false will invoke bread-first traversal.
  * @return GraphPaths object that has already processed Graph G
  */
-GraphPaths::GraphPaths(const Graph &G, int queryVertex, bool useDfs)
+GraphPaths::GraphPaths(const DiGraph &G, int queryVertex, bool useDfs)
     : queryVertex(queryVertex), connectedCount(0)
 {
     if (G.V() < 1)

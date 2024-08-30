@@ -1,18 +1,19 @@
-/**graph.hpp
+/**digraph.hpp
  *
- * Weighted undirected graph container.
+ * Weighted directed graph container.
  */
 
-#ifndef GRAPH
-#define GRAPH
+#ifndef DIGRAPH
+#define DIGRAPH
 
 #include <unordered_map>
 #include <forward_list>
 #include <vector>
 #include <string>
+
 #include "node-edge.hpp"
 
-class Graph
+class DiGraph
 {
 private:
     std::vector<Node> vertices;
@@ -25,19 +26,19 @@ public:
      */
 
     // Constructor: create empty graph
-    Graph();
+    DiGraph();
 
     // Constructor: creates a graph with vertices 0 to V - 1
-    Graph(int V);
+    DiGraph(int V);
 
     // Constructor: creates a graph with an initializer list of vertices
-    Graph(const std::initializer_list<int> &vertices);
+    DiGraph(const std::initializer_list<int> &vertices);
 
     // Constructor: deep copy another graph
-    Graph(const Graph &other);
+    DiGraph(const DiGraph &other);
 
     // Operator=: deep copy-and-swap
-    Graph &operator=(const Graph &other);
+    DiGraph &operator=(const DiGraph &other);
 
     /**
      * Accessors
@@ -77,7 +78,7 @@ public:
      * @abstract Returns the underlying undirected representation of the graph.
      * @return   The underlying undirected graph
      */
-    Graph toUndirected();
+    DiGraph toUndirected();
 
     /**
      * Mutators
@@ -96,8 +97,8 @@ public:
      * @abstract Insert an edge between vertex v and w if the vertices
      *           exist. If the vertices do not exist, out_of_range
      *           exception will be thrown. Weights are all set to 1
-     * @param v First vertex
-     * @param w Second vertex
+     * @param v The starting vertex
+     * @param w The destination vertex
      * @param weight Weight of the edge, default to 1
      */
     void insertEdge(int v, int w, double weight = 1);
@@ -114,7 +115,9 @@ public:
 
     /*!
      * @function insertEdge
-     * @abstract Insert an edge between vertex v and w if the vertices exist.
+     * @abstract Insert an edge between vertex v and w if the vertices
+     *           exist. If the directed edge does not exist, the function
+     *           will return true.
      * @param v The starting vertex
      * @param w The destination vertex
      */
@@ -122,4 +125,4 @@ public:
     void eraseEdge(std::initializer_list<std::pair<int, int>> edges);
 };
 
-#endif /*GRAPH*/
+#endif /*DIGRAPH*/

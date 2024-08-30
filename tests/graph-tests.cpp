@@ -5,30 +5,30 @@
 
 #include <gtest/gtest.h>
 #include <stdexcept>
-#include "graph/graph.hpp"
+#include "graph/digraph.hpp"
 
 constexpr unsigned int STRESS_TEST_SAMPLE_COUNT = 10000;
 
-TEST(GraphTest, DefaultConstructor)
+TEST(DiGraphTest, DefaultConstructor)
 {
-    Graph g;
+    DiGraph g;
     EXPECT_EQ(g.V(), 0);
     EXPECT_EQ(g.E(), 0);
     EXPECT_EQ(g.toString(",", true), "");
 }
 
-TEST(GraphTest, VertexCountConstructor)
+TEST(DiGraphTest, VertexCountConstructor)
 {
     int V = 5;
-    Graph g(V);
+    DiGraph g(V);
     EXPECT_EQ(g.V(), V);
     EXPECT_EQ(g.E(), 0);
     EXPECT_NO_THROW(g.insertEdge(1, 2));
 }
 
-TEST(GraphTest, ToString)
+TEST(DiGraphTest, ToString)
 {
-    Graph g;
+    DiGraph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertEdge(1, 2);
@@ -36,12 +36,12 @@ TEST(GraphTest, ToString)
     EXPECT_EQ(g.toString(",", true), expected);
 }
 
-TEST(GraphTest, CopyConstructor)
+TEST(DiGraphTest, CopyConstructor)
 {
-    Graph g1(5);
+    DiGraph g1(5);
     g1.insertEdge(0, 1);
     g1.insertEdge(1, 2);
-    Graph g2(g1);
+    DiGraph g2(g1);
     EXPECT_EQ(g2.V(), 5);
     EXPECT_EQ(g2.E(), 2);
     EXPECT_EQ(g1.toString(",", true), g2.toString(",", true));
@@ -52,12 +52,12 @@ TEST(GraphTest, CopyConstructor)
     EXPECT_EQ(g2.V(), 5);
 }
 
-TEST(GraphTest, CopyAssignment)
+TEST(DiGraphTest, CopyAssignment)
 {
-    Graph g1(5);
+    DiGraph g1(5);
     g1.insertEdge(0, 1);
     g1.insertEdge(1, 2);
-    Graph g2 = g1;
+    DiGraph g2 = g1;
     EXPECT_EQ(g2.V(), 5);
     EXPECT_EQ(g2.E(), 2);
     EXPECT_EQ(g1.toString(",", true), g2.toString(",", true));
@@ -68,9 +68,9 @@ TEST(GraphTest, CopyAssignment)
     EXPECT_EQ(g2.V(), 5);
 }
 
-TEST(GraphTest, InsertVertex)
+TEST(DiGraphTest, InsertVertex)
 {
-    Graph g;
+    DiGraph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertVertex(3);
@@ -81,18 +81,18 @@ TEST(GraphTest, InsertVertex)
     EXPECT_EQ(g.toString(",", true), "1: 1 -> 2[1.00],\n2: 2 -> 1[1.00],\n3: 3 -> 1[1.00],\n");
 }
 
-TEST(GraphTest, InsertEdge)
+TEST(DiGraphTest, InsertEdge)
 {
-    Graph g;
+    DiGraph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertEdge(1, 2);
     EXPECT_EQ(g.E(), 1);
 }
 
-TEST(GraphTest, EraseEdge)
+TEST(DiGraphTest, EraseEdge)
 {
-    Graph g;
+    DiGraph g;
     g.insertVertex(1);
     g.insertVertex(2);
     g.insertVertex(3);
@@ -109,10 +109,10 @@ TEST(GraphTest, EraseEdge)
     EXPECT_NO_THROW(g.eraseEdge(1, 4));
 }
 
-TEST(GraphTest, EraseVertex)
+TEST(DiGraphTest, EraseVertex)
 {
     int N = 10;
-    Graph g(N);
+    DiGraph g(N);
 
     // Each vertex connects to every vertex (including itself)
     for (int i = 0; i < N; i++)
@@ -134,9 +134,9 @@ TEST(GraphTest, EraseVertex)
     EXPECT_EQ(g.toString(",", true), expected);
 }
 
-TEST(GraphTest, MixedOpsWithIntializerList)
+TEST(DiGraphTest, MixedOpsWithIntializerList)
 {
-    Graph g = {0, 2, 4, 6, 8, 10};
+    DiGraph g = {0, 2, 4, 6, 8, 10};
 
     // Mixed insertion followed by edge removal
     g.insertEdge({{0, 2}, {0, 4}, {2, 6}, {2, 8}, {4, 8}, {4, 10}, {6, 10}});
@@ -213,9 +213,9 @@ TEST(GraphTest, MixedOpsWithIntializerList)
     EXPECT_EQ(g.E(), 0);
 }
 
-TEST(GraphTest, InsertionWithRepetitions)
+TEST(DiGraphTest, InsertionWithRepetitions)
 {
-    Graph g(5);
+    DiGraph g(5);
 
     // Repetitive vertex insertion
     g.insertVertex({0, 1, 2, 3, 4});
@@ -254,9 +254,9 @@ TEST(GraphTest, InsertionWithRepetitions)
     EXPECT_EQ(g.E(), 4);
 }
 
-TEST(GraphTest, MixedStressTest)
+TEST(DiGraphTest, MixedStressTest)
 {
-    Graph g;
+    DiGraph g;
 
     // Insertion with cycles
     for (int i = 0; i < STRESS_TEST_SAMPLE_COUNT; i++)

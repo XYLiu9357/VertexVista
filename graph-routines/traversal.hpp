@@ -9,7 +9,7 @@
 #define GRAPH_PATHS
 
 #include <map>
-#include "graph/graph.hpp"
+#include "graph/digraph.hpp"
 
 class GraphPaths
 {
@@ -23,10 +23,10 @@ private:
     void reset();
 
     // Iterative DFS that updates visted and edgeTo
-    void dfs(const Graph &G, int queryVertex);
+    void dfs(const DiGraph &G, int queryVertex);
 
     // Iterative BFS that updates visted and edgeTo
-    void bfs(const Graph &G, int queryVertex);
+    void bfs(const DiGraph &G, int queryVertex);
 
 public:
     /*!
@@ -39,7 +39,7 @@ public:
      *                    it to false will invoke bread-first traversal.
      * @return GraphPaths object that has already processed Digraph G
      */
-    GraphPaths(const Graph &G, int queryVertex, bool useDfs = true);
+    GraphPaths(const DiGraph &G, int queryVertex, bool useDfs = true);
 
     /*!
      * @function hasPathTo

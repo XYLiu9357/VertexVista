@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include <set>
-#include "graph/graph.hpp"
+#include "graph/digraph.hpp"
 #include "graph-routines/bipartite.hpp"
 
 /**
@@ -15,17 +15,17 @@
 class BipartiteTest : public ::testing::Test
 {
 protected:
-    Graph smallGraph;
-    Graph largeGraph;
+    DiGraph smallGraph;
+    DiGraph largeGraph;
 
     void SetUp() override
     {
         // Both are bipartite
-        smallGraph = Graph(12);
-        largeGraph = Graph(50);
+        smallGraph = DiGraph(12);
+        largeGraph = DiGraph(50);
 
         // Set up graphs
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i <= 3; i++)
             smallGraph.insertEdge({{i, 4 + i}, {4 + i, 8 + i}}); // Fully connected network
 
         for (int i = 1; i < 50; i++)
@@ -36,9 +36,9 @@ protected:
 
 TEST_F(BipartiteTest, EmptyGraph)
 {
-    Graph g;
+    DiGraph g;
     Bipartite b(g);
-    EXPECT_THROW(b.isBipartite(), std::out_of_range);
+    EXPECT_TRUE(b.isBipartite());
     EXPECT_THROW(b.getPart1(), std::out_of_range);
     EXPECT_THROW(b.getPart2(), std::out_of_range);
     EXPECT_THROW(b.sameSet(0, 1), std::out_of_range);
