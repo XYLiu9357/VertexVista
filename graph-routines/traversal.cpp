@@ -1,4 +1,4 @@
-/**paths.cpp
+/**traversal.cpp
  *
  * Directed graph path search & traversal class.
  * Supports elementary path query using
@@ -7,7 +7,7 @@
 
 #include <stdexcept>
 #include "utils/deque.hpp"
-#include "paths.hpp"
+#include "traversal.hpp"
 
 // Reset the storage by clearing edgeTo
 void GraphPaths::reset() { edgeTo.clear(); }

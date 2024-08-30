@@ -1,4 +1,4 @@
-/**paths.hpp
+/**traversal.hpp
  *
  * Directed graph path search & traversal class.
  * Supports elementary path query using

@@ -6,7 +6,7 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include "graph/graph.hpp"
-#include "graph-routines/paths.hpp"
+#include "graph-routines/traversal.hpp"
 
 class GraphPathsTest : public ::testing::Test
 {
