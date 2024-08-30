@@ -404,6 +404,7 @@ TEST(GraphTest, EraseVertex)
         for (int j = i + 1; j < N; j++)
             g.insertEdge(i, j);
 
+    EXPECT_EQ(g.E(), N * (N - 1) / 2);
     g.eraseVertex(N - 1);
     EXPECT_EQ(g.V(), N - 1);
     EXPECT_EQ(g.E(), (N - 1) * (N - 2) / 2);
@@ -412,8 +413,9 @@ TEST(GraphTest, EraseVertex)
     for (int i = 0; i < N - 1; i++)
     {
         expected += std::to_string(i) + ": ";
-        for (int j = i + 1; j < N - 1; j++)
-            expected += std::to_string(i) + " -> " + std::to_string(j) + "[1.00]" + ",";
+        for (int j = 0; j < N - 1; j++)
+            if (i != j)
+                expected += std::to_string(i) + " -> " + std::to_string(j) + "[1.00]" + ",";
         expected += "\n";
     }
     EXPECT_EQ(g.toString(",", true), expected);
@@ -437,7 +439,11 @@ TEST(GraphTest, MixedOpsWithInitializerList)
     EXPECT_EQ(g.E(), 17);
     g.eraseEdge({{0, 2}, {0, 4}, {2, 6}, {2, 8}, {4, 8}, {4, 10}, {6, 10}});
 
-    std::string expected = "0: 0 -> 1[1.00],\n1: 1 -> 0[1.00],\n2: 2 -> 1[1.00],2 -> 3[1.00],\n3: 3 -> 2[1.00],\n4: 4 -> 3[1.00],4 -> 5[1.00],\n5: 5 -> 4[1.00],\n6: 6 -> 5[1.00],6 -> 7[1.00],\n7: 7 -> 6[1.00],\n8: 8 -> 7[1.00],8 -> 9[1.00],\n9: 9 -> 8[1.00],\n10: 10 -> 9[1.00],\n";
+    // Compiler auto-concatenates adjacent string literals
+    std::string expected = "0: 0 -> 1[1.00],\n1: 1 -> 0[1.00],1 -> 2[1.00],\n2: 2 -> 1[1.00],2 -> 3[1.00],\n3: 3 -> 2[1.00],3 -> 4[1.00],\n"
+                           "4: 4 -> 3[1.00],4 -> 5[1.00],\n5: 5 -> 4[1.00],5 -> 6[1.00],\n6: 6 -> 5[1.00],6 -> 7[1.00],\n7: 7 -> 6[1.00],7 -> 8[1.00],\n"
+                           "8: 8 -> 7[1.00],8 -> 9[1.00],\n9: 9 -> 8[1.00],9 -> 10[1.00],\n10: 10 -> 9[1.00],\n";
+
     EXPECT_EQ(g.toString(",", true), expected);
 
     // Erase all odd vertices, which should remove all edges
@@ -447,18 +453,18 @@ TEST(GraphTest, MixedOpsWithInitializerList)
     EXPECT_EQ(g.E(), 0);
     EXPECT_EQ(g.V(), 6);
 
-    // Cyclic graphs with bidirectional edges
+    // Undirected edge repetitive insertion (should have no effect)
     g.insertEdge({{0, 2}, {2, 4}, {4, 6}, {6, 8}, {8, 10}, {10, 0}});
     EXPECT_EQ(g.E(), 6);
     g.insertEdge({{2, 0}, {6, 4}, {10, 8}});
-    EXPECT_EQ(g.E(), 9);
+    EXPECT_EQ(g.E(), 6);
     expected = "0: 0 -> 2[1.00],0 -> 10[1.00],\n2: 2 -> 0[1.00],2 -> 4[1.00],\n4: 4 -> 2[1.00],4 -> 6[1.00],\n6: 6 -> 4[1.00],6 -> 8[1.00],\n8: 8 -> 6[1.00],8 -> 10[1.00],\n10: 10 -> 0[1.00],10 -> 8[1.00],\n";
     EXPECT_EQ(g.toString(",", true), expected);
 
-    // Remove vertices linked by bidirectional links
+    // Remove vertices linked by undirected edges
     g.eraseVertex({2, 8});
     EXPECT_EQ(g.V(), 4);
-    EXPECT_EQ(g.E(), 3);
+    EXPECT_EQ(g.E(), 2); // 0 <-> 10 and 4 <-> 6
     expected = "0: 0 -> 10[1.00],\n4: 4 -> 6[1.00],\n6: 6 -> 4[1.00],\n10: 10 -> 0[1.00],\n";
     EXPECT_EQ(g.toString(",", true), expected);
 
@@ -534,7 +540,7 @@ TEST(GraphTest, MixedStressTest)
 {
     Graph g;
 
-    // Bulk insert vertices and edges
+    // A connected line-graph with 100 vertices
     for (int i = 0; i < 100; ++i)
     {
         g.insertVertex(i);
@@ -556,23 +562,23 @@ TEST(GraphTest, MixedStressTest)
 
     // Bulk delete and validate
     for (int i = 0; i < 50; i += 2)
-    {
         g.eraseVertex(i);
-    }
-    EXPECT_EQ(g.V(), 75); // 50 deletions, but only 25 distinct vertices removed
+
+    // 25 deletions, all odd vertices < 48 (1 ~ 47) are disconnected
+    // The line graph from 49 ~ 100 has 50 edges in between
+    EXPECT_EQ(g.V(), 75);
 
     // Verify structure after deletions
     for (int i = 1; i < 100; i += 2)
     {
-        EXPECT_NO_THROW(g.insertEdge(i, (i + 2) % 100)); // Should not fail for valid vertices
+        // Should not fail for valid vertices
+        EXPECT_NO_THROW(g.insertEdge(i, (i + 2) % 100));
+        EXPECT_NO_THROW(g.eraseEdge(i, (i + 2) % 100));
     }
-
-    EXPECT_EQ(g.E(), 75);
-    std::string expected = "1: 1 -> 2[1.00],1 -> 3[1.00],\n3: 3 -> 1[1.00],3 -> 4[1.00],3 -> 5[1.00],\n";
-    expected += "5: 5 -> 3[1.00],5 -> 6[1.00],5 -> 7[1.00],\n"; // And so on...
+    EXPECT_EQ(g.E(), 50);
 
     // Erase some edges to create isolated components
-    g.eraseEdge(1, 2);
-    g.eraseEdge(3, 4);
-    EXPECT_EQ(g.E(), 73);
+    g.eraseEdge(60, 61);
+    g.eraseEdge(84, 83);
+    EXPECT_EQ(g.E(), 48);
 }

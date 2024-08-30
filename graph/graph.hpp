@@ -15,11 +15,6 @@
 
 class Graph : public DiGraph
 {
-private:
-    std::vector<Node> vertices;
-    std::unordered_map<int, int> idToIndex;
-    size_t edgeCount;
-
 public:
     /**
      * Constructors

@@ -15,7 +15,7 @@
 
 class DiGraph
 {
-private:
+protected:
     std::vector<Node> vertices;
     std::unordered_map<int, int> idToIndex;
     size_t edgeCount;

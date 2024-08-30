@@ -11,37 +11,13 @@
 #include "graph.hpp"
 
 // Constructor: create empty graph
-Graph::Graph()
-    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
-{
-    vertices.reserve(32);
-}
+Graph::Graph() : DiGraph() {}
 
 // Constructor: creates a graph with vertices 0 to V - 1
-Graph::Graph(int V)
-    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
-{
-    vertices.reserve(V);
-    for (int id = 0; id < V; id++)
-    {
-        vertices.emplace_back(Node(id));
-        idToIndex[id] = id;
-    }
-}
+Graph::Graph(int V) : DiGraph(V) {}
 
 // Constructor: creates a graph with an initializer list of vertices
-Graph::Graph(const std::initializer_list<int> &vertices)
-    : edgeCount(0), vertices(std::vector<Node>()), idToIndex(std::unordered_map<int, int>())
-{
-    this->vertices.reserve(vertices.size());
-    int curIdx = 0;
-    for (int id : vertices)
-    {
-        this->vertices.emplace_back(Node(id));
-        idToIndex[id] = curIdx;
-        curIdx++;
-    }
-}
+Graph::Graph(const std::initializer_list<int> &vertices) : DiGraph(vertices) {}
 
 // Constructor: extract the underlying representation of a directed graph
 Graph::Graph(const DiGraph &digraph)
@@ -74,8 +50,7 @@ Graph::Graph(const DiGraph &digraph)
 }
 
 // Constructor: deep copy another graph
-Graph::Graph(const Graph &other)
-    : edgeCount(other.edgeCount), vertices(other.vertices), idToIndex(other.idToIndex) {}
+Graph::Graph(const Graph &other) : DiGraph(other) {}
 
 // Operator=: deep copy-and-swap
 Graph &Graph::operator=(const Graph &other)
