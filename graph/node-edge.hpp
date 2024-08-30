@@ -34,6 +34,16 @@ public:
     std::string toString(int precision) const;
 };
 
+// Edge hashing
+namespace std
+{
+    template <>
+    struct hash<Edge>
+    {
+        std::size_t operator()(const Edge &edge) const;
+    };
+}
+
 #endif /*EDGE*/
 
 #ifndef NODE
@@ -68,6 +78,16 @@ public:
     void insertEdges(std::initializer_list<Edge> edges);
     void eraseEdgeTo(int to);
     const std::forward_list<Edge> &edges() const;
+};
+
+// Node hashing
+namespace std
+{
+    template <>
+    struct hash<Node>
+    {
+        std::size_t operator()(const Node &node) const;
+    };
 };
 
 #endif /*NODE*/

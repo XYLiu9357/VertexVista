@@ -231,3 +231,18 @@ TEST(UnionFindTest, Insert8NodeObjects)
     EXPECT_TRUE(u.isConnected(Node(7), Node(3)));
     EXPECT_TRUE(!u.isConnected(Node(2), Node(6)));
 }
+
+TEST(UnionFindTest, Insert4EdgeObjects)
+{
+    UF<Edge> u = {Edge(0, 1, 1),
+                  Edge(1, 2, 1),
+                  Edge(2, 3, 1),
+                  Edge(4, 5, 1)};
+
+    u.connect(Edge(0, 1, 1), Edge(2, 3, 1));
+    u.connect(Edge(0, 1, 1), Edge(4, 5, 1));
+
+    EXPECT_TRUE(u.isConnected(Edge(2, 3, 1), Edge(4, 5, 1)));
+    EXPECT_TRUE(!u.isConnected(Edge(4, 5, 1), Edge(1, 2, 1)));
+    EXPECT_THROW(u.connect(Edge(0, 0, 0), Edge(2, 3, 1)), std::out_of_range);
+}

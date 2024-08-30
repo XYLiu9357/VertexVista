@@ -125,3 +125,29 @@ void Node::eraseEdgeTo(int to)
 }
 
 const std::forward_list<Edge> &Node::edges() const { return edgeList; }
+
+/**
+ * Hashing
+ */
+
+// Cantor pairing function uniquely maps two natural numbers to one
+// This is used for hashing edges
+int cantorPair(int k1, int k2)
+{
+    return (k1 + k2) * (k1 + k2 + 1) / 2 + k2;
+}
+
+namespace std
+{
+    std::size_t hash<Edge>::operator()(const Edge &edge) const
+    {
+        // Use integer hash on node id
+        int key = cantorPair(edge.getFrom(), edge.getTo());
+        return std::hash<int>()(key);
+    }
+    std::size_t hash<Node>::operator()(const Node &node) const
+    {
+        // Use integer hash on node id
+        return std::hash<int>()(node.getId());
+    }
+}
