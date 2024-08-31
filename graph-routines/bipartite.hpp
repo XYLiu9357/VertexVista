@@ -10,18 +10,23 @@
 #define BIPARTITE
 
 #include <set>
+#include <unordered_set>
+#include "graph/graph.hpp"
 #include "graph/digraph.hpp"
 
 class Bipartite
 {
 private:
-    DiGraph g;
-    std::set<int> vertexSet1;
-    std::set<int> vertexSet2;
+    Graph g;
+    std::unordered_set<int> vertexSet1;
+    std::unordered_set<int> vertexSet2;
     bool _isBipartite;
 
     // BFS to check if the graph is bipartite starting from one source
-    bool bfsFromSrc(const DiGraph &g, int src);
+    bool bfsFromSrc(const Graph &g, int src);
+
+    // Iterate through all vertices to check if the graph is bipartite
+    bool bipartiteCheck(const Graph &g);
 
 public:
     /*!
@@ -69,7 +74,8 @@ public:
 
     /*!
      * @function getPart1
-     * @abstract Returns the first set of vertices
+     * @abstract Returns the first set of vertices if the graph is bipartite.
+     *           Returns empty std::set<int> if graph is not bipartite.
      * @return the first set of vertices. Empty if graph is not bipartite.
      * @exception throws std::out_of_range if graph is empty
      */
@@ -77,7 +83,8 @@ public:
 
     /*!
      * @function getPart2
-     * @abstract Returns the second (other) set of vertices
+     * @abstract Returns the second (other) set of vertices if the graph is bipartite.
+     *           Returns empty std::set<int> if graph is not bipartite.
      * @return the second set of vertices. Empty if graph is not bipartite.
      * @exception throws std::out_of_range if graph is empty
      */

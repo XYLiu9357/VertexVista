@@ -16,7 +16,7 @@ set(TEST_SRC
     graph-tests.cpp
     graph-traversal-tests.cpp
     uf-tests.cpp
-    # routine-tests.cpp
+    routine-tests.cpp
 )
 set(TEST_NAME graph-test.out)
 

@@ -1,5 +1,7 @@
 /**deque.hpp
  *
+ * DEPRECATED
+ *
  * The STL container deque is too powerful and bulky for this application.
  * deque.hpp contains a minimalistic linked-list deque made solely for the
  * purpose of supporting left-leaning red-black tree operations.

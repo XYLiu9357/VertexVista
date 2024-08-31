@@ -582,3 +582,20 @@ TEST(GraphTest, MixedStressTest)
     g.eraseEdge(84, 83);
     EXPECT_EQ(g.E(), 48);
 }
+
+TEST(GraphTest, ConstructFromDirectedGraph)
+{
+    DiGraph dg(5);
+    dg.insertEdge({{0, 1}, {1, 0}, {1, 2}, {2, 3}, {3, 4}});
+    EXPECT_EQ(dg.V(), 5);
+    EXPECT_EQ(dg.E(), 5);
+
+    Graph g(dg);
+    EXPECT_EQ(g.V(), 5);
+    EXPECT_EQ(g.E(), 4);
+
+    dg.eraseVertex({0, 1, 2, 3, 4});
+    EXPECT_EQ(dg.V(), 0);
+    EXPECT_EQ(g.V(), 5);
+    EXPECT_EQ(g.E(), 4);
+}

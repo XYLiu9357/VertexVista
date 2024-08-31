@@ -7,19 +7,87 @@
  */
 
 #include <string>
+#include <deque>
+#include <set>
 #include <unordered_set>
 #include <stdexcept>
 #include <algorithm>
 #include <utility>
-#include <iostream>
 
 #include "bipartite.hpp"
+#include "graph/graph.hpp"
 #include "graph/digraph.hpp"
-#include "utils/deque.hpp"
 
 // BFS to check if the graph is bipartite starting from one source
-bool Bipartite::bfsFromSrc(const DiGraph &g, int src)
+bool Bipartite::bfsFromSrc(const Graph &g, int src)
 {
+    std::deque<std::pair<int, bool>> queue;
+
+    queue.push_back({src, false});
+    while (!queue.empty())
+    {
+        std::pair<int, bool> curPair = queue.front();
+        queue.pop_front();
+        int cur = curPair.first;
+        bool setId = curPair.second;
+        bool inSet1 = vertexSet1.find(cur) != vertexSet1.end();
+        bool inSet2 = vertexSet2.find(cur) != vertexSet2.end();
+
+        // Bipartite condition check
+        if (inSet1 || inSet2)
+        {
+            if (!setId && inSet2)
+                return false;
+            else if (setId && inSet1)
+                return false;
+            else
+                continue;
+        }
+
+        if (setId)
+            vertexSet2.insert(cur);
+        else
+            vertexSet1.insert(cur);
+
+        // Process neighbors
+        for (Edge e : g.adj(cur))
+        {
+            int next = e.getTo();
+            bool nextSetId = !setId;
+            bool nextInSet1 = vertexSet1.find(next) != vertexSet1.end();
+            bool nextInSet2 = vertexSet2.find(next) != vertexSet2.end();
+            if (!nextInSet1 && !nextInSet2)
+                queue.push_back({next, nextSetId});
+        }
+    }
+
+    return true;
+}
+
+// Iterate through all vertices to check if the graph is bipartite
+bool Bipartite::bipartiteCheck(const Graph &g)
+{
+    vertexSet1.clear();
+    vertexSet2.clear();
+
+    // Check each vertex in case the graph is disconnected
+    for (const Node &node : g.getVertices())
+    {
+        int cur = node.getId();
+        bool inSet1 = vertexSet1.find(cur) != vertexSet1.end();
+        bool inSet2 = vertexSet2.find(cur) != vertexSet2.end();
+
+        // Perform BFS from this vertex if it hasn't been visited
+        if (!inSet1 && !inSet2)
+        {
+            if (!bfsFromSrc(g, cur))
+                return false;
+        }
+    }
+
+    if (vertexSet1.size() + vertexSet2.size() != g.V())
+        throw std::logic_error("Bipartite check: partition size and graph size are inconsistent");
+    return true;
 }
 
 /*!
@@ -30,7 +98,13 @@ bool Bipartite::bfsFromSrc(const DiGraph &g, int src)
  */
 Bipartite::Bipartite(const DiGraph &target)
 {
-    this->g = target; // Copy made
+    this->g = Graph(target); // Copy and extract undirected representation
+
+    // Trivially bipartite
+    if (g.V() == 0 || g.V() == 1)
+        this->_isBipartite = true;
+    else
+        this->_isBipartite = bipartiteCheck(g);
 }
 
 /*!
@@ -41,8 +115,8 @@ Bipartite::Bipartite(const DiGraph &target)
 Bipartite::Bipartite(const Bipartite &other)
 {
     this->g = DiGraph(other.g);
-    this->vertexSet1 = std::set<int>(other.vertexSet1);
-    this->vertexSet2 = std::set<int>(other.vertexSet2);
+    this->vertexSet1 = std::unordered_set<int>(other.vertexSet1);
+    this->vertexSet2 = std::unordered_set<int>(other.vertexSet2);
     this->_isBipartite = other._isBipartite;
 }
 
@@ -90,13 +164,14 @@ bool Bipartite::sameSet(int v, int w)
 
     bool set1HasV = vertexSet1.find(v) != vertexSet1.end();
     bool set1HasW = vertexSet1.find(w) != vertexSet1.end();
-    return set1HasV ^ set1HasW;
+    return !(set1HasV ^ set1HasW);
 }
 
 /*!
  * @function getPart1
- * @abstract Returns the first set of vertices
- * @return the second set of vertices. Empty if graph is not bipartite.
+ * @abstract Returns the first set of vertices if the graph is bipartite.
+ *           Returns empty std::set<int> if graph is not bipartite.
+ * @return the first set of vertices. Empty if graph is not bipartite.
  * @exception throws std::out_of_range if graph is empty
  */
 std::set<int> Bipartite::getPart1()
@@ -104,15 +179,17 @@ std::set<int> Bipartite::getPart1()
     if (g.V() == 0)
         throw std::out_of_range("Invalid bipartite query: graph is empty");
 
+    std::set<int> part1Set;
     if (_isBipartite)
-        return vertexSet1;
-    else
-        throw std::set<int>();
+        for (int id : vertexSet1)
+            part1Set.insert(id);
+    return part1Set;
 }
 
 /*!
  * @function getPart2
- * @abstract Returns the second (other) set of vertices
+ * @abstract Returns the second (other) set of vertices if the graph is bipartite.
+ *           Returns empty std::set<int> if graph is not bipartite.
  * @return the second set of vertices. Empty if graph is not bipartite.
  * @exception throws std::out_of_range if graph is empty
  */
@@ -121,8 +198,9 @@ std::set<int> Bipartite::getPart2()
     if (g.V() == 0)
         throw std::out_of_range("Invalid bipartite query: graph is empty");
 
+    std::set<int> part2Set;
     if (_isBipartite)
-        return vertexSet2;
-    else
-        return std::set<int>();
+        for (int id : vertexSet2)
+            part2Set.insert(id);
+    return part2Set;
 }

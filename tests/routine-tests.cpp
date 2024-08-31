@@ -118,17 +118,25 @@ TEST_F(BipartiteTest, CheckImmutable)
     smallGraph.insertEdge(3, 11);
     ASSERT_TRUE(b.isBipartite());
 
-    b = Bipartite(largeGraph);
-    ASSERT_TRUE(b.isBipartite());
-    smallGraph.insertEdge(3, 12);
-    ASSERT_TRUE(b.isBipartite());
+    b = Bipartite(smallGraph);
+    ASSERT_TRUE(!b.isBipartite());
 }
 
-TEST_F(BipartiteTest, SmallGraphModified)
+TEST_F(BipartiteTest, StressTestUndirectedGraph)
 {
-    Bipartite b(smallGraph);
-    ASSERT_TRUE(b.isBipartite());
+    int numVertices = 2000;
+    Graph g(numVertices);
 
-    smallGraph.insertEdge(3, 11);
+    // First Component: Connect even-indexed vertices to odd-indexed vertices
+    for (int i = 0; i < numVertices / 2; i += 2)
+        for (int j = i + 1; j < numVertices / 2; j += 2)
+            g.insertEdge(i, j);
+
+    // Second Component: Connect the remaining vertices similarly
+    for (int i = numVertices / 2; i < numVertices; i += 2)
+        for (int j = i + 1; j < numVertices; j += 2)
+            g.insertEdge(i, j);
+
+    Bipartite b(g);
     ASSERT_TRUE(b.isBipartite());
 }

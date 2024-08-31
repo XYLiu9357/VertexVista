@@ -6,7 +6,7 @@
  */
 
 #include <stdexcept>
-#include "utils/deque.hpp"
+#include <deque>
 #include "traversal.hpp"
 
 // Reset the storage by clearing edgeTo
@@ -16,14 +16,15 @@ void GraphPaths::reset() { edgeTo.clear(); }
 void GraphPaths::dfs(const DiGraph &G, int queryVertex)
 {
     reset();
-    Deque<int> stack;
+    std::deque<int> stack;
     edgeTo[queryVertex] = queryVertex;
     stack.push_back(queryVertex);
     connectedCount++;
 
     while (stack.size() > 0)
     {
-        int cur = stack.pop_back();
+        int cur = stack.back();
+        stack.pop_back();
         for (const Edge &edge : G.adj(cur))
         {
             if (edgeTo.find(edge.getTo()) == edgeTo.end())
@@ -40,14 +41,15 @@ void GraphPaths::dfs(const DiGraph &G, int queryVertex)
 void GraphPaths::bfs(const DiGraph &G, int queryVertex)
 {
     // TODO: take advantage of the pointers somehow
-    Deque<int> queue;
+    std::deque<int> queue;
     edgeTo[queryVertex] = queryVertex;
     queue.push_back(queryVertex);
     connectedCount++;
 
     while (queue.size() > 0)
     {
-        int cur = queue.pop_front();
+        int cur = queue.front();
+        queue.pop_front();
         for (const Edge &edge : G.adj(cur))
         {
             if (edgeTo.find(edge.getTo()) == edgeTo.end())
