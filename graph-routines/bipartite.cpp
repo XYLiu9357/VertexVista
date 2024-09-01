@@ -9,7 +9,7 @@
 #include <string>
 #include <deque>
 #include <set>
-#include <unordered_set>
+#include <unordered_map>
 #include <stdexcept>
 #include <algorithm>
 #include <utility>
@@ -22,7 +22,6 @@
 bool Bipartite::bfsFromSrc(const Graph &g, int src)
 {
     std::deque<std::pair<int, bool>> queue;
-
     queue.push_back({src, false});
     while (!queue.empty())
     {
@@ -30,10 +29,10 @@ bool Bipartite::bfsFromSrc(const Graph &g, int src)
         queue.pop_front();
         int cur = curPair.first;
         bool setId = curPair.second;
-        bool inSet1 = vertexSet1.find(cur) != vertexSet1.end();
-        bool inSet2 = vertexSet2.find(cur) != vertexSet2.end();
 
         // Bipartite condition check
+        bool inSet1 = idMap.find(cur) != idMap.end() && !idMap.find(cur)->second;
+        bool inSet2 = idMap.find(cur) != idMap.end() && idMap.find(cur)->second;
         if (inSet1 || inSet2)
         {
             if (!setId && inSet2)
@@ -43,20 +42,14 @@ bool Bipartite::bfsFromSrc(const Graph &g, int src)
             else
                 continue;
         }
-
-        if (setId)
-            vertexSet2.insert(cur);
-        else
-            vertexSet1.insert(cur);
+        idMap[cur] = setId;
 
         // Process neighbors
         for (Edge e : g.adj(cur))
         {
             int next = e.getTo();
             bool nextSetId = !setId;
-            bool nextInSet1 = vertexSet1.find(next) != vertexSet1.end();
-            bool nextInSet2 = vertexSet2.find(next) != vertexSet2.end();
-            if (!nextInSet1 && !nextInSet2)
+            if (idMap.find(next) == idMap.end())
                 queue.push_back({next, nextSetId});
         }
     }
@@ -67,38 +60,33 @@ bool Bipartite::bfsFromSrc(const Graph &g, int src)
 // Iterate through all vertices to check if the graph is bipartite
 bool Bipartite::bipartiteCheck(const Graph &g)
 {
-    vertexSet1.clear();
-    vertexSet2.clear();
+    idMap.clear();
 
     // Check each vertex in case the graph is disconnected
     for (const Node &node : g.getVertices())
     {
         int cur = node.getId();
-        bool inSet1 = vertexSet1.find(cur) != vertexSet1.end();
-        bool inSet2 = vertexSet2.find(cur) != vertexSet2.end();
-
         // Perform BFS from this vertex if it hasn't been visited
-        if (!inSet1 && !inSet2)
+        if (idMap.find(cur) == idMap.end())
         {
             if (!bfsFromSrc(g, cur))
                 return false;
         }
     }
-
-    if (vertexSet1.size() + vertexSet2.size() != g.V())
+    if (idMap.size() != g.V())
         throw std::logic_error("Bipartite check: partition size and graph size are inconsistent");
     return true;
 }
 
 /*!
  * @function Bipartite
- * @abstract Construct Bipartite-type object based on a
- * directed graph.
- * @param target directed graph used as input
+ * @abstract Construct Bipartite-type object based on an
+ * undirected graph.
+ * @param target undirected graph used as input
  */
-Bipartite::Bipartite(const DiGraph &target)
+Bipartite::Bipartite(const Graph &target)
 {
-    this->g = Graph(target); // Copy and extract undirected representation
+    this->g = Graph(target); // Copy
 
     // Trivially bipartite
     if (g.V() == 0 || g.V() == 1)
@@ -115,8 +103,7 @@ Bipartite::Bipartite(const DiGraph &target)
 Bipartite::Bipartite(const Bipartite &other)
 {
     this->g = DiGraph(other.g);
-    this->vertexSet1 = std::unordered_set<int>(other.vertexSet1);
-    this->vertexSet2 = std::unordered_set<int>(other.vertexSet2);
+    this->idMap = std::unordered_map<int, bool>(other.idMap);
     this->_isBipartite = other._isBipartite;
 }
 
@@ -129,8 +116,7 @@ Bipartite &Bipartite::operator=(const Bipartite &other)
 {
     Bipartite newCopy(other);
     std::swap(this->g, newCopy.g);
-    std::swap(this->vertexSet1, newCopy.vertexSet1);
-    std::swap(this->vertexSet2, newCopy.vertexSet2);
+    std::swap(this->idMap, newCopy.idMap);
     std::swap(this->_isBipartite, newCopy._isBipartite);
     return *this;
 }
@@ -140,7 +126,6 @@ Bipartite &Bipartite::operator=(const Bipartite &other)
  * @abstract Checks if the Bipartite object is constructed
  * based on a bipartite graph.
  * @return true if the graph is bipartite or empty, false otherwise
- * @exception throws std::out_of_range if graph is empty
  */
 bool Bipartite::isBipartite()
 {
@@ -153,18 +138,18 @@ bool Bipartite::isBipartite()
  * @param v first query vertex
  * @param w second query vertex
  * @return true if v and w are in the same set, false otherwise or if the graph is not bipartite.
- * @exception throws std::out_of_range if graph is empty
+ * @exception throws std::out_of_range if graph does not contain v or w
  */
 bool Bipartite::sameSet(int v, int w)
 {
-    if (g.V() == 0)
-        throw std::out_of_range("Invalid bipartite query: graph is empty");
+    if (!g.contains(v))
+        throw std::out_of_range("Invalid bipartite query: invalid vertex " + std::to_string(v));
+    if (!g.contains(w))
+        throw std::out_of_range("Invalid bipartite query: invalid vertex " + std::to_string(w));
     if (!_isBipartite)
         return false;
 
-    bool set1HasV = vertexSet1.find(v) != vertexSet1.end();
-    bool set1HasW = vertexSet1.find(w) != vertexSet1.end();
-    return !(set1HasV ^ set1HasW);
+    return idMap.find(v)->second == idMap.find(w)->second;
 }
 
 /*!
@@ -180,9 +165,12 @@ std::set<int> Bipartite::getPart1()
         throw std::out_of_range("Invalid bipartite query: graph is empty");
 
     std::set<int> part1Set;
-    if (_isBipartite)
-        for (int id : vertexSet1)
-            part1Set.insert(id);
+    if (!_isBipartite)
+        return part1Set;
+
+    for (auto p : idMap)
+        if (!p.second)
+            part1Set.insert(p.first);
     return part1Set;
 }
 
@@ -199,8 +187,11 @@ std::set<int> Bipartite::getPart2()
         throw std::out_of_range("Invalid bipartite query: graph is empty");
 
     std::set<int> part2Set;
-    if (_isBipartite)
-        for (int id : vertexSet2)
-            part2Set.insert(id);
+    if (!_isBipartite)
+        return part2Set;
+
+    for (auto p : idMap)
+        if (p.second)
+            part2Set.insert(p.first);
     return part2Set;
 }

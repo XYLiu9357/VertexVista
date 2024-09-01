@@ -124,7 +124,7 @@ TEST_F(BipartiteTest, CheckImmutable)
 
 TEST_F(BipartiteTest, StressTestUndirectedGraph)
 {
-    int numVertices = 2000;
+    int numVertices = 4000;
     Graph g(numVertices);
 
     // First Component: Connect even-indexed vertices to odd-indexed vertices

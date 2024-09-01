@@ -10,7 +10,7 @@
 #define BIPARTITE
 
 #include <set>
-#include <unordered_set>
+#include <unordered_map>
 #include "graph/graph.hpp"
 #include "graph/digraph.hpp"
 
@@ -18,8 +18,7 @@ class Bipartite
 {
 private:
     Graph g;
-    std::unordered_set<int> vertexSet1;
-    std::unordered_set<int> vertexSet2;
+    std::unordered_map<int, bool> idMap;
     bool _isBipartite;
 
     // BFS to check if the graph is bipartite starting from one source
@@ -31,11 +30,11 @@ private:
 public:
     /*!
      * @function Bipartite
-     * @abstract Construct Bipartite-type object based on a
-     * directed graph.
-     * @param target directed graph used as input
+     * @abstract Construct Bipartite-type object based on an
+     * undirected graph.
+     * @param target undirected graph used as input
      */
-    Bipartite(const DiGraph &target);
+    Bipartite(const Graph &target);
 
     /*!
      * @function Bipartite
@@ -46,9 +45,8 @@ public:
 
     /*!
      * @function operator=
-     * @abstract copy-assignment operator for Bipartite-type object.
+     * @abstract Copy-assignment operator for Bipartite-type object.
      * @param other another Bipartite-type object
-     * @exception throws std::out_of_range if graph is empty
      */
     Bipartite &operator=(const Bipartite &other);
 
@@ -57,7 +55,6 @@ public:
      * @abstract Checks if the Bipartite object is constructed
      * based on a bipartite graph.
      * @return true if the graph is bipartite, false otherwise
-     * @exception throws std::out_of_range if graph is empty
      */
     bool isBipartite();
 
@@ -67,8 +64,7 @@ public:
      * @param v first query vertex
      * @param w second query vertex
      * @return true if v and w are in the same set, false otherwise or if the graph is not bipartite.
-     * @exception throws std::out_of_range if graph is empty
-
+     * @exception throws std::out_of_range if graph does not contain v or w
      */
     bool sameSet(int v, int w);
 
