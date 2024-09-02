@@ -6,8 +6,10 @@
 #include <gtest/gtest.h>
 #include <stdexcept>
 #include <set>
+
 #include "graph/digraph.hpp"
 #include "graph-routines/bipartite.hpp"
+#include "graph-routines/connected-component.hpp"
 
 /**
  * Bipartite
@@ -139,4 +141,193 @@ TEST_F(BipartiteTest, StressTestUndirectedGraph)
 
     Bipartite b(g);
     ASSERT_TRUE(b.isBipartite());
+}
+
+/**
+ * Connected Component
+ */
+
+TEST(ConnectedComponentTest, EmptyGraph)
+{
+    Graph g;
+    ConnectedComponent cc(g);
+    EXPECT_EQ(cc.count(), 0);
+    EXPECT_THROW(cc.id(0), std::out_of_range);
+    EXPECT_THROW(cc.id(-1), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(0, 1), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(0, 0), std::out_of_range);
+}
+
+TEST(ConnectedComponentTest, SmallAcyclicGraph)
+{
+    Graph g(5);
+    g.insertEdge({{0, 1}, {0, 2}, {3, 4}});
+
+    ConnectedComponent cc(g);
+    EXPECT_EQ(cc.count(), 2);
+
+    EXPECT_EQ(cc.id(0), 0);
+    EXPECT_EQ(cc.id(1), 0);
+    EXPECT_EQ(cc.id(2), 0);
+    EXPECT_EQ(cc.id(3), 1);
+    EXPECT_EQ(cc.id(4), 1);
+    EXPECT_THROW(cc.id(-1), std::out_of_range);
+    EXPECT_THROW(cc.id(5), std::out_of_range);
+
+    EXPECT_TRUE(cc.isConnected(0, 1));
+    EXPECT_TRUE(cc.isConnected(0, 2));
+    EXPECT_TRUE(cc.isConnected(1, 2));
+    EXPECT_TRUE(!cc.isConnected(0, 3));
+    EXPECT_TRUE(!cc.isConnected(2, 3));
+    EXPECT_TRUE(cc.isConnected(3, 4));
+    EXPECT_TRUE(cc.isConnected(0, 0)); // Check connectivity with self
+    EXPECT_TRUE(cc.isConnected(3, 3)); // Check connectivity with self
+    EXPECT_THROW(cc.isConnected(-1, 4), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(3, 5), std::out_of_range);
+}
+
+TEST(ConnectedComponentTest, SmallCyclicGraph)
+{
+    Graph g(5);
+    g.insertEdge({{0, 1}, {0, 2}, {1, 2}, {3, 2}, {4, 0}});
+    EXPECT_EQ(g.degree(0), 3);
+    EXPECT_EQ(g.V(), 5);
+    EXPECT_EQ(g.E(), 5);
+
+    ConnectedComponent cc(g);
+    EXPECT_EQ(cc.count(), 1);
+
+    EXPECT_EQ(cc.id(0), 0);
+    EXPECT_EQ(cc.id(4), 0);
+    EXPECT_THROW(cc.id(-1), std::out_of_range);
+    EXPECT_THROW(cc.id(5), std::out_of_range);
+
+    EXPECT_TRUE(cc.isConnected(0, 2));
+    EXPECT_TRUE(cc.isConnected(0, 3));
+    EXPECT_TRUE(cc.isConnected(2, 4));
+    EXPECT_TRUE(cc.isConnected(3, 4));
+    EXPECT_THROW(cc.isConnected(0, 10), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(3, 5), std::out_of_range);
+}
+
+TEST(ConnectedComponentTest, LargeCyclicGraph)
+{
+    int n = 50;
+    Graph g(n);
+    for (int i = 0; i < n; i++)
+        g.insertEdge(i, (i - 2) % n);
+
+    ConnectedComponent cc(g);
+    EXPECT_EQ(cc.count(), 2);
+
+    EXPECT_EQ(cc.id(0), 0);
+    EXPECT_EQ(cc.id(1), 1);
+    EXPECT_EQ(cc.id(3), 1);
+    EXPECT_EQ(cc.id(4), 0);
+    EXPECT_EQ(cc.id(24), 0);
+    EXPECT_EQ(cc.id(48), 0);
+    EXPECT_EQ(cc.id(49), 1);
+
+    EXPECT_THROW(cc.id(50), std::out_of_range);
+    EXPECT_THROW(cc.id(-1), std::out_of_range);
+
+    EXPECT_TRUE(cc.isConnected(0, 2));
+    EXPECT_TRUE(cc.isConnected(6, 14));
+    EXPECT_TRUE(cc.isConnected(38, 42));
+    EXPECT_TRUE(cc.isConnected(19, 3));
+
+    EXPECT_TRUE(!cc.isConnected(0, 43));
+    EXPECT_TRUE(!cc.isConnected(14, 15));
+    EXPECT_TRUE(!cc.isConnected(33, 34));
+    EXPECT_TRUE(!cc.isConnected(48, 49));
+    EXPECT_TRUE(!cc.isConnected(49, 0));
+
+    EXPECT_TRUE(cc.isConnected(0, 0)); // Check connectivity with self
+    EXPECT_THROW(cc.isConnected(0, 50), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(1, 50), std::out_of_range);
+}
+
+TEST(ConnectedComponentTest, FullyDisconnected)
+{
+    Graph g(20);
+    ASSERT_EQ(g.V(), 20);
+    ASSERT_EQ(g.E(), 0);
+
+    ConnectedComponent cc(g);
+    EXPECT_EQ(cc.count(), 20);
+    EXPECT_EQ(cc.id(2), 2);
+    EXPECT_EQ(cc.id(18), 18);
+    EXPECT_THROW(cc.id(20), std::out_of_range);
+
+    EXPECT_TRUE(!cc.isConnected(0, 1));
+    EXPECT_TRUE(!cc.isConnected(1, 2));
+    EXPECT_TRUE(!cc.isConnected(2, 3));
+    EXPECT_TRUE(!cc.isConnected(2, 16));
+    EXPECT_TRUE(!cc.isConnected(5, 20));
+    EXPECT_THROW(cc.isConnected(0, 20), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(-1, 5), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(-1, 20), std::out_of_range);
+}
+
+TEST(ConnectedComponentTest, CheckImmutable)
+{
+    Graph g(5);
+    g.insertEdge({{0, 1}, {0, 2}, {3, 4}});
+
+    ConnectedComponent cc(g);
+    ASSERT_EQ(cc.count(), 2);
+
+    g.insertEdge(2, 3);
+    EXPECT_EQ(cc.count(), 2);
+    EXPECT_TRUE(cc.isConnected(0, 2));
+    EXPECT_TRUE(cc.isConnected(4, 3));
+    EXPECT_TRUE(!cc.isConnected(0, 3));
+
+    cc = ConnectedComponent(g);
+    EXPECT_EQ(cc.count(), 1);
+    EXPECT_TRUE(cc.isConnected(0, 2));
+    EXPECT_TRUE(cc.isConnected(3, 4));
+    EXPECT_TRUE(cc.isConnected(0, 3));
+}
+
+TEST(ConnectedComponentTest, StressTest)
+{
+    // Create graph
+    int graphSize = 2000;
+    Graph graph;
+
+    for (int i = 0; i < graphSize / 2; ++i)
+        graph.insertEdge(i, (i + 1) % (graphSize / 2)); // Component 1 (simple cycle)
+    for (int i = graphSize / 2; i < graphSize - 5; ++i)
+        graph.insertEdge(i, i + 1); // Component 2 (line graph)
+    for (int i = graphSize - 5; i < graphSize; ++i)
+        graph.insertVertex(i); // 5 isolated nodes
+
+    ConnectedComponent cc(graph);
+    ASSERT_EQ(cc.count(), 7);
+
+    // All in the first component
+    for (int i = 0; i < graphSize / 2; ++i)
+        EXPECT_EQ(cc.id(i), cc.id(0));
+
+    // All in the second component
+    for (int i = graphSize / 2; i < graphSize - 1; ++i)
+        EXPECT_EQ(cc.id(i), cc.id(graphSize / 2));
+
+    // Isolated nodes, different components
+    for (int i = graphSize - 5; i < graphSize; ++i)
+    {
+        EXPECT_NE(cc.id(i), cc.id(0));
+        ASSERT_NE(cc.id(i), cc.id(graphSize / 2));
+    }
+
+    // Check connectivity queries
+    EXPECT_TRUE(cc.isConnected(0, graphSize / 2 - 1));
+    EXPECT_TRUE(cc.isConnected(graphSize / 2, graphSize - 2));
+    EXPECT_TRUE(!cc.isConnected(0, graphSize / 2));
+
+    // Check for isolated nodes
+    for (int i = graphSize - 5; i < graphSize; ++i)
+        for (int j = 0; j < graphSize - 5; ++j)
+            EXPECT_TRUE(!cc.isConnected(i, j));
 }

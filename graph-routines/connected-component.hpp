@@ -1,6 +1,6 @@
 /**connected-component.hpp
  *
- * Finds all the maximal sets connected vertices in an undirected graph
+ * Finds all the maximal sets of connected vertices in an undirected graph
  * and answer queries about these sets.
  */
 
@@ -12,9 +12,8 @@ class ConnectedComponent
 {
 private:
     Graph g;
-    std::unordered_set<int> marked;
-    std::unordered_map<int, int> id;
-    int count;
+    std::unordered_map<int, int> idMap;
+    int _count;
 
     // Process the graph g and find all connected components
     void dfsCC();
