@@ -1,6 +1,6 @@
 /**graph.hpp
  *
- * Weighted undirected graph container.
+ * Weighted undirected graph container. Parallel edges are not supported.
  * Implemented as a child class of DiGraph.
  */
 
@@ -61,6 +61,7 @@ public:
      * @param weight Weight of the edge, default to 1
      */
     void insertEdge(int v, int w, double weight = 1);
+    void insertEdge(std::initializer_list<std::pair<int, int>> edges);
     void insertEdge(std::initializer_list<std::pair<int, int>> edges);
 
     /*!

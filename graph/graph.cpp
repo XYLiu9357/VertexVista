@@ -1,6 +1,6 @@
 /**graph.cpp
  *
- * Weighted undirected graph container.
+ * Weighted undirected graph container. Parallel edges are not supported.
  * Implemented as a child class of DiGraph.
  */
 

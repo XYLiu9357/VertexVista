@@ -1,6 +1,7 @@
 /**digraph.hpp
  *
- * Weighted directed graph container.
+ * Weighted directed graph container. Parallel edges
+ * with the same direction are not supported.
  */
 
 #ifndef DIGRAPH
