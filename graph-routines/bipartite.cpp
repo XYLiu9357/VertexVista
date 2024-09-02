@@ -61,6 +61,7 @@ bool Bipartite::bfsFromSrc(const Graph &g, int src)
 bool Bipartite::bipartiteCheck(const Graph &g)
 {
     idMap.clear();
+    idMap.reserve(g.V());
 
     // Check each vertex in case the graph is disconnected
     for (const Node &node : g.getVertices())

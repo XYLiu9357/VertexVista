@@ -15,8 +15,11 @@ private:
     std::unordered_map<int, int> idMap;
     int _count;
 
-    // Process the graph g and find all connected components
-    void dfsCC();
+    /**
+     * Process the graph g and find all connected vertices
+     * starting from a fixed source and assign them an id
+     */
+    void dfsCC(int src, int id);
 
 public:
     /*!

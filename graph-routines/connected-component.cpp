@@ -4,11 +4,34 @@
  * and answer queries about these sets.
  */
 
+#include <stack>
 #include <stdexcept>
 #include "connected-component.hpp"
 
-// Process the graph g and find all connected components
-void dfsCC() {}
+/**
+ * Process the graph g and find all connected vertices
+ * starting from a fixed source and assign them an id
+ */
+void ConnectedComponent::dfsCC(int src, int id)
+{
+    std::stack<int> dfsStack;
+    dfsStack.push(src);
+
+    // DFS to assign all vertices accessible with the same id
+    while (!dfsStack.empty())
+    {
+        int vertex = dfsStack.top();
+        dfsStack.pop();
+        idMap[vertex] = id;
+
+        for (const Edge &e : g.adj(vertex))
+        {
+            int neighbor = e.getTo();
+            if (idMap.find(neighbor) == idMap.end())
+                dfsStack.push(neighbor);
+        }
+    }
+}
 
 /*!
  * @function ConnectedComponent
@@ -16,7 +39,19 @@ void dfsCC() {}
  * based on an undirected graph.
  * @param target undirected graph used as input
  */
-ConnectedComponent::ConnectedComponent(const Graph &target) {}
+ConnectedComponent::ConnectedComponent(const Graph &target)
+    : g(target), _count(0)
+{
+    int id = 0;
+    idMap.reserve(g.V());
+    for (const Node &node : g.getVertices())
+    {
+        int vertexId = node.getId();
+        if (idMap.find(vertexId) == idMap.end())
+            dfsCC(vertexId, id++);
+    }
+    _count = id;
+}
 
 /*!
  * @function ConnectedComponent

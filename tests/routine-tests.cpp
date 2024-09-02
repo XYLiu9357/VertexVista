@@ -186,6 +186,34 @@ TEST(ConnectedComponentTest, SmallAcyclicGraph)
     EXPECT_THROW(cc.isConnected(3, 5), std::out_of_range);
 }
 
+TEST(ConnectedComponentTest, NegativeVertices)
+{
+    Graph g = {0, -1, -2, -3, -4};
+    g.insertEdge({{0, -1}, {0, -2}, {-3, -4}});
+
+    ConnectedComponent cc(g);
+    EXPECT_EQ(cc.count(), 2);
+
+    EXPECT_EQ(cc.id(0), 0);
+    EXPECT_EQ(cc.id(-1), 0);
+    EXPECT_EQ(cc.id(-2), 0);
+    EXPECT_EQ(cc.id(-3), 1);
+    EXPECT_EQ(cc.id(-4), 1);
+    EXPECT_THROW(cc.id(1), std::out_of_range);
+    EXPECT_THROW(cc.id(5), std::out_of_range);
+
+    EXPECT_TRUE(cc.isConnected(0, -1));
+    EXPECT_TRUE(cc.isConnected(0, -2));
+    EXPECT_TRUE(cc.isConnected(-1, -2));
+    EXPECT_TRUE(!cc.isConnected(0, -3));
+    EXPECT_TRUE(!cc.isConnected(-2, -3));
+    EXPECT_TRUE(cc.isConnected(-3, -4));
+    EXPECT_TRUE(cc.isConnected(0, 0));   // Check connectivity with self
+    EXPECT_TRUE(cc.isConnected(-3, -3)); // Check connectivity with self
+    EXPECT_THROW(cc.isConnected(-1, 1), std::out_of_range);
+    EXPECT_THROW(cc.isConnected(-3, -5), std::out_of_range);
+}
+
 TEST(ConnectedComponentTest, SmallCyclicGraph)
 {
     Graph g(5);
@@ -215,7 +243,7 @@ TEST(ConnectedComponentTest, LargeCyclicGraph)
     int n = 50;
     Graph g(n);
     for (int i = 0; i < n; i++)
-        g.insertEdge(i, (i - 2) % n);
+        g.insertEdge(i, (i - 2 + n) % n);
 
     ConnectedComponent cc(g);
     EXPECT_EQ(cc.count(), 2);
@@ -263,7 +291,7 @@ TEST(ConnectedComponentTest, FullyDisconnected)
     EXPECT_TRUE(!cc.isConnected(1, 2));
     EXPECT_TRUE(!cc.isConnected(2, 3));
     EXPECT_TRUE(!cc.isConnected(2, 16));
-    EXPECT_TRUE(!cc.isConnected(5, 20));
+    EXPECT_THROW(cc.isConnected(5, 20), std::out_of_range);
     EXPECT_THROW(cc.isConnected(0, 20), std::out_of_range);
     EXPECT_THROW(cc.isConnected(-1, 5), std::out_of_range);
     EXPECT_THROW(cc.isConnected(-1, 20), std::out_of_range);
@@ -293,41 +321,40 @@ TEST(ConnectedComponentTest, CheckImmutable)
 TEST(ConnectedComponentTest, StressTest)
 {
     // Create graph
-    int graphSize = 2000;
-    Graph graph;
+    int graphSize = 10000;
+    Graph graph(graphSize);
 
     for (int i = 0; i < graphSize / 2; ++i)
         graph.insertEdge(i, (i + 1) % (graphSize / 2)); // Component 1 (simple cycle)
     for (int i = graphSize / 2; i < graphSize - 5; ++i)
         graph.insertEdge(i, i + 1); // Component 2 (line graph)
-    for (int i = graphSize - 5; i < graphSize; ++i)
-        graph.insertVertex(i); // 5 isolated nodes
+    // We still have 4 isolated nodes left -> total of 6
 
     ConnectedComponent cc(graph);
-    ASSERT_EQ(cc.count(), 7);
+    ASSERT_EQ(cc.count(), 6);
 
     // All in the first component
     for (int i = 0; i < graphSize / 2; ++i)
         EXPECT_EQ(cc.id(i), cc.id(0));
 
     // All in the second component
-    for (int i = graphSize / 2; i < graphSize - 1; ++i)
+    for (int i = graphSize / 2; i < graphSize - 4; ++i)
         EXPECT_EQ(cc.id(i), cc.id(graphSize / 2));
 
     // Isolated nodes, different components
-    for (int i = graphSize - 5; i < graphSize; ++i)
+    for (int i = graphSize - 4; i < graphSize; ++i)
     {
         EXPECT_NE(cc.id(i), cc.id(0));
-        ASSERT_NE(cc.id(i), cc.id(graphSize / 2));
+        EXPECT_NE(cc.id(i), cc.id(graphSize / 2));
     }
 
     // Check connectivity queries
     EXPECT_TRUE(cc.isConnected(0, graphSize / 2 - 1));
-    EXPECT_TRUE(cc.isConnected(graphSize / 2, graphSize - 2));
+    EXPECT_TRUE(cc.isConnected(graphSize / 2, graphSize - 5));
     EXPECT_TRUE(!cc.isConnected(0, graphSize / 2));
 
     // Check for isolated nodes
-    for (int i = graphSize - 5; i < graphSize; ++i)
-        for (int j = 0; j < graphSize - 5; ++j)
+    for (int i = graphSize - 4; i < graphSize; ++i)
+        for (int j = 0; j < graphSize - 4; ++j)
             EXPECT_TRUE(!cc.isConnected(i, j));
 }

@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(GRAPH_ROUTINES_SRC
     traversal.cpp
     bipartite.cpp
-    # connected-components.cpp
+    connected-component.cpp
     # cycle.cpp
     # eulerian.cpp
     # planarity.cpp
