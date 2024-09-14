@@ -8,9 +8,8 @@ Technical documentations can be found here:
 
 - **Graph**: the skeleton of VertexVista - [Graph](docs/Graph.md)
 - **Routines**: graph analysis and processing routines - [GraphRoutines](docs/GraphRoutines.md)
-- **Performance Analysis**: performance analysis for a subset of graph routines - [Performance](docs/Performance.md)
 
-\*The library currently offers a C++ interface with expressive syntax and customizable features. A Python interface with the same structure and style will be developed in the near future.
+\*Development is ongoing...
 
 ## About VertexVista
 
@@ -32,7 +31,7 @@ Create a undirected graph and determine if it is [Bipartite](https://en.wikipedi
 int main()
 {
     // Fully connected network
-    Graph smallGraph = DiGraph(12);
+    Graph smallGraph = Graph(12);
     for (int i = 0; i <= 3; i++)
         smallGraph.insertEdge({{i, 4 + i}, {4 + i, 8 + i}});
 
