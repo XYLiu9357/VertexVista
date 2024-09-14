@@ -34,7 +34,7 @@ add_subdirectory(vertex-vista)
 
 # Build your executable...
 
-target_link_libraries(your_executable graph)
+target_link_libraries(your_executable vertex-vista)
 ```
 
 ## Example
