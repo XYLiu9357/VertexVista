@@ -7,9 +7,12 @@
 #include <stdexcept>
 #include <set>
 
+#include "graph/graph.hpp"
 #include "graph/digraph.hpp"
+
 #include "graph-routines/bipartite.hpp"
 #include "graph-routines/connected-component.hpp"
+#include "graph-routines/cycle.hpp"
 
 /**
  * Bipartite
@@ -357,4 +360,113 @@ TEST(ConnectedComponentTest, StressTest)
     for (int i = graphSize - 4; i < graphSize; ++i)
         for (int j = 0; j < graphSize - 4; ++j)
             EXPECT_TRUE(!cc.isConnected(i, j));
+}
+
+/**
+ * Cycle detection
+ */
+
+TEST(CycleTest, EmptyDiGraph)
+{
+    DiGraph g;
+    EXPECT_TRUE(!isCyclic(g));
+}
+
+TEST(CycleTest, SmallCyclicDiGraph)
+{
+    DiGraph g(5);
+    g.insertEdge({{0, 1}, {1, 2}, {2, 3}, {3, 4}, {4, 0}});
+    EXPECT_TRUE(isCyclic(g));
+}
+
+TEST(CycleTest, SmallAcyclicDiGraph)
+{
+    DiGraph g(5);
+    g.insertEdge({{0, 1}, {1, 2}, {2, 3}, {3, 4}, {0, 4}});
+    EXPECT_TRUE(!isCyclic(g));
+}
+
+TEST(CycleTest, SmallAcyclicGraph)
+{
+    Graph g(5);
+    g.insertEdge({{0, 1}, {1, 2}, {1, 3}, {3, 4}});
+    EXPECT_TRUE(!isCyclic(g));
+}
+
+TEST(CycleTest, LargeCyclicGraph)
+{
+    // Fully connected
+    Graph g;
+    for (int v = 0; v < 100; v += 2)
+        g.insertVertex(v);
+    for (int v = 0; v < 100; v += 2)
+        for (int w = v + 2; w < 100; w += 2)
+            g.insertEdge(v, w);
+
+    EXPECT_TRUE(isCyclic(g));
+}
+
+TEST(CycleTest, LargeAcyclicGraph)
+{
+    Graph g;
+    for (int v = 0; v < 100; v += 2)
+        g.insertVertex(v);
+    for (int v = 0; v < 100; v += 2)
+        if (v != 48)
+            g.insertEdge(v, 48);
+
+    EXPECT_TRUE(!isCyclic(g));
+}
+
+TEST(CycleTest, LargeAcyclicDiGraph)
+{
+    // Fully connected by directional edges
+    DiGraph g;
+    for (int v = 0; v < 100; v += 2)
+        g.insertVertex(v);
+    for (int v = 0; v < 100; v += 2)
+        for (int w = v + 2; w < 100; w += 2)
+            g.insertEdge(v, w);
+
+    EXPECT_TRUE(!isCyclic(g));
+}
+
+TEST(CycleTest, LargeAcyclicDisconnectedGraph)
+{
+    // Five disconnected components
+    Graph g;
+    for (int v = 0; v < 100; v += 2)
+        g.insertVertex(v);
+    for (int v = 0; v < 100; v += 2)
+        if (v % 20 != 0)
+            g.insertEdge(v, (v / 20) * 20);
+
+    EXPECT_TRUE(!isCyclic(g));
+}
+
+TEST(CycleTest, LargeCyclicDisconnectedDiGraph)
+{
+    // Five disconnected components
+    DiGraph g;
+    for (int v = 0; v < 100; v += 2)
+        g.insertVertex(v);
+    for (int v = 0; v < 100; v += 2)
+        if (v % 20 != 0)
+            g.insertEdge(v, (v / 20) * 20);
+
+    // One cycle in the last component
+    g.insertEdge(80, 98);
+    EXPECT_TRUE(isCyclic(g));
+}
+
+TEST(CycleTest, StressTest)
+{
+    int graphSize = 100000;
+    DiGraph g(graphSize);
+
+    for (int i = 0; i < graphSize - 1; ++i)
+        g.insertEdge(i, i + 1);
+
+    g.insertEdge(graphSize - 1, 5000);
+    EXPECT_TRUE(isCyclic(g));
 }

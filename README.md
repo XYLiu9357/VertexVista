@@ -22,32 +22,42 @@ Indeed, BGL is a fantastic library built by absolute C++ virtuosos. It's versati
 
 ## Example
 
-Create a directed graph and determine if there exists an [Eulerian path](https://en.wikipedia.org/wiki/Eulerian_path): a path that visits every edge exactly once.
+Create a undirected graph and determine if it is [Bipartite](https://en.wikipedia.org/wiki/Bipartite_graph).
 
 ```cpp
 #include <iostream>
 #include <VertexVista/graph/graph.hpp>
-#include <VertexVista/routines/eulerian.hpp>
+#include <VertexVista/routines/bipartite.hpp>
 
 int main()
 {
-    // Create a graph
-    Graph g = Graph(4);
-    g.insertEdges({{0, 1}, {1, 2}, {2, 3}, {3, 0}});
+    // Fully connected network
+    Graph smallGraph = DiGraph(12);
+    for (int i = 0; i <= 3; i++)
+        smallGraph.insertEdge({{i, 4 + i}, {4 + i, 8 + i}});
 
-    // Eulerian path query
-    Eulerian eu = Eulerian(g);
-    if (eu.hasEulerianPath())
-        std::cout << "Has Eu-path" << std::endl;
-    else
-        std::cout << "No Eu-path" << std::endl;
+    Bipartite b(smallGraph);
+    if (b.isBipartite())
+        std::cout << "Graph is bipartite." << std::endl;
+
+    // Print partition
+    std::cout << "Part 1: ";
+    if (int v : b.getPart1())
+        std::cout << v << ", ";
+    std::cout << endl;
+
+    std::cout << "Part 2: ";
+    if (int v : b.getPart2())
+        std::cout << v << ", ";
+    std::cout << endl;
 
     return 0;
 }
 
-/**Output:
- * $ ./a.out
- * Has Eu-path
+/**
+ * Graph is bipartite.
+ * Part 1: 0, 1, 2, 3, 8, 9, 10, 11
+ * Part 2: 4, 5, 6, 7
  */
 ```
 

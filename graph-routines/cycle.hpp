@@ -9,12 +9,21 @@
  * For undirected graph, each edge is treated as bidirectional edges
  * in a directed graph setting.
  */
+#include "graph/graph.hpp"
 #include "graph/digraph.hpp"
 
 /*!
  *@function isCyclic
- * @abstract Checks whether the directed graph.
+ * @abstract Checks whether the directed graph is cyclic.
  * @param target the target DiGraph
  * @return True if the graph is cyclic, false otherwise.
  */
 bool isCyclic(const DiGraph &target);
+
+/*!
+ *@function isCyclic
+ * @abstract Checks whether the undirected graph is cyclic.
+ * @param target the target Graph
+ * @return True if the graph is cyclic, false otherwise.
+ */
+bool isCyclic(const Graph &target);

@@ -62,7 +62,6 @@ public:
      */
     void insertEdge(int v, int w, double weight = 1);
     void insertEdge(std::initializer_list<std::pair<int, int>> edges);
-    void insertEdge(std::initializer_list<std::pair<int, int>> edges);
 
     /*!
      * @function eraseVertex

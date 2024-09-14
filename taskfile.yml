@@ -13,7 +13,7 @@ tasks:
 
   build-test:
     cmds:
-      - cmake -S . -B build -DCMAKE_CXX_COMPILER=${GCC} ${DEBUG}
+      - cmake -S . -B build -DCMAKE_CXX_COMPILER=${CLANG} ${DEBUG}
       - cmake --build build
 
   build:

@@ -7,7 +7,7 @@ set(GRAPH_ROUTINES_SRC
     traversal.cpp
     bipartite.cpp
     connected-component.cpp
-    # cycle.cpp
+    cycle.cpp
     # eulerian.cpp
     # planarity.cpp
     # strong-connectivity.cpp
