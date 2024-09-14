@@ -53,7 +53,7 @@ int main()
     return 0;
 }
 
-/**
+/**Output
  * Graph is bipartite.
  * Part 1: 0, 1, 2, 3, 8, 9, 10, 11
  * Part 2: 4, 5, 6, 7
