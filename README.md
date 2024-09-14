@@ -17,7 +17,25 @@ VertexVista provides a comprehensive set of features for working with weighted d
 
 Indeed, BGL is a fantastic library built by absolute C++ virtuosos. It's versatile and is well-known for its compatibility and robust performance. Yet this comes at a cost: BGL has a steep learning curve and is somewhat bulky. For many use cases, support for ancient or older compilers is unnecessary. Developers have expressed the need for a light-weight alternative for their projects. VertexVista is a performant, flexible alternative solution that can easily be tailored to our own projects.
 
-## Dependencies & Installation
+## Dependencies
+
+- C++ Compiler: A C++ compiler that supports C++14 or later.
+- CMake: Version 3.20 or higher.
+- Google Test: This project includes support for unit tests using the Google Test framework.
+
+## Installation
+
+To include this library in your own projects, you need to **clone the repository** and then **compile the library along with your own project**. If using CMake, add the following lines to `CMakeLists.txt`
+
+```cmake
+# Declarations & dependencies...
+
+add_subdirectory(vertex-vista)
+
+# Build your executable...
+
+target_link_libraries(your_executable graph)
+```
 
 ## Example
 
